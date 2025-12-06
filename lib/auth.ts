@@ -11,4 +11,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  debug: true, // Enable debugging to see logs in Vercel
 })
