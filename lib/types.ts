@@ -135,3 +135,18 @@ export type LandingPagePlanData = {
     metaDescription: string;
   };
 };
+
+export type ExecutionTask = {
+  id: string;
+  title: string;
+  description: string;
+  category: "validation" | "marketing" | "product" | "branding" | "landing_page" | "research" | "setup" | "other";
+  priority: "high" | "medium" | "low";
+  estimatedTimeMinutes: number;
+  suggestedTools: string[];
+};
+
+export type ExecutionCoachResponse = {
+  focusSummary: string;
+  tasks: ExecutionTask[];
+};
