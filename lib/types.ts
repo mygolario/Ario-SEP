@@ -71,3 +71,39 @@ export type DeepPlanData = {
     mitigation: string;
   }[];
 };
+
+export type BrandingKitData = {
+  brandEssence: {
+    coreIdea: string;
+    personality: string;
+    toneOfVoice: string;
+  };
+  visualDirection: {
+    colorPalette: {
+      name: string;
+      hex: string;
+      usage: string;
+    }[];
+    typography: {
+      role: string;
+      suggestion: string;
+      styleNote: string;
+    }[];
+  };
+  messaging: {
+    tagline: string;
+    shortDescription: string;
+    elevatorPitch: string;
+    valueProposition: string;
+  };
+  heroSection: {
+    headline: string;
+    subheadline: string;
+    primaryCTA: string;
+    secondaryCTA: string;
+  };
+  brandDoDont: {
+    do: string[];
+    dont: string[];
+  };
+};
