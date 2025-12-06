@@ -4,9 +4,13 @@ import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
 import StrategyMap from '@/components/StrategyMap';
 import ShareLinkButton from '@/components/ShareLinkButton';
+import RegenerateButton from '@/components/RegenerateButton';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import { StartupPlan } from '@/lib/types';
+import { ArrowLeft, LayoutTemplate, Layers } from 'lucide-react';
+import { StartupPlan, DeepPlanData } from '@/lib/types';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import DeepPlanGenerator from '@/components/DeepPlanGenerator';
+import DeepPlanRenderer from '@/components/DeepPlanRenderer';
 
 interface ProjectPageProps {
   params: Promise<{
@@ -27,7 +31,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       id: id,
     },
     include: {
-      strategyMap: true,
+      strategyMaps: {
+        orderBy: {
+            createdAt: 'desc'
+        },
+        take: 1
+      },
+      deepPlan: true,
     },
   });
 
@@ -36,22 +46,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   if (project.userId !== session.user.id) {
-    // Basic authorization check - strictly checking ID
-    // Could also just notFound() to hide existence
     redirect('/dashboard'); 
   }
 
-  if (!project.strategyMap?.data) {
-     return (
-        <div className="p-8">
-            <h1 className="text-2xl font-bold mb-4">Project found, but no strategy map data available.</h1>
-            <Link href="/dashboard"><Button>Back to Dashboard</Button></Link>
-        </div>
-     )
-  }
-
-  // Cast Json to StartupPlan
-  const plan = project.strategyMap.data as unknown as StartupPlan;
+  const hasStrategyMap = !!project.strategyMaps?.[0]?.data;
+  const plan = hasStrategyMap ? (project.strategyMaps[0].data as unknown as StartupPlan) : null;
+  
+  const hasDeepPlan = !!project.deepPlan?.data;
+  const deepPlan = hasDeepPlan ? (project.deepPlan?.data as unknown as DeepPlanData) : null;
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 md:px-8">
@@ -74,6 +76,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
            </div>
            <div>
             <div className='flex gap-2 items-center'>
+            {project.userId === session.user.id && (
+                <RegenerateButton projectId={project.id} />
+            )}
             <ShareLinkButton publicId={project.publicId} />
            <a href={`/api/export-pdf/${project.id}`} target="_blank" rel="noopener noreferrer">
              <Button variant="outline">
@@ -84,9 +89,37 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
            </div>
         </header>
 
-        <section>
-          <StrategyMap plan={plan} />
-        </section>
+        <Tabs defaultValue="one-page" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 max-w-[400px] mb-8">
+            <TabsTrigger value="one-page" className="flex items-center gap-2">
+              <LayoutTemplate className="h-4 w-4" />
+              One-Page Plan
+            </TabsTrigger>
+            <TabsTrigger value="deep-plan" className="flex items-center gap-2">
+               <Layers className="h-4 w-4" />
+               Deep Plan (Beta)
+            </TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="one-page" className="mt-0">
+             {plan ? (
+                <StrategyMap plan={plan} />
+             ) : (
+                <div className="p-12 text-center border-2 border-dashed rounded-lg">
+                    <h2 className="text-xl font-semibold">No One-Page Plan Found</h2>
+                    <p className="text-muted-foreground mt-2">Use the dashboard to generate a new idea.</p>
+                </div>
+             )}
+          </TabsContent>
+          
+          <TabsContent value="deep-plan" className="mt-0">
+             {deepPlan ? (
+                <DeepPlanRenderer plan={deepPlan} />
+             ) : (
+                <DeepPlanGenerator projectId={project.id} />
+             )}
+          </TabsContent>
+        </Tabs>
       </div>
     </main>
   );

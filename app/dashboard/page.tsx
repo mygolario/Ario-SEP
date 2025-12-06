@@ -21,10 +21,11 @@ export default async function DashboardPage() {
       createdAt: 'desc',
     },
     include: {
-      strategyMap: {
-        select: {
-          summary: true,
+      strategyMaps: {
+        orderBy: {
+          createdAt: 'desc',
         },
+        take: 1,
       },
     },
   });
@@ -63,7 +64,7 @@ export default async function DashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => {
               // Safe cast for summary which is Json type
-              const summary = project.strategyMap?.summary as { elevatorPitch?: string; coreGoal?: string } | undefined;
+              const summary = project.strategyMaps?.[0]?.summary as { elevatorPitch?: string; coreGoal?: string } | undefined;
               
               return (
                 <Card key={project.id} className="flex flex-col h-full hover:shadow-lg transition-shadow">

@@ -20,7 +20,14 @@ export async function GET(
 
     const project = await prisma.project.findUnique({
       where: { id },
-      include: { strategyMap: true },
+      include: {
+        strategyMaps: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          take: 1,
+        },
+      },
     });
 
     if (!project) {
@@ -31,11 +38,11 @@ export async function GET(
       return new NextResponse('Unauthorized', { status: 403 });
     }
 
-    if (!project.strategyMap?.data) {
+    if (!project.strategyMaps?.[0]?.data) {
       return new NextResponse('No strategy map data found', { status: 404 });
     }
 
-    const plan = project.strategyMap.data as unknown as StartupPlan;
+    const plan = project.strategyMaps[0].data as unknown as StartupPlan;
 
     // Generate PDF stream
     const stream = await renderToStream(React.createElement(StrategyPdf, { plan, title: project.title }));

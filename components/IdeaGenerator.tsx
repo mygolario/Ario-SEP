@@ -55,20 +55,20 @@ export default function IdeaGenerator() {
            <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-bold">Your Execution Strategy</h2>
               <div className="flex gap-4 items-center">
-                {plan.projectId && (
-                  <a 
-                    href={`/project/${plan.projectId}`} 
-                    className="text-sm font-medium text-primary hover:underline"
+                  {plan.projectId && (
+                    <a 
+                      href={`/project/${plan.projectId}`} 
+                      className="text-sm font-medium text-primary hover:underline"
+                    >
+                      View Saved Project
+                    </a>
+                  )}
+                  <button 
+                    onClick={() => { setPlan(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    className="text-sm text-muted-foreground hover:text-primary underline"
                   >
-                    View Saved Project
-                  </a>
-                )}
-                <button 
-                  onClick={() => { setPlan(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                  className="text-sm text-muted-foreground hover:text-primary underline"
-                >
-                  Start Over
-                </button>
+                    Start Over
+                  </button>
               </div>
            </div>
            <StrategyMap plan={plan} />

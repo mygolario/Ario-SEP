@@ -18,7 +18,12 @@ export default async function PublicProjectPage({ params }: PublicProjectPagePro
       publicId: publicId,
     },
     include: {
-      strategyMap: true,
+      strategyMaps: {
+        orderBy: {
+            createdAt: 'desc'
+        },
+        take: 1
+      },
     },
   });
 
@@ -27,7 +32,7 @@ export default async function PublicProjectPage({ params }: PublicProjectPagePro
   }
 
   // Cast Json to StartupPlan
-  const plan = project.strategyMap?.data as unknown as StartupPlan;
+  const plan = project.strategyMaps?.[0]?.data as unknown as StartupPlan;
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 md:px-8">
