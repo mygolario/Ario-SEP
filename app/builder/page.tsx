@@ -10,12 +10,12 @@ export default function BuilderPage() {
       <div className="max-w-6xl mx-auto space-y-12">
         <header className="flex flex-col items-center space-y-4 relative">
            <div className="absolute left-0 top-0">
-              <Link href="/">
-                <Button variant="ghost" size="sm" className="gap-2">
+              <Button asChild variant="ghost" size="sm" className="gap-2">
+                <Link href="/">
                     <ArrowLeft className="h-4 w-4" />
                     Back to Home
-                </Button>
-              </Link>
+                </Link>
+              </Button>
            </div>
           <div className="absolute right-0 top-0">
             <AuthButton />

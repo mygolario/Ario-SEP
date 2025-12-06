@@ -21,19 +21,19 @@ export default async function LandingPage() {
           <div className="flex items-center gap-4">
             {isSignedIn ? (
                 <div className="flex items-center gap-4">
-                    <Link href="/dashboard">
-                        <Button variant="ghost">Dashboard</Button>
-                    </Link>
+                    <Button asChild variant="ghost">
+                        <Link href="/dashboard">Dashboard</Link>
+                    </Button>
                     <AuthButton />
                 </div>
             ) : (
                 <div className="flex items-center gap-4">
-                     <Link href="/api/auth/signin">
-                        <Button variant="ghost">Sign In</Button>
-                     </Link>
-                     <Link href="/builder">
-                        <Button>Get Started</Button>
-                     </Link>
+                     <Button asChild variant="ghost">
+                        <Link href="/api/auth/signin">Sign In</Link>
+                     </Button>
+                     <Button asChild>
+                        <Link href="/builder">Get Started</Link>
+                     </Button>
                 </div>
             )}
           </div>
@@ -57,31 +57,31 @@ export default async function LandingPage() {
               <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center">
                  {isSignedIn ? (
                     <>
-                        <Link href="/dashboard">
-                            <Button size="lg" className="w-full sm:w-auto text-lg h-12 px-8">
+                        <Button asChild size="lg" className="w-full sm:w-auto text-lg h-12 px-8">
+                            <Link href="/dashboard">
                                 Go to Dashboard
                                 <ArrowRight className="ml-2 h-5 w-5" />
-                            </Button>
-                        </Link>
-                        <Link href="/builder">
-                             <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg h-12 px-8">
+                            </Link>
+                        </Button>
+                        <Button asChild size="lg" variant="outline" className="w-full sm:w-auto text-lg h-12 px-8">
+                             <Link href="/builder">
                                 Start New Plan
-                             </Button>
-                        </Link>
+                             </Link>
+                        </Button>
                     </>
                  ) : (
                     <>
-                        <Link href="/builder">
-                             <Button size="lg" className="w-full sm:w-auto text-lg h-12 px-8 bg-indigo-600 hover:bg-indigo-700 text-white">
+                        <Button asChild size="lg" className="w-full sm:w-auto text-lg h-12 px-8 bg-indigo-600 hover:bg-indigo-700 text-white">
+                             <Link href="/builder">
                                 Start Your First Plan
                                 <ArrowRight className="ml-2 h-5 w-5" />
-                             </Button>
-                        </Link>
-                        <Link href="/api/auth/signin">
-                             <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg h-12 px-8">
+                             </Link>
+                        </Button>
+                        <Button asChild size="lg" variant="outline" className="w-full sm:w-auto text-lg h-12 px-8">
+                             <Link href="/api/auth/signin">
                                 Sign In
-                             </Button>
-                        </Link>
+                             </Link>
+                        </Button>
                     </>
                  )}
               </div>
@@ -181,11 +181,11 @@ export default async function LandingPage() {
              <div className="container mx-auto max-w-3xl space-y-8">
                  <h2 className="text-3xl md:text-5xl font-bold">Ready to launch your next big thing?</h2>
                  <p className="text-xl text-muted-foreground">Join the platform helping founders move from idea to execution.</p>
-                 <Link href="/builder">
-                    <Button size="lg" className="text-lg h-14 px-10 bg-indigo-600 hover:bg-indigo-700 text-white">
+                 <Button asChild size="lg" className="text-lg h-14 px-10 bg-indigo-600 hover:bg-indigo-700 text-white">
+                    <Link href="/builder">
                         Start Building Now
-                    </Button>
-                 </Link>
+                    </Link>
+                 </Button>
              </div>
         </section>
       </main>
