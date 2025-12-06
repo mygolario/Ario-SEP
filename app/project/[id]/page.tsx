@@ -16,6 +16,7 @@ import BrandingKitRenderer from '@/components/BrandingKitRenderer';
 import LandingPageGenerator from '@/components/LandingPageGenerator';
 import LandingPageRenderer from '@/components/LandingPageRenderer';
 import ProjectSettings from '@/components/ProjectSettings';
+import ExecutionCoachPanel from '@/components/ExecutionCoachPanel';
 
 interface ProjectPageProps {
   params: Promise<{
@@ -98,6 +99,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                Download PDF
              </Button>
            </a>
+            <ExecutionCoachPanel projectId={project.id} />
             </div>
            </div>
         </header>
