@@ -81,7 +81,7 @@ export default async function AdminFeedbackPage() {
                         {item.type}
                     </Badge>
                     </TableCell>
-                    <TableCell className="max-w-md break-words">
+                    <TableCell className="max-w-md wrap-break-word">
                         {item.message}
                     </TableCell>
                     <TableCell>
