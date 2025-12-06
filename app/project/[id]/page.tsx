@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma';
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
 import StrategyMap from '@/components/StrategyMap';
+import ShareLinkButton from '@/components/ShareLinkButton';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { StartupPlan } from '@/lib/types';
@@ -71,11 +72,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 </p>
               </div>
            </div>
+           <div>
+            <div className='flex gap-2 items-center'>
+            <ShareLinkButton publicId={project.publicId} />
            <a href={`/api/export-pdf/${project.id}`} target="_blank" rel="noopener noreferrer">
              <Button variant="outline">
                Download PDF
              </Button>
            </a>
+            </div>
+           </div>
         </header>
 
         <section>
