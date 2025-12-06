@@ -6,11 +6,13 @@ import StrategyMap from '@/components/StrategyMap';
 import ShareLinkButton from '@/components/ShareLinkButton';
 import RegenerateButton from '@/components/RegenerateButton';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, LayoutTemplate, Layers, Settings } from 'lucide-react';
-import { StartupPlan, DeepPlanData } from '@/lib/types';
+import { ArrowLeft, LayoutTemplate, Layers, Settings, Palette } from 'lucide-react';
+import { StartupPlan, DeepPlanData, BrandingKitData } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DeepPlanGenerator from '@/components/DeepPlanGenerator';
 import DeepPlanRenderer from '@/components/DeepPlanRenderer';
+import BrandingKitGenerator from '@/components/BrandingKitGenerator';
+import BrandingKitRenderer from '@/components/BrandingKitRenderer';
 import ProjectSettings from '@/components/ProjectSettings';
 
 interface ProjectPageProps {
@@ -39,6 +41,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         take: 1
       },
       deepPlan: true,
+      brandingKit: true,
     },
   });
 
@@ -55,6 +58,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   
   const hasDeepPlan = !!project.deepPlan?.data;
   const deepPlan = hasDeepPlan ? (project.deepPlan?.data as unknown as DeepPlanData) : null;
+
+  const hasBrandingKit = !!project.brandingKit?.data;
+  const brandingKit = hasBrandingKit ? (project.brandingKit?.data as unknown as BrandingKitData) : null;
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 md:px-8">
@@ -91,14 +97,18 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </header>
 
         <Tabs defaultValue="one-page" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 max-w-[500px] mb-8">
+          <TabsList className="grid w-full grid-cols-4 max-w-[600px] mb-8">
             <TabsTrigger value="one-page" className="flex items-center gap-2">
               <LayoutTemplate className="h-4 w-4" />
-              One-Page Plan
+              One-Page
             </TabsTrigger>
             <TabsTrigger value="deep-plan" className="flex items-center gap-2">
                <Layers className="h-4 w-4" />
-               Deep Plan (Beta)
+               Deep Plan
+            </TabsTrigger>
+            <TabsTrigger value="branding" className="flex items-center gap-2">
+               <Palette className="h-4 w-4" />
+               Branding
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
                <Settings className="h-4 w-4" />
@@ -122,6 +132,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 <DeepPlanRenderer plan={deepPlan} />
              ) : (
                 <DeepPlanGenerator projectId={project.id} />
+             )}
+          </TabsContent>
+
+          <TabsContent value="branding" className="mt-0">
+             {brandingKit ? (
+                <BrandingKitRenderer kit={brandingKit} />
+             ) : (
+                <BrandingKitGenerator projectId={project.id} />
              )}
           </TabsContent>
 
