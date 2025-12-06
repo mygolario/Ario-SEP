@@ -66,14 +66,23 @@ model Project {
   experienceLevel  ExperienceLevel
   timePerWeekHours Int?
   createdAt        DateTime        @default(now())
-  strategyMap      StrategyMap?
+  strategyMaps     StrategyMap[]
+  deepPlan         DeepPlan?
 }
 
 model StrategyMap {
   id        String   @id @default(cuid())
-  projectId String   @unique
+  projectId String
   project   Project  @relation(fields: [projectId], references: [id])
   summary   Json
+  data      Json
+  createdAt DateTime @default(now())
+}
+
+model DeepPlan {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id])
   data      Json
   createdAt DateTime @default(now())
 }
