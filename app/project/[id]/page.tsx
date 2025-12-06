@@ -6,11 +6,12 @@ import StrategyMap from '@/components/StrategyMap';
 import ShareLinkButton from '@/components/ShareLinkButton';
 import RegenerateButton from '@/components/RegenerateButton';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, LayoutTemplate, Layers } from 'lucide-react';
+import { ArrowLeft, LayoutTemplate, Layers, Settings } from 'lucide-react';
 import { StartupPlan, DeepPlanData } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DeepPlanGenerator from '@/components/DeepPlanGenerator';
 import DeepPlanRenderer from '@/components/DeepPlanRenderer';
+import ProjectSettings from '@/components/ProjectSettings';
 
 interface ProjectPageProps {
   params: Promise<{
@@ -90,7 +91,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </header>
 
         <Tabs defaultValue="one-page" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 max-w-[400px] mb-8">
+          <TabsList className="grid w-full grid-cols-3 max-w-[500px] mb-8">
             <TabsTrigger value="one-page" className="flex items-center gap-2">
               <LayoutTemplate className="h-4 w-4" />
               One-Page Plan
@@ -98,6 +99,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <TabsTrigger value="deep-plan" className="flex items-center gap-2">
                <Layers className="h-4 w-4" />
                Deep Plan (Beta)
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="flex items-center gap-2">
+               <Settings className="h-4 w-4" />
+               Settings
             </TabsTrigger>
           </TabsList>
           
@@ -118,6 +123,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
              ) : (
                 <DeepPlanGenerator projectId={project.id} />
              )}
+          </TabsContent>
+
+          <TabsContent value="settings" className="mt-0">
+             <ProjectSettings project={project} />
           </TabsContent>
         </Tabs>
       </div>
