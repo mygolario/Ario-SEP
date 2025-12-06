@@ -48,7 +48,7 @@ export default function DeepPlanGenerator({ projectId }: DeepPlanGeneratorProps)
         size="lg" 
         onClick={handleGenerate} 
         disabled={loading}
-        className="bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-indigo-500/20"
+        className="bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-indigo-500/20"
       >
         {loading ? (
           <>
