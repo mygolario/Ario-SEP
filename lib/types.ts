@@ -51,7 +51,7 @@ export type DeepPlanData = {
     differentiation: string;
   }[];
   extendedRoadmap: {
-    phase: string;        // e.g. "Weeks 1–2", "Weeks 3–4"
+    phase: string;
     timeFrame: string;
     items: string[];
   }[];
@@ -105,5 +105,33 @@ export type BrandingKitData = {
   brandDoDont: {
     do: string[];
     dont: string[];
+  };
+};
+
+export type LandingPagePlanData = {
+  hero: {
+    headline: string;
+    subheadline: string;
+    primaryCTA: string;
+    secondaryCTA?: string;
+    keyBenefits: string[];
+  };
+  sections: {
+    id: string;
+    type: "features" | "problem-solution" | "how-it-works" | "testimonial" | "pricing" | "faq" | "trust" | "cta" | "custom";
+    title: string;
+    subtitle?: string;
+    body?: string;
+    bulletPoints?: string[];
+  }[];
+  layoutNotes: {
+    generalStyle: string;
+    suggestedStructure: string;
+    aboveTheFoldFocus: string;
+  };
+  seo: {
+    targetKeyword: string;
+    metaTitle: string;
+    metaDescription: string;
   };
 };

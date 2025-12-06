@@ -55,20 +55,21 @@ model VerificationToken {
 }
 
 model Project {
-  id               String          @id @default(cuid())
-  publicId         String          @unique @default(cuid())
+  id               String           @id @default(cuid())
+  publicId         String           @unique @default(cuid())
   userId           String?
-  user             User?           @relation(fields: [userId], references: [id])
+  user             User?            @relation(fields: [userId], references: [id])
   title            String
   description      String
   targetAudience   String
   budgetLevel      BudgetLevel
   experienceLevel  ExperienceLevel
   timePerWeekHours Int?
-  createdAt        DateTime        @default(now())
+  createdAt        DateTime         @default(now())
   strategyMaps     StrategyMap[]
   deepPlan         DeepPlan?
   brandingKit      BrandingKit?
+  landingPagePlan  LandingPagePlan?
 }
 
 model StrategyMap {
@@ -89,6 +90,14 @@ model DeepPlan {
 }
 
 model BrandingKit {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id])
+  data      Json
+  createdAt DateTime @default(now())
+}
+
+model LandingPagePlan {
   id        String   @id @default(cuid())
   projectId String   @unique
   project   Project  @relation(fields: [projectId], references: [id])
