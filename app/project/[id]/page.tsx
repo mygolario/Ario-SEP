@@ -6,13 +6,15 @@ import StrategyMap from '@/components/StrategyMap';
 import ShareLinkButton from '@/components/ShareLinkButton';
 import RegenerateButton from '@/components/RegenerateButton';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, LayoutTemplate, Layers, Settings, Palette } from 'lucide-react';
-import { StartupPlan, DeepPlanData, BrandingKitData } from '@/lib/types';
+import { ArrowLeft, LayoutTemplate, Layers, Settings, Palette, Layout } from 'lucide-react';
+import { StartupPlan, DeepPlanData, BrandingKitData, LandingPagePlanData } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DeepPlanGenerator from '@/components/DeepPlanGenerator';
 import DeepPlanRenderer from '@/components/DeepPlanRenderer';
 import BrandingKitGenerator from '@/components/BrandingKitGenerator';
 import BrandingKitRenderer from '@/components/BrandingKitRenderer';
+import LandingPageGenerator from '@/components/LandingPageGenerator';
+import LandingPageRenderer from '@/components/LandingPageRenderer';
 import ProjectSettings from '@/components/ProjectSettings';
 
 interface ProjectPageProps {
@@ -42,6 +44,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       },
       deepPlan: true,
       brandingKit: true,
+      landingPagePlan: true,
     },
   });
 
@@ -61,6 +64,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const hasBrandingKit = !!project.brandingKit?.data;
   const brandingKit = hasBrandingKit ? (project.brandingKit?.data as unknown as BrandingKitData) : null;
+
+  const hasLandingPagePlan = !!project.landingPagePlan?.data;
+  const landingPagePlan = hasLandingPagePlan ? (project.landingPagePlan?.data as unknown as LandingPagePlanData) : null;
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 md:px-8">
@@ -97,7 +103,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </header>
 
         <Tabs defaultValue="one-page" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 max-w-[600px] mb-8">
+          <TabsList className="grid w-full grid-cols-5 max-w-[750px] mb-8 overflow-x-auto">
             <TabsTrigger value="one-page" className="flex items-center gap-2">
               <LayoutTemplate className="h-4 w-4" />
               One-Page
@@ -109,6 +115,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <TabsTrigger value="branding" className="flex items-center gap-2">
                <Palette className="h-4 w-4" />
                Branding
+            </TabsTrigger>
+            <TabsTrigger value="landing-page" className="flex items-center gap-2">
+               <Layout className="h-4 w-4" />
+               Landing Page
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
                <Settings className="h-4 w-4" />
@@ -140,6 +150,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 <BrandingKitRenderer kit={brandingKit} />
              ) : (
                 <BrandingKitGenerator projectId={project.id} />
+             )}
+          </TabsContent>
+
+          <TabsContent value="landing-page" className="mt-0">
+             {landingPagePlan ? (
+                <LandingPageRenderer plan={landingPagePlan} />
+             ) : (
+                <LandingPageGenerator projectId={project.id} />
              )}
           </TabsContent>
 
