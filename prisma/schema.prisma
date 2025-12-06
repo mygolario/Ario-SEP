@@ -35,15 +35,16 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   projects      Project[]
-  createdAt     DateTime  @default(now())
+  feedbacks     Feedback[]
+  createdAt     DateTime   @default(now())
 }
 
 model VerificationToken {
@@ -115,4 +116,22 @@ enum ExperienceLevel {
   BEGINNER
   INTERMEDIATE
   ADVANCED
+}
+
+model Feedback {
+  id        String       @id @default(cuid())
+  userId    String?
+  user      User?        @relation(fields: [userId], references: [id])
+  projectId String?
+  type      FeedbackType
+  message   String
+  metadata  Json?
+  createdAt DateTime     @default(now())
+}
+
+enum FeedbackType {
+  BUG
+  IDEA
+  CONFUSION
+  OTHER
 }
