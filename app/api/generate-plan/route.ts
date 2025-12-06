@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { IdeaInput, StartupPlan } from '@/lib/types';
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
+import { BudgetLevel, ExperienceLevel, Prisma } from '@prisma/client';
 
 export async function POST(request: Request) {
   try {
@@ -126,13 +127,13 @@ Generate a strategy map with:
             title: ideaTitle,
             description: ideaDescription,
             targetAudience: targetAudience,
-            budgetLevel: budgetLevel.toUpperCase() as any, // Enum mapping might need case adjustment
-            experienceLevel: experienceLevel.toUpperCase() as any,
+            budgetLevel: budgetLevel.toUpperCase() as BudgetLevel,
+            experienceLevel: experienceLevel.toUpperCase() as ExperienceLevel,
             timePerWeekHours: timePerWeek,
             strategyMap: {
               create: {
-                summary: plan.summary as any, // Prisma Json type
-                data: plan as any,
+                summary: plan.summary as unknown as Prisma.InputJsonValue,
+                data: plan as unknown as Prisma.InputJsonValue,
               },
             },
           },

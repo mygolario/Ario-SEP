@@ -77,7 +77,7 @@ export default async function DashboardPage() {
                   <CardContent className="grow">
                     {summary?.elevatorPitch && (
                         <p className="text-sm text-muted-foreground line-clamp-3 italic">
-                          "{summary.elevatorPitch}"
+                          &quot;{summary.elevatorPitch}&quot;
                         </p>
                     )}
                   </CardContent>

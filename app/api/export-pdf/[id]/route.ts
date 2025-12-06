@@ -42,7 +42,7 @@ export async function GET(
     
     // Convert Node stream to Buffer to avoid Web Stream compatibility issues in Next.js App Router
     const chunks: Uint8Array[] = [];
-    // @ts-ignore - renderToStream returns a NodeJS.ReadableStream which is async iterable
+
     for await (const chunk of stream) {
       chunks.push(chunk as Uint8Array);
     }
