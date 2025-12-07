@@ -21,9 +21,7 @@ export default async function LandingPage() {
           </div>
           <div className="flex items-center gap-4">
             {isSignedIn ? (
-                <div className="flex items-center gap-4">
-                    <AuthButton />
-                </div>
+                <AuthButton />
             ) : (
                 <div className="flex items-center gap-4">
                      <Button asChild variant="ghost">

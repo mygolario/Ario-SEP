@@ -99,7 +99,7 @@ export default function IdeaForm({ onSubmit, isLoading }: IdeaFormProps) {
                 value={formData.budgetLevel}
                 onValueChange={(val) => handleSelectChange('budgetLevel', val)}
               >
-                <SelectTrigger>
+                <SelectTrigger id="budgetLevel">
                   <SelectValue placeholder="Select budget" />
                 </SelectTrigger>
                 <SelectContent>
@@ -117,7 +117,7 @@ export default function IdeaForm({ onSubmit, isLoading }: IdeaFormProps) {
                 value={formData.experienceLevel}
                 onValueChange={(val) => handleSelectChange('experienceLevel', val)}
               >
-                <SelectTrigger>
+                <SelectTrigger id="experienceLevel">
                   <SelectValue placeholder="Select experience" />
                 </SelectTrigger>
                 <SelectContent>
