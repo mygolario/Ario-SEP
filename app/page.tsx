@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LayoutTemplate, Layers, Palette, Layout, Zap, ArrowRight, CheckCircle2 } from 'lucide-react';
 import AuthButton from '@/components/AuthButton';
-import IdeaIntakeForm from '@/components/IdeaIntakeForm';
+
 
 export default async function LandingPage() {
   const user = await getCurrentUser();
@@ -29,7 +29,7 @@ export default async function LandingPage() {
                         <Link href="/login">ورود</Link>
                      </Button>
                      <Button asChild>
-                        <Link href="/builder">شروع کنید</Link>
+                        <Link href="/dashboard/new">شروع کنید</Link>
                      </Button>
                 </div>
             )}
@@ -62,7 +62,7 @@ export default async function LandingPage() {
                             </Link>
                         </Button>
                         <Button asChild variant="outline" className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm md:text-base font-medium text-slate-800 hover:bg-slate-50 transition-colors h-auto">
-                             <Link href="/builder">
+                             <Link href="/dashboard/new">
                                 شروع پروژه جدید
                              </Link>
                         </Button>
@@ -70,7 +70,7 @@ export default async function LandingPage() {
                  ) : (
                     <>
                         <Button asChild className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-6 py-3 text-sm md:text-base font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors h-auto">
-                             <Link href="/builder">
+                             <Link href="/dashboard/new">
                                 شروع اولین پلن استارتاپی
                                 <ArrowRight className="ms-2 h-5 w-5 rtl:rotate-180" />
                              </Link>
@@ -116,15 +116,22 @@ export default async function LandingPage() {
         </section>
 
         {/* Idea Intake Form Section */}
-        {/* Idea Intake Form Section */}
-        <section className="py-16 md:py-24 px-4 bg-slate-50 dark:bg-slate-950/50" id="intake-form">
+        {/* Idea Intake Form Section - REPLACED WITH CTA */}
+        <section className="py-16 md:py-24 px-4 bg-slate-50 dark:bg-slate-950/50" id="intake-cta">
             <div className="container mx-auto max-w-2xl text-center mb-10">
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">ثبت ایده و شروع ارزیابی</h2>
-                <p className="mt-2 text-sm md:text-base text-slate-600 leading-relaxed">
-                  این فرم فقط چند سؤال ساده دارد و پر کردنش حدود ۲–۳ دقیقه طول می‌کشد. لازم نیست جزئیات فنی بنویسید؛ فقط واضح بگویید چه می‌خواهید بسازید، ما کمک می‌کنیم آن را به پلن اجرایی تبدیل کنید.
+                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">آماده‌اید ایده‌تان را بسازید؟</h2>
+                <p className="mt-2 text-sm md:text-base text-slate-600 leading-relaxed max-w-lg mx-auto mb-8">
+                  فقط کافیست چند سؤال ساده را پاسخ دهید تا هوش مصنوعی ما برای شما یک نقشه راه اجرایی دقیق بسازد.
                 </p>
+                <div className="flex justify-center">
+                    <Button asChild className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-8 py-4 text-base font-semibold text-white shadow-lg hover:bg-indigo-700 transition-colors h-auto">
+                        <Link href="/dashboard/new">
+                            شروع ساخت پروژه جدید
+                            <ArrowRight className="ms-2 h-5 w-5 rtl:rotate-180" />
+                        </Link>
+                    </Button>
+                </div>
             </div>
-            <IdeaIntakeForm />
         </section>
 
 
