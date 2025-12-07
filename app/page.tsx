@@ -10,6 +10,7 @@ export default async function LandingPage() {
   const isSignedIn = !!session?.user;
 
   return (
+    // Main layout wrapper
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       {/* Navbar */}
       <header className="border-b sticky top-0 z-40 bg-background/80 backdrop-blur-md">
