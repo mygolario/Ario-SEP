@@ -85,52 +85,54 @@ export default function FeedbackButton() {
           className="fixed bottom-4 end-4 z-50 shadow-lg rounded-full px-4 h-10 gap-2 border bg-background/80 backdrop-blur hover:bg-background"
         >
           <MessageSquare className="h-4 w-4" />
-          Feedback
+          بازخورد
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] text-right" dir="rtl">
         {success ? (
           <div className="flex flex-col items-center justify-center py-10 space-y-4">
             <CheckCircle2 className="h-12 w-12 text-green-500 animate-in zoom-in" />
-            <h3 className="text-lg font-semibold">Thank you!</h3>
+            <h3 className="text-lg font-semibold">سپاسگزاریم!</h3>
             <p className="text-center text-muted-foreground">
-              Your feedback helps us improve the platform.
+              بازخورد شما به ما کمک می‌کند تا پلتفرم را بهتر کنیم.
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit}>
-            <DialogHeader>
-              <DialogTitle>Send Feedback</DialogTitle>
+            <DialogHeader className="text-right space-y-3">
+              <DialogTitle>ارسال بازخورد</DialogTitle>
               <DialogDescription>
-                Found a bug? Have an idea? Let us know.
+                ایده‌ای دارید یا با مشکلی روبرو شدید؟ برای ما بنویسید.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="type">Type</Label>
-                <Select
-                  value={type}
-                  onValueChange={(val) => setType(val as any)}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="BUG">Bug Report</SelectItem>
-                    <SelectItem value="IDEA">Feature Idea</SelectItem>
-                    <SelectItem value="CONFUSION">Confusing UI</SelectItem>
-                    <SelectItem value="OTHER">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="type" className="text-right">نوع</Label>
+                <div dir="rtl">
+                  <Select
+                    value={type}
+                    onValueChange={(val) => setType(val as any)}
+                  >
+                    <SelectTrigger className="text-right flex-row-reverse">
+                      <SelectValue placeholder="انتخاب کنید" />
+                    </SelectTrigger>
+                    <SelectContent align="end" dir="rtl">
+                      <SelectItem value="BUG">گزارش خطا (باگ)</SelectItem>
+                      <SelectItem value="IDEA">پیشنهاد ویژگی جدید</SelectItem>
+                      <SelectItem value="CONFUSION">رابط کاربری گیج‌کننده</SelectItem>
+                      <SelectItem value="OTHER">سایر</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="message">Message</Label>
+                <Label htmlFor="message" className="text-right">پیام شما</Label>
                 <Textarea
                   id="message"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Tell us what's happening..."
-                  className="min-h-[100px]"
+                  placeholder="توضیح دهید چه اتفاقی افتاده..."
+                  className="min-h-[100px] text-right"
                   required
                 />
               </div>
@@ -141,10 +143,10 @@ export default function FeedbackButton() {
                 </div>
               )}
             </div>
-            <DialogFooter>
-              <Button type="submit" disabled={loading}>
-                {loading && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
-                Submit
+            <DialogFooter className="sm:justify-start">
+              <Button type="submit" disabled={loading} className="w-full sm:w-auto">
+                {loading && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+                ارسال
               </Button>
             </DialogFooter>
           </form>

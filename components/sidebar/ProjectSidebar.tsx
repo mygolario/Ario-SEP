@@ -18,16 +18,16 @@ import {
 } from 'lucide-react';
 
 export const projectSections = [
-  { id: 'overview', label: 'Overview', icon: Home },
-  { id: 'one-page', label: 'One-Page Plan', icon: LayoutTemplate },
-  { id: 'deep-plan', label: 'Deep Plan', icon: Layers },
-  { id: 'branding', label: 'Branding Kit', icon: Palette },
-  { id: 'landing-page', label: 'Landing Page', icon: Layout },
-  { id: 'market-analysis', label: 'Market & Competitors', icon: ShieldCheck },
-  { id: 'pitch-deck', label: 'Pitch Deck', icon: Presentation },
-  { id: 'funding', label: 'Funding Roadmap', icon: HandCoins },
-  { id: 'execution', label: 'Execution Coach', icon: CheckCircle },
-  { id: 'settings', label: 'Settings', icon: Settings },
+  { id: 'overview', label: 'نمای کلی', icon: Home },
+  { id: 'one-page', label: 'برنامه یک‌صفحه‌ای', icon: LayoutTemplate },
+  { id: 'deep-plan', label: 'برنامه عمیق', icon: Layers },
+  { id: 'branding', label: 'بسته برندسازی', icon: Palette },
+  { id: 'landing-page', label: 'صفحه لندینگ', icon: Layout },
+  { id: 'market-analysis', label: 'بازار و رقبا', icon: ShieldCheck },
+  { id: 'pitch-deck', label: 'ارائه سرمایه‌گذاری', icon: Presentation },
+  { id: 'funding', label: 'نقشه راه تأمین مالی', icon: HandCoins },
+  { id: 'execution', label: 'مربی اجرا', icon: CheckCircle },
+  { id: 'settings', label: 'تنظیمات', icon: Settings },
 ];
 
 interface ProjectSidebarProps {
@@ -44,7 +44,7 @@ export function ProjectSidebar({ projectId, className, onNavigate }: ProjectSide
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
-            Project
+            پروژه
           </h2>
           <div className="space-y-1">
             {projectSections.map((section) => {
@@ -53,7 +53,7 @@ export function ProjectSidebar({ projectId, className, onNavigate }: ProjectSide
               return (
                 <Link key={section.id} href={href} onClick={onNavigate}>
                     <Button variant={isActive ? "secondary" : "ghost"} className="w-full justify-start">
-                        <section.icon className="mr-2 h-4 w-4" />
+                        <section.icon className="ml-2 h-4 w-4" />
                         {section.label}
                     </Button>
                 </Link>

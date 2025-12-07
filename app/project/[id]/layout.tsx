@@ -54,7 +54,7 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
          <div className="h-14 flex items-center border-b px-4 bg-background">
              <Link href="/dashboard" className="flex items-center gap-2 font-semibold hover:text-primary transition-colors">
                <ArrowLeft className="h-4 w-4" />
-               Back
+               بازگشت
              </Link>
          </div>
          <ProjectSidebar projectId={project.id} className="flex-1 w-full" />
@@ -67,7 +67,7 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
                  <Link href="/dashboard">
                   <Button variant="ghost" size="sm">
                     <ArrowLeft className="h-4 w-4 mr-2" />
-                    Back
+                    بازگشت
                   </Button>
                 </Link>
              </div>

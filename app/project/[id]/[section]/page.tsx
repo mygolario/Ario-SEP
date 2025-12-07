@@ -87,7 +87,7 @@ export default async function ProjectSectionPage({ params }: SectionPageProps) {
         )}
         <ShareLinkButton publicId={project.publicId} />
         <a href={`/api/export-pdf/${project.id}`} target="_blank" rel="noopener noreferrer">
-            <Button variant="outline">Download PDF</Button>
+            <Button variant="outline">دانلود PDF</Button>
         </a>
       </div>
   );
@@ -96,60 +96,60 @@ export default async function ProjectSectionPage({ params }: SectionPageProps) {
     switch (section) {
       case 'overview':
         return (
-             <div className="space-y-6">
+             <div className="space-y-6" dir="rtl">
                  <div className="flex items-center justify-between">
-                     <div>
+                     <div className="text-right">
                         <h2 className="text-3xl font-bold tracking-tight">{project.title}</h2>
-                        <p className="text-muted-foreground mt-1">Project Overview</p>
+                        <p className="text-muted-foreground mt-1">نمای کلی پروژه</p>
                      </div>
                      <HeaderActions />
                  </div>
                  {/* Simple Overview Dashboard - reusing One-Page Summary for now */}
                  {plan ? (
                      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                         <div className="col-span-full p-6 bg-white dark:bg-slate-900 rounded-lg border shadow-sm">
-                             <h3 className="text-lg font-semibold mb-2">Elevator Pitch</h3>
+                         <div className="col-span-full p-6 bg-white dark:bg-slate-900 rounded-lg border shadow-sm text-right">
+                             <h3 className="text-lg font-semibold mb-2">معرفی آسانسوری (Elevator Pitch)</h3>
                              <p className="text-slate-700 dark:text-slate-300">{plan.summary.elevatorPitch}</p>
                          </div>
-                         <div className="p-6 bg-white dark:bg-slate-900 rounded-lg border shadow-sm">
-                             <h3 className="text-lg font-semibold mb-2">Target Audience</h3>
+                         <div className="p-6 bg-white dark:bg-slate-900 rounded-lg border shadow-sm text-right">
+                             <h3 className="text-lg font-semibold mb-2">مخاطب هدف</h3>
                              <p className="text-slate-700 dark:text-slate-300">{project.targetAudience}</p>
                          </div>
-                          <div className="p-6 bg-white dark:bg-slate-900 rounded-lg border shadow-sm">
-                             <h3 className="text-lg font-semibold mb-2">Core Goal</h3>
+                          <div className="p-6 bg-white dark:bg-slate-900 rounded-lg border shadow-sm text-right">
+                             <h3 className="text-lg font-semibold mb-2">هدف اصلی</h3>
                              <p className="text-slate-700 dark:text-slate-300">{plan.summary.coreGoal}</p>
                          </div>
                          {/* Quick Links to other sections could go here */}
                      </div>
                  ) : (
                     <div className="p-12 text-center border-2 border-dashed rounded-lg">
-                        <h2 className="text-xl font-semibold">No Plan Generated</h2>
-                        <p className="text-muted-foreground mt-2">Generate a plan to see the overview.</p>
+                        <h2 className="text-xl font-semibold">هیچ پلنی ساخته نشده است</h2>
+                        <p className="text-muted-foreground mt-2">برای مشاهده نمای کلی، ابتدا یک پلن ایجاد کنید.</p>
                     </div>
                  )}
              </div>
         );
       case 'one-page':
         return (
-            <div className="space-y-6">
+            <div className="space-y-6" dir="rtl">
                 <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold">One-Page Plan</h2>
+                    <h2 className="text-2xl font-bold">پلن یک‌صفحه‌ای</h2>
                     <HeaderActions />
                 </div>
                  {plan ? (
                     <StrategyMap plan={plan} />
                  ) : (
                     <div className="p-12 text-center border-2 border-dashed rounded-lg">
-                        <h2 className="text-xl font-semibold">No One-Page Plan Found</h2>
-                        <p className="text-muted-foreground mt-2">Use the dashboard to generate a new idea.</p>
+                        <h2 className="text-xl font-semibold">پلن یک‌صفحه‌ای یافت نشد</h2>
+                        <p className="text-muted-foreground mt-2">از داشبورد برای ایجاد ایده جدید استفاده کنید.</p>
                     </div>
                  )}
             </div>
         );
       case 'deep-plan':
         return (
-           <div className="space-y-6">
-               <h2 className="text-2xl font-bold">Deep Plan</h2>
+           <div className="space-y-6" dir="rtl">
+               <h2 className="text-2xl font-bold text-right">استراتژی عمیق</h2>
                  {deepPlan ? (
                     <DeepPlanRenderer plan={deepPlan} />
                  ) : (
@@ -159,8 +159,8 @@ export default async function ProjectSectionPage({ params }: SectionPageProps) {
         );
       case 'branding':
         return (
-             <div className="space-y-6">
-                 <h2 className="text-2xl font-bold">Branding Kit</h2>
+             <div className="space-y-6" dir="rtl">
+                 <h2 className="text-2xl font-bold text-right">کیت برندسازی</h2>
                  {brandingKit ? (
                     <BrandingKitRenderer kit={brandingKit} />
                  ) : (
@@ -170,8 +170,8 @@ export default async function ProjectSectionPage({ params }: SectionPageProps) {
         );
       case 'landing-page':
         return (
-             <div className="space-y-6">
-                 <h2 className="text-2xl font-bold">Landing Page Plan</h2>
+             <div className="space-y-6" dir="rtl">
+                 <h2 className="text-2xl font-bold text-right">برنامه لندینگ پیج</h2>
                  {landingPagePlan ? (
                     <LandingPageRenderer plan={landingPagePlan} />
                  ) : (
@@ -193,29 +193,29 @@ export default async function ProjectSectionPage({ params }: SectionPageProps) {
         );
       case 'execution':
         return (
-             <div className="space-y-6">
+             <div className="space-y-6" dir="rtl">
                  <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold">Execution Coach</h2>
+                    <h2 className="text-2xl font-bold">مربی اجرا (Execution Coach)</h2>
                  </div>
-                 <p className="text-muted-foreground">Concrete tasks to move your idea forward this week.</p>
+                 <p className="text-muted-foreground text-right">اقدامات مشخص برای پیشبرد ایده شما در این هفته.</p>
                  <div className="p-8 border rounded-lg bg-slate-50 dark:bg-slate-900">
-                     <p className="mb-4">The Execution Coach provides AI-powered task lists and guidance.</p>
+                     <p className="mb-4 text-right">مربی اجرا با هوش مصنوعی لیست کارها و راهنمایی‌های لازم را ارائه می‌دهد.</p>
                      <ExecutionCoachPanel projectId={project.id} />
                  </div>
              </div>
         );
       case 'settings':
         return (
-             <div className="space-y-6">
-                 <h2 className="text-2xl font-bold">Settings</h2>
+             <div className="space-y-6" dir="rtl">
+                 <h2 className="text-2xl font-bold text-right">تنظیمات</h2>
                  <ProjectSettings project={project} />
              </div>
         );
       default:
         return (
-            <div className="p-12 text-center">
-                <h2 className="text-xl font-semibold">Section Not Found</h2>
-                <Link href={`/project/${project.id}/overview`}><Button className="mt-4">Go to Overview</Button></Link>
+            <div className="p-12 text-center" dir="rtl">
+                <h2 className="text-xl font-semibold">بخش مورد نظر یافت نشد</h2>
+                <Link href={`/project/${project.id}/overview`}><Button className="mt-4">بازگشت به نمای کلی</Button></Link>
             </div>
         );
     }

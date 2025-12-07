@@ -27,20 +27,20 @@ export default function DeepPlanGenerator({ projectId }: DeepPlanGeneratorProps)
       router.refresh(); // Refresh to show the new plan
     } catch (error) {
       console.error(error);
-      alert('Something went wrong. Please try again.');
+      alert('خطایی رخ داد. لطفاً دوباره تلاش کنید.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg bg-card text-card-foreground min-h-[400px]">
+    <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg bg-card text-card-foreground min-h-[400px]" dir="rtl">
       {loading ? (
         <div className="w-full max-w-2xl space-y-6 animate-pulse">
            <div className="flex flex-col items-center space-y-4 mb-8">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              <h3 className="text-lg font-semibold text-primary">Constructing Deep Strategy...</h3>
-              <p className="text-sm text-muted-foreground">Analyzing market, competitors, and revenue models.</p>
+              <h3 className="text-lg font-semibold text-primary">در حال ساخت استراتژی عمیق...</h3>
+              <p className="text-sm text-muted-foreground">تحلیل بازار، رقبا و مدل‌های درآمدی.</p>
            </div>
            
            <div className="grid grid-cols-2 gap-4">
@@ -63,10 +63,10 @@ export default function DeepPlanGenerator({ projectId }: DeepPlanGeneratorProps)
             <div className="bg-primary/10 p-4 rounded-full mb-6">
                 <Sparkles className="h-10 w-10 text-primary" />
             </div>
-            <h3 className="text-xl font-bold mb-2">Deep Strategy Mode (Beta)</h3>
+            <h3 className="text-xl font-bold mb-2">حالت استراتژی عمیق (بتا)</h3>
             <p className="text-muted-foreground text-center max-w-md mb-8">
-                Unlock a comprehensive, multi-page deep dive into your startup strategy. 
-                AI will analyze your idea to generate personas, revenue models, detailed roadmaps, and risk assessments.
+                دسترسی به یک تحلیل جامع چندصفحه‌ای برای استارتاپ شما.
+                هوش مصنوعی ایده شما را تحلیل می‌کند تا پرسونـا، مدل درآمدی، نقشه راه دقیق و ارزیابی ریسک را تولید کند.
             </p>
             
             <Button 
@@ -75,8 +75,8 @@ export default function DeepPlanGenerator({ projectId }: DeepPlanGeneratorProps)
                 disabled={loading}
                 className="bg-linear-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-indigo-500/20"
             >
-                <Sparkles className="mr-2 h-5 w-5" />
-                Generate Deep Plan
+                <Sparkles className="ml-2 h-5 w-5" />
+                تولید برنامه عمیق
             </Button>
         </>
       )}

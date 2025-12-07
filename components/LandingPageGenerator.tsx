@@ -27,20 +27,20 @@ export default function LandingPageGenerator({ projectId }: LandingPageGenerator
       router.refresh();
     } catch (error) {
       console.error(error);
-      alert('Something went wrong. Please try again.');
+      alert('خطایی رخ داد. لطفاً دوباره تلاش کنید.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg bg-card text-card-foreground min-h-[400px]">
+    <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg bg-card text-card-foreground min-h-[400px]" dir="rtl">
       {loading ? (
         <div className="w-full max-w-xl space-y-6 animate-pulse">
             <div className="flex flex-col items-center space-y-4 mb-4">
                 <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
-                <h3 className="text-lg font-semibold text-emerald-500">Constructing Wireframe...</h3>
-                <p className="text-sm text-muted-foreground">Drafting headers, features, and call-to-actions.</p>
+                <h3 className="text-lg font-semibold text-emerald-500">در حال طراحی وایرفریم...</h3>
+                <p className="text-sm text-muted-foreground">طراحی هدر، ویژگی‌ها و فراخوان‌های اقدام (CTA).</p>
             </div>
             
             <div className="border border-slate-200 dark:border-slate-800 rounded-lg p-4 space-y-4">
@@ -58,9 +58,10 @@ export default function LandingPageGenerator({ projectId }: LandingPageGenerator
             <div className="bg-emerald-100 dark:bg-emerald-900/30 p-4 rounded-full mb-6 relative">
                 <Layout className="h-10 w-10 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <h3 className="text-xl font-bold mb-2">AI Landing Page Strategist</h3>
+            <h3 className="text-xl font-bold mb-2">استراتژیست صفحه لندینگ</h3>
             <p className="text-muted-foreground text-center max-w-md mb-8">
-                Generate a high-conversion landing page structure. Includes persuasive copy, section breakdown, and SEO recommendations tailored to your audience.
+                ساختار یک صفحه لندینگ با نرخ تبدیل بالا را ایجاد کنید.
+                شامل متن‌های تبلیغاتی، بخش‌بندی محتوا و توصیه‌های سئو متناسب با مخاطبان شما.
             </p>
             
             <Button 
@@ -69,8 +70,8 @@ export default function LandingPageGenerator({ projectId }: LandingPageGenerator
                 disabled={loading}
                 className="bg-linear-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-lg shadow-emerald-500/20"
             >
-                <Layout className="mr-2 h-5 w-5" />
-                Generate Landing Page Plan
+                <Layout className="ml-2 h-5 w-5" />
+                تولید برنامه صفحه لندینگ
             </Button>
         </>
       )}

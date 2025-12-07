@@ -18,14 +18,14 @@ export default function StrategyMap({ plan }: StrategyMapProps) {
       <RoadmapBoard roadmap={plan.roadmap} />
 
       {plan.notes && plan.notes.length > 0 && (
-        <Card className="bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-900">
+        <Card className="bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-900" dir="rtl">
           <CardHeader>
             <CardTitle className="text-lg text-yellow-800 dark:text-yellow-200">
-              Important Notes
+              نکات مهم
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="list-disc pl-5 space-y-1 text-yellow-900 dark:text-yellow-100/80">
+            <ul className="list-disc pr-5 space-y-1 text-yellow-900 dark:text-yellow-100/80">
               {plan.notes.map((note, i) => (
                 <li key={i}>{note}</li>
               ))}

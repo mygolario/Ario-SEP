@@ -45,21 +45,21 @@ export default function IdeaForm({ onSubmit, isLoading }: IdeaFormProps) {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto" dir="rtl">
       <CardHeader>
-        <CardTitle>Describe Your Startup Idea</CardTitle>
+        <CardTitle>ایده استارتاپی خود را توصیف کنید</CardTitle>
         <CardDescription>
-          Fill in the details below to generate your personalized execution strategy.
+          جزئیات زیر را پر کنید تا استراتژی اجرایی اختصاصی شما ساخته شود.
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="ideaTitle">Idea Title / Name</Label>
+            <Label htmlFor="ideaTitle">عنوان ایده / نام</Label>
             <Input
               id="ideaTitle"
               name="ideaTitle"
-              placeholder="e.g. Uber for Dog Walking"
+              placeholder="مثال: اوبر برای گردشگری"
               required
               value={formData.ideaTitle}
               onChange={handleChange}
@@ -67,11 +67,11 @@ export default function IdeaForm({ onSubmit, isLoading }: IdeaFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="ideaDescription">Description</Label>
+            <Label htmlFor="ideaDescription">توضیحات</Label>
             <Textarea
               id="ideaDescription"
               name="ideaDescription"
-              placeholder="What problem does it solve and how?"
+              placeholder="چه مشکلی را حل می‌کند و چگونه؟"
               required
               className="min-h-[100px]"
               value={formData.ideaDescription}
@@ -80,11 +80,11 @@ export default function IdeaForm({ onSubmit, isLoading }: IdeaFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="targetAudience">Target Audience</Label>
+            <Label htmlFor="targetAudience">مخاطب هدف</Label>
             <Input
               id="targetAudience"
               name="targetAudience"
-              placeholder="Who are your customers?"
+              placeholder="مشتریان شما چه کسانی هستند؟"
               required
               value={formData.targetAudience}
               onChange={handleChange}
@@ -93,49 +93,49 @@ export default function IdeaForm({ onSubmit, isLoading }: IdeaFormProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="budgetLevel">Budget Level</Label>
+              <Label htmlFor="budgetLevel">سطح بودجه</Label>
               <Select
                 name="budgetLevel"
                 value={formData.budgetLevel}
                 onValueChange={(val) => handleSelectChange('budgetLevel', val)}
               >
-                <SelectTrigger id="budgetLevel">
-                  <SelectValue placeholder="Select budget" />
+                <SelectTrigger id="budgetLevel" className="flex-row-reverse text-right">
+                  <SelectValue placeholder="انتخاب بودجه" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">Low (Bootstrapped)</SelectItem>
-                  <SelectItem value="medium">Medium (Some Savings/Seed)</SelectItem>
-                  <SelectItem value="high">High (Funded)</SelectItem>
+                <SelectContent align="end" dir="rtl">
+                  <SelectItem value="low">کم (سرمایه شخصی)</SelectItem>
+                  <SelectItem value="medium">متوسط (کمی پس‌انداز)</SelectItem>
+                  <SelectItem value="high">زیاد (سرمایه‌گذار)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="experienceLevel">Experience Level</Label>
+              <Label htmlFor="experienceLevel">سطح تجربه</Label>
               <Select
                 name="experienceLevel"
                 value={formData.experienceLevel}
                 onValueChange={(val) => handleSelectChange('experienceLevel', val)}
               >
-                <SelectTrigger id="experienceLevel">
-                  <SelectValue placeholder="Select experience" />
+                <SelectTrigger id="experienceLevel" className="flex-row-reverse text-right">
+                  <SelectValue placeholder="انتخاب تجربه" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="beginner">Beginner</SelectItem>
-                  <SelectItem value="intermediate">Intermediate</SelectItem>
-                  <SelectItem value="advanced">Advanced</SelectItem>
+                <SelectContent align="end" dir="rtl">
+                  <SelectItem value="beginner">مبتدی</SelectItem>
+                  <SelectItem value="intermediate">متوسط</SelectItem>
+                  <SelectItem value="advanced">پیشرفته</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="timePerWeek">Time Commitment (Hours/Week)</Label>
+            <Label htmlFor="timePerWeek">زمان در هفته (ساعت)</Label>
             <Input
               id="timePerWeek"
               name="timePerWeek"
               type="number"
-              placeholder="e.g. 20"
+              placeholder="مثال: ۲۰"
               value={formData.timePerWeek || ''}
               onChange={(e) =>
                 setFormData((prev) => ({
@@ -148,7 +148,7 @@ export default function IdeaForm({ onSubmit, isLoading }: IdeaFormProps) {
         </CardContent>
         <CardFooter>
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Generating Plan...' : 'Generate Strategy Map'}
+            {isLoading ? 'در حال ساخت پلن...' : 'تولید نقشه استراتژی'}
           </Button>
         </CardFooter>
       </form>

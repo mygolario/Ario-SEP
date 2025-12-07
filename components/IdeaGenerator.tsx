@@ -32,7 +32,7 @@ export default function IdeaGenerator() {
 
       setPlan(data);
     } catch (err: any) {
-      setError(err.message || 'Something went wrong');
+      setError(err.message || 'خطایی رخ داد');
     } finally {
       setIsLoading(false);
     }
@@ -51,23 +51,23 @@ export default function IdeaGenerator() {
       )}
 
       {plan && (
-        <section className="animate-in fade-in slide-in-from-bottom-8 duration-700">
+        <section className="animate-in fade-in slide-in-from-bottom-8 duration-700" dir="rtl">
            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold">Your Execution Strategy</h2>
+              <h2 className="text-3xl font-bold">استراتژی اجرایی شما</h2>
               <div className="flex gap-4 items-center">
                   {plan.projectId && (
                     <a 
                       href={`/project/${plan.projectId}`} 
                       className="text-sm font-medium text-primary hover:underline"
                     >
-                      View Saved Project
+                      مشاهده پروژه ذخیره شده
                     </a>
                   )}
                   <button 
                     onClick={() => { setPlan(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                     className="text-sm text-muted-foreground hover:text-primary underline"
                   >
-                    Start Over
+                    شروع مجدد
                   </button>
               </div>
            </div>

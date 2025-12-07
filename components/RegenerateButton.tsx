@@ -14,7 +14,7 @@ export default function RegenerateButton({ projectId }: RegenerateButtonProps) {
   const router = useRouter();
 
   const handleRegenerate = async () => {
-    if (!confirm('Are you sure you want to regenerate the plan? This will create a new version based on your original idea.')) {
+    if (!confirm('آیا مطمئن هستید که می‌خواهید پلن را بازسازی کنید؟ این کار یک نسخه جدید بر اساس ایده اولیه شما ایجاد می‌کند.')) {
       return;
     }
 
@@ -26,14 +26,14 @@ export default function RegenerateButton({ projectId }: RegenerateButtonProps) {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to regenerate plan');
+        throw new Error(data.error || 'بازسازی پلن با شکست مواجه شد');
       }
 
       // Refresh the page to show new data
       router.refresh();
     } catch (err: any) {
       console.error('Regeneration failed:', err);
-      alert(err.message || 'Failed to regenerate plan');
+      alert(err.message || 'بازسازی پلن با شکست مواجه شد');
     } finally {
       setIsLoading(false);
     }
@@ -48,7 +48,7 @@ export default function RegenerateButton({ projectId }: RegenerateButtonProps) {
       disabled={isLoading}
     >
       <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-      {isLoading ? 'Regenerating...' : 'Regenerate Plan'}
+      {isLoading ? 'در حال بازسازی...' : 'بازسازی پلن'}
     </Button>
   );
 }

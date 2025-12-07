@@ -30,7 +30,7 @@ export default function ShareLinkButton({ publicId }: ShareLinkButtonProps) {
       onClick={handleCopy}
     >
       {copied ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
-      {copied ? 'Copied' : 'Share Public Link'}
+      {copied ? 'کپی شد' : 'اشتراک‌گذاری لینک عمومی'}
     </Button>
   );
 }

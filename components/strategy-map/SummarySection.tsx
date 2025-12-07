@@ -12,15 +12,15 @@ export default function SummarySection({ data }: SummarySectionProps) {
   return (
     <Card className="mb-6 border-l-4 border-l-primary">
       <CardHeader>
-        <CardTitle className="text-2xl">{data.title}</CardTitle>
+        <CardTitle className="text-2xl text-right">{data.title}</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div>
-          <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">Elevator Pitch</h4>
+      <CardContent className="space-y-4" dir="rtl">
+        <div className="text-right">
+          <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-1">الویتور پیچ (معرفی آسانسوری)</h4>
           <p className="text-lg font-medium">{data.elevatorPitch}</p>
         </div>
-        <div>
-          <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider">Core Goal</h4>
+        <div className="text-right">
+          <h4 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-1">هدف اصلی</h4>
           <p className="text-base">{data.coreGoal}</p>
         </div>
       </CardContent>

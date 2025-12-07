@@ -11,7 +11,7 @@ interface BrandingKitRendererProps {
 
 export default function BrandingKitRenderer({ kit }: BrandingKitRendererProps) {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 text-right" dir="rtl">
       {/* Brand Essence */}
       <section>
           <div className="bg-linear-to-r from-pink-500 to-rose-500 rounded-lg p-8 text-white mb-6">
@@ -22,7 +22,7 @@ export default function BrandingKitRenderer({ kit }: BrandingKitRendererProps) {
           <div className="grid gap-4 md:grid-cols-3">
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Core Idea</CardTitle>
+                <CardTitle className="text-lg">ایده اصلی</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">{kit.brandEssence.coreIdea}</p>
@@ -30,7 +30,7 @@ export default function BrandingKitRenderer({ kit }: BrandingKitRendererProps) {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Personality</CardTitle>
+                <CardTitle className="text-lg">شخصیت</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">{kit.brandEssence.personality}</p>
@@ -38,7 +38,7 @@ export default function BrandingKitRenderer({ kit }: BrandingKitRendererProps) {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle className="text-lg">Tone of Voice</CardTitle>
+                <CardTitle className="text-lg">لحن صدا</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">{kit.brandEssence.toneOfVoice}</p>
@@ -49,10 +49,10 @@ export default function BrandingKitRenderer({ kit }: BrandingKitRendererProps) {
 
       {/* Visual Direction */}
       <section>
-          <h3 className="text-2xl font-bold mb-4">Visual Direction</h3>
+          <h3 className="text-2xl font-bold mb-4">هدایت بصری</h3>
           
           <div className="mb-6">
-            <h4 className="text-lg font-semibold mb-3">Color Palette</h4>
+            <h4 className="text-lg font-semibold mb-3">پالت رنگ</h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {kit.visualDirection.colorPalette.map((color, i) => (
                     <div key={i} className="space-y-2">
@@ -71,7 +71,7 @@ export default function BrandingKitRenderer({ kit }: BrandingKitRendererProps) {
           </div>
 
           <div>
-             <h4 className="text-lg font-semibold mb-3">Typography</h4>
+             <h4 className="text-lg font-semibold mb-3">تایپوگرافی</h4>
              <div className="grid gap-4 md:grid-cols-2">
                  {kit.visualDirection.typography.map((type, i) => (
                      <Card key={i}>
@@ -90,16 +90,16 @@ export default function BrandingKitRenderer({ kit }: BrandingKitRendererProps) {
 
       {/* Messaging */}
       <section>
-         <h3 className="text-2xl font-bold mb-4">Messaging Strategy</h3>
+         <h3 className="text-2xl font-bold mb-4">استراتژی پیام‌رسانی</h3>
          <Card>
              <CardContent className="pt-6 space-y-6">
                  <div>
-                     <h4 className="font-semibold text-sm mb-1">Value Proposition</h4>
+                     <h4 className="font-semibold text-sm mb-1">ارزش پیشنهادی</h4>
                      <p className="text-muted-foreground">{kit.messaging.valueProposition}</p>
                  </div>
                  <Separator />
                  <div>
-                     <h4 className="font-semibold text-sm mb-1">Short Description</h4>
+                     <h4 className="font-semibold text-sm mb-1">توضیحات کوتاه</h4>
                      <p className="text-muted-foreground">{kit.messaging.shortDescription}</p>
                  </div>
              </CardContent>
@@ -108,7 +108,7 @@ export default function BrandingKitRenderer({ kit }: BrandingKitRendererProps) {
 
       {/* Hero Section */}
       <section>
-         <h3 className="text-2xl font-bold mb-4">Hero Section Mockup</h3>
+         <h3 className="text-2xl font-bold mb-4">پیش‌نمایش بخش هیرو</h3>
          <div className="border rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-900">
              <div className="p-12 text-center max-w-2xl mx-auto">
                  <h1 className="text-4xl font-extrabold mb-4">{kit.heroSection.headline}</h1>
@@ -127,24 +127,24 @@ export default function BrandingKitRenderer({ kit }: BrandingKitRendererProps) {
 
       {/* Do / Don't */}
       <section>
-           <h3 className="text-2xl font-bold mb-4">Brand Guidelines</h3>
+           <h3 className="text-2xl font-bold mb-4">بایدها و نبایدها</h3>
            <div className="grid gap-6 md:grid-cols-2">
                <Card className="border-green-200 dark:border-green-900 bg-green-50/50 dark:bg-green-950/20">
                    <CardHeader>
-                       <CardTitle className="text-green-700 dark:text-green-400">Do</CardTitle>
+                       <CardTitle className="text-green-700 dark:text-green-400">انجام دهید</CardTitle>
                    </CardHeader>
                    <CardContent>
-                       <ul className="list-disc list-inside space-y-2 text-sm">
+                       <ul className="list-disc pr-5 space-y-2 text-sm">
                            {kit.brandDoDont.do.map((item, i) => <li key={i}>{item}</li>)}
                        </ul>
                    </CardContent>
                </Card>
                <Card className="border-red-200 dark:border-red-900 bg-red-50/50 dark:bg-red-950/20">
                    <CardHeader>
-                       <CardTitle className="text-red-700 dark:text-red-400">Don&apos;t</CardTitle>
+                       <CardTitle className="text-red-700 dark:text-red-400">انجام ندهید</CardTitle>
                    </CardHeader>
                    <CardContent>
-                       <ul className="list-disc list-inside space-y-2 text-sm">
+                       <ul className="list-disc pr-5 space-y-2 text-sm">
                            {kit.brandDoDont.dont.map((item, i) => <li key={i}>{item}</li>)}
                        </ul>
                    </CardContent>

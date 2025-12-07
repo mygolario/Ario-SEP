@@ -59,10 +59,10 @@ export default function ProjectSettings({ project }: ProjectSettingsProps) {
 
       router.refresh();
       // Ideally show toast here
-      alert('Project updated successfully');
+      alert('پروژه با موفقیت بروزرسانی شد');
     } catch (error) {
       console.error(error);
-      alert('Failed to update project');
+      alert('خطا در بروزرسانی پروژه');
     } finally {
       setLoading(false);
     }
@@ -83,21 +83,21 @@ export default function ProjectSettings({ project }: ProjectSettingsProps) {
         router.refresh(); // Ensure dashboard list is fresh
     } catch (error) {
         console.error(error);
-        alert('Failed to delete project');
+        alert('خطا در حذف پروژه');
         setDeleteLoading(false);
     }
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8" dir="rtl">
       <Card>
         <CardHeader>
-          <CardTitle>Project Details</CardTitle>
-          <CardDescription>Update your project information.</CardDescription>
+          <CardTitle>جزئیات پروژه</CardTitle>
+          <CardDescription>اطلاعات پروژه خود را ویرایش کنید.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
+            <Label htmlFor="title">عنوان</Label>
             <Input 
               id="title" 
               value={formData.title} 
@@ -106,7 +106,7 @@ export default function ProjectSettings({ project }: ProjectSettingsProps) {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">توضیحات</Label>
             <Textarea 
               id="description" 
               value={formData.description} 
@@ -116,7 +116,7 @@ export default function ProjectSettings({ project }: ProjectSettingsProps) {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="targetAudience">Target Audience</Label>
+            <Label htmlFor="targetAudience">مخاطب هدف</Label>
             <Input 
               id="targetAudience" 
               value={formData.targetAudience} 
@@ -126,42 +126,42 @@ export default function ProjectSettings({ project }: ProjectSettingsProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Budget Level</Label>
+                <Label>سطح بودجه</Label>
                 <Select 
                   value={formData.budgetLevel} 
                   onValueChange={(val) => handleChange('budgetLevel', val)}
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select budget" />
+                  <SelectTrigger className="flex-row-reverse text-right">
+                    <SelectValue placeholder="انتخاب بودجه" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="LOW">Low</SelectItem>
-                    <SelectItem value="MEDIUM">Medium</SelectItem>
-                    <SelectItem value="HIGH">High</SelectItem>
+                  <SelectContent align="end">
+                    <SelectItem value="LOW">کم</SelectItem>
+                    <SelectItem value="MEDIUM">متوسط</SelectItem>
+                    <SelectItem value="HIGH">زیاد</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="space-y-2">
-                <Label>Experience Level</Label>
+                <Label>سطح تجربه</Label>
                 <Select 
                   value={formData.experienceLevel} 
                   onValueChange={(val) => handleChange('experienceLevel', val)}
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select experience" />
+                  <SelectTrigger className="flex-row-reverse text-right">
+                    <SelectValue placeholder="انتخاب تجربه" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="BEGINNER">Beginner</SelectItem>
-                    <SelectItem value="INTERMEDIATE">Intermediate</SelectItem>
-                    <SelectItem value="ADVANCED">Advanced</SelectItem>
+                  <SelectContent align="end">
+                    <SelectItem value="BEGINNER">مبتدی</SelectItem>
+                    <SelectItem value="INTERMEDIATE">متوسط</SelectItem>
+                    <SelectItem value="ADVANCED">پیشرفته</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="timePerWeek">Time Per Week (Hours)</Label>
+            <Label htmlFor="timePerWeek">زمان در هفته (ساعت)</Label>
             <Input 
               id="timePerWeek" 
               type="number"
@@ -171,10 +171,9 @@ export default function ProjectSettings({ project }: ProjectSettingsProps) {
           </div>
 
           <div className="pt-4 flex justify-end">
-            <Button onClick={handleSave} disabled={loading}>
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              <Save className="mr-2 h-4 w-4" />
-              Save Changes
+            <Button onClick={handleSave} disabled={loading} className="gap-2">
+              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              ذخیره تغییرات
             </Button>
           </div>
         </CardContent>
@@ -182,35 +181,35 @@ export default function ProjectSettings({ project }: ProjectSettingsProps) {
 
       <Card className="border-red-200 dark:border-red-900">
         <CardHeader>
-          <CardTitle className="text-red-600 dark:text-red-400">Danger Zone</CardTitle>
+          <CardTitle className="text-red-600 dark:text-red-400">ناحیه خطر</CardTitle>
           <CardDescription>
-            Irreversible actions. Be careful.
+            این عملیات غیرقابل بازگشت است. لطفاً دقت کنید.
           </CardDescription>
         </CardHeader>
         <CardContent>
            <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" disabled={deleteLoading}>
-                   {deleteLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Trash2 className="mr-2 h-4 w-4" />}
-                   Delete Project
+                <Button variant="destructive" disabled={deleteLoading} className="gap-2">
+                   {deleteLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
+                   حذف پروژه
                 </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogContent className="text-right" dir="rtl">
+                <AlertDialogHeader className="text-right space-y-3">
+                  <AlertDialogTitle>آیا کاملاً مطمئن هستید؟</AlertDialogTitle>
                   <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete your project
+                    این عملیات غیرقابل بازگشت است. پروژه
                     <span className="font-bold text-foreground mx-1">&quot;{project.title}&quot;</span>
-                    and all associated strategy maps and deep plans.
+                    و تمام استراتژی‌ها و برنامه‌های مرتبط با آن برای همیشه حذف خواهند شد.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogFooter className="sm:justify-start gap-2">
+                  <AlertDialogCancel>انصراف</AlertDialogCancel>
                   <AlertDialogAction 
                     onClick={handleDelete}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
-                    Delete Project
+                    حذف پروژه
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>

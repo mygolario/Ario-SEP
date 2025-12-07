@@ -12,13 +12,13 @@ export default async function AccountPage() {
 
   return (
     <div className="container mx-auto py-12 px-4 max-w-4xl">
-      <h1 className="text-3xl font-bold mb-8">Account & Settings</h1>
+      <h1 className="text-3xl font-bold mb-8">حساب کاربری و تنظیمات</h1>
       
       <div className="grid gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Profile</CardTitle>
-            <CardDescription>Your personal information.</CardDescription>
+            <CardTitle>پروفایل</CardTitle>
+            <CardDescription>اطلاعات شخصی شما.</CardDescription>
           </CardHeader>
           <CardContent className="flex items-center gap-6">
             <Avatar className="h-20 w-20">
@@ -34,13 +34,13 @@ export default async function AccountPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Plan</CardTitle>
-            <CardDescription>Manage your subscription.</CardDescription>
+            <CardTitle>طرح اشتراک</CardTitle>
+            <CardDescription>مدیریت وضعیت اشتراک پلتفرم.</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="p-4 bg-slate-100 dark:bg-slate-800 rounded-lg border">
-                <p className="font-medium">Free Tier</p>
-                <p className="text-sm text-muted-foreground">You are currently on the free plan.</p>
+                <p className="font-medium">طرح رایگان</p>
+                <p className="text-sm text-muted-foreground">شما در حال استفاده از نسخه رایگان هستید.</p>
             </div>
           </CardContent>
         </Card>

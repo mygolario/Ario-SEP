@@ -27,20 +27,20 @@ export default function BrandingKitGenerator({ projectId }: BrandingKitGenerator
       router.refresh();
     } catch (error) {
       console.error(error);
-      alert('Something went wrong. Please try again.');
+      alert('خطایی رخ داد. لطفاً دوباره تلاش کنید.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg bg-card text-card-foreground min-h-[400px]">
+    <div className="flex flex-col items-center justify-center p-12 border-2 border-dashed rounded-lg bg-card text-card-foreground min-h-[400px]" dir="rtl">
       {loading ? (
         <div className="w-full max-w-xl space-y-8 animate-pulse">
             <div className="flex flex-col items-center space-y-4">
                 <Loader2 className="h-8 w-8 animate-spin text-pink-500" />
-                <h3 className="text-lg font-semibold text-pink-500">Crafting Visual Identity...</h3>
-                <p className="text-sm text-muted-foreground">Selecting colors, typography, and brand voice.</p>
+                <h3 className="text-lg font-semibold text-pink-500">در حال ساخت هویت بصری...</h3>
+                <p className="text-sm text-muted-foreground">انتخاب رنگ‌ها، تایپوگرافی و صدای برند.</p>
             </div>
             
             <div className="space-y-4">
@@ -62,10 +62,10 @@ export default function BrandingKitGenerator({ projectId }: BrandingKitGenerator
             <div className="bg-pink-100 dark:bg-pink-900/30 p-4 rounded-full mb-6 relative">
                 <Palette className="h-10 w-10 text-pink-500" />
             </div>
-            <h3 className="text-xl font-bold mb-2">AI Branding Kit</h3>
+            <h3 className="text-xl font-bold mb-2">کیت برندسازی هوشمند</h3>
             <p className="text-muted-foreground text-center max-w-md mb-8">
-                Instantly generate a complete visual identity and messaging strategy for your startup.
-                Includes color palettes, typography, tone of voice, and more.
+                هویت بصری کامل و استراتژی پیام‌رسانی استارتاپ خود را فوراً ایجاد کنید.
+                شامل پالت‌های رنگی، تایپوگرافی، لحن صدا و موارد دیگر.
             </p>
             
             <Button 
@@ -74,8 +74,8 @@ export default function BrandingKitGenerator({ projectId }: BrandingKitGenerator
                 disabled={loading}
                 className="bg-linear-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white shadow-lg shadow-pink-500/20"
             >
-                <Palette className="mr-2 h-5 w-5" />
-                Generate Branding Kit
+                <Palette className="ml-2 h-5 w-5" />
+                تولید کیت برند
             </Button>
         </>
       )}
