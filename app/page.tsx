@@ -39,28 +39,29 @@ export default async function LandingPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="py-20 md:py-32 px-4 text-center bg-slate-50 dark:bg-slate-950/50">
-           <div className="container mx-auto max-w-4xl space-y-6">
+        {/* Hero Section */}
+        <section className="py-20 md:py-28 px-4 text-center bg-slate-50 dark:bg-slate-950/50">
+           <div className="max-w-3xl mx-auto space-y-6">
               <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-indigo-100 text-indigo-900 dark:bg-indigo-900/30 dark:text-indigo-300 mb-4">
                   پلتفرم اجرای استارتاپ با هوش مصنوعی
               </div>
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+              <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">
                 ایده استارتاپی‌تان را به یک <span className="text-indigo-600 dark:text-indigo-400">برنامه اجرایی واقعی</span> تبدیل کنید.
               </h1>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              <p className="mt-4 text-base md:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
                 با کمک هوش مصنوعی، از مپ یک‌صفحه‌ای تا استراتژی عمیق، برندسازی، لندینگ پیج و قدم‌های بعدی را برای بازار ایران طراحی کنید.
               </p>
               
-              <div className="pt-8 flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
                  {isSignedIn ? (
                     <>
-                        <Button asChild size="lg" className="w-full sm:w-auto text-lg h-12 px-8">
+                        <Button asChild className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-6 py-3 text-sm md:text-base font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors h-auto">
                             <Link href="/dashboard">
                                 برو به داشبورد
                                 <ArrowRight className="ms-2 h-5 w-5 rtl:rotate-180" />
                             </Link>
                         </Button>
-                        <Button asChild size="lg" variant="outline" className="w-full sm:w-auto text-lg h-12 px-8">
+                        <Button asChild variant="outline" className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm md:text-base font-medium text-slate-800 hover:bg-slate-50 transition-colors h-auto">
                              <Link href="/builder">
                                 شروع پروژه جدید
                              </Link>
@@ -68,13 +69,13 @@ export default async function LandingPage() {
                     </>
                  ) : (
                     <>
-                        <Button asChild size="lg" className="w-full sm:w-auto text-lg h-12 px-8 bg-indigo-600 hover:bg-indigo-700 text-white">
+                        <Button asChild className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-6 py-3 text-sm md:text-base font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors h-auto">
                              <Link href="/builder">
                                 شروع اولین پلن استارتاپی
                                 <ArrowRight className="ms-2 h-5 w-5 rtl:rotate-180" />
                              </Link>
                         </Button>
-                        <Button asChild size="lg" variant="outline" className="w-full sm:w-auto text-lg h-12 px-8">
+                        <Button asChild variant="outline" className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm md:text-base font-medium text-slate-800 hover:bg-slate-50 transition-colors h-auto">
                              <Link href="/api/auth/signin">
                                 ورود به حساب کاربری
                              </Link>
@@ -82,7 +83,7 @@ export default async function LandingPage() {
                     </>
                  )}
               </div>
-              <p className="text-sm text-muted-foreground pt-4">بدون نیاز به کارت بانکی. نسخه بتای اولیه مخصوص فاوندرهای ایرانی.</p>
+              <p className="text-xs text-muted-foreground pt-4">بدون نیاز به کارت بانکی. نسخه بتای اولیه مخصوص فاوندرهای ایرانی.</p>
            </div>
         </section>
 
@@ -115,10 +116,11 @@ export default async function LandingPage() {
         </section>
 
         {/* Idea Intake Form Section */}
-        <section className="py-20 px-4 bg-slate-50 dark:bg-slate-950/50" id="intake-form">
+        {/* Idea Intake Form Section */}
+        <section className="py-16 md:py-24 px-4 bg-slate-50 dark:bg-slate-950/50" id="intake-form">
             <div className="container mx-auto max-w-2xl text-center mb-10">
-                <h2 className="text-3xl font-bold mb-4">ثبت ایده و شروع ارزیابی</h2>
-                <p className="text-muted-foreground">
+                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">ثبت ایده و شروع ارزیابی</h2>
+                <p className="mt-2 text-sm md:text-base text-slate-600 leading-relaxed">
                   این فرم فقط چند سؤال ساده دارد و پر کردنش حدود ۲–۳ دقیقه طول می‌کشد. لازم نیست جزئیات فنی بنویسید؛ فقط واضح بگویید چه می‌خواهید بسازید، ما کمک می‌کنیم آن را به پلن اجرایی تبدیل کنید.
                 </p>
             </div>
@@ -127,41 +129,41 @@ export default async function LandingPage() {
 
 
         {/* Core Features */}
-        <section className="py-20 px-4 bg-slate-50 dark:bg-slate-950/50">
-             <div className="container mx-auto max-w-6xl">
+        <section className="py-16 md:py-24 px-4 bg-slate-50 dark:bg-slate-950/50">
+             <div className="container mx-auto max-w-5xl px-4 md:px-6">
                  <div className="text-center mb-16">
-                    <h2 className="text-3xl font-bold mb-4">همه‌چیز برای لانچ محصول در یک‌جا</h2>
-                    <p className="text-muted-foreground">ابزارهای کامل برای فاوندرهایی که می‌خواهند در بازار ایران جدی بسازند، نه فقط ایده‌پردازی کنند.</p>
+                    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">همه‌چیز برای لانچ محصول در یک‌جا</h2>
+                    <p className="mt-2 text-sm md:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">ابزارهای کامل برای فاوندرهایی که می‌خواهند در بازار ایران جدی بسازند، نه فقط ایده‌پردازی کنند.</p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     <FeatureCard 
-                        icon={<LayoutTemplate className="h-6 w-6 text-blue-500" />}
+                        icon={<LayoutTemplate className="h-5 w-5" />}
                         title="استراتژی یک‌صفحه‌ای"
                         desc="مدل کسب‌وکار، ارزش پیشنهادی و نقشه راه را روی یک صفحه واضح می‌بینید."
                     />
                     <FeatureCard 
-                        icon={<Layers className="h-6 w-6 text-purple-500" />}
+                        icon={<Layers className="h-5 w-5" />}
                         title="حالت استراتژی عمیق"
                         desc="تحلیل جزئی مخاطب، رقبا و سناریوهای رشد، مخصوص مارکت ایران."
                     />
                     <FeatureCard 
-                        icon={<Palette className="h-6 w-6 text-pink-500" />}
+                        icon={<Palette className="h-5 w-5" />}
                         title="بسته برندسازی"
                         desc="پالت رنگ، تایپوگرافی، لحن برند و پیشنهادهای هویتی متناسب با مخاطب فارسی‌زبان."
                     />
                     <FeatureCard 
-                        icon={<Layout className="h-6 w-6 text-emerald-500" />}
+                        icon={<Layout className="h-5 w-5" />}
                         title="برنامه لندینگ پیج"
                         desc="ساختار صفحه، سکشن‌ها و متن‌های لندینگ پیج آماده برای پیاده‌سازی."
                     />
                      <FeatureCard 
-                        icon={<Zap className="h-6 w-6 text-yellow-500" />}
+                        icon={<Zap className="h-5 w-5" />}
                         title="کوچ اجرایی"
                         desc="لیست تسک‌های روزانه و هفتگی تا کار از «در حد حرف» به «در حال اجرا» برسد."
                     />
                      <FeatureCard 
-                        icon={<ArrowRight className="h-6 w-6 text-slate-500" />}
+                        icon={<ArrowRight className="h-5 w-5" />}
                         title="داشبورد و خروجی PDF"
                         desc="مدیریت چند پروژه در یک داشبورد و خروجی گرفتن از پلن‌ها به صورت PDF حرفه‌ای."
                     />
@@ -170,14 +172,14 @@ export default async function LandingPage() {
         </section>
 
         {/* Who it is for */}
-        <section className="py-20 px-4">
-             <div className="container mx-auto max-w-4xl text-center border rounded-2xl p-12 bg-slate-900 text-slate-50 dark:bg-slate-900/50">
-                 <h2 className="text-3xl font-bold mb-2">برای کسانی که واقعا می‌سازند</h2>
-                 <p className="text-slate-400 mb-8 max-w-2xl mx-auto">اگر اهل اجرا هستید و نمی‌خواهید ماه‌ها فقط ایده را در ذهن‌تان بچرخانید، این پلتفرم برای شماست.</p>
-                 <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 text-start md:text-center">
+        <section className="py-16 md:py-20 px-4">
+             <div className="container mx-auto max-w-4xl bg-slate-900 text-slate-50 rounded-3xl px-6 md:px-10 py-8 md:py-10 space-y-4">
+                 <h2 className="text-xl md:text-2xl font-bold">برای کسانی که واقعا می‌سازند</h2>
+                 <p className="text-sm md:text-base text-slate-300 max-w-2xl">اگر اهل اجرا هستید و نمی‌خواهید ماه‌ها فقط ایده را در ذهن‌تان بچرخانید، این پلتفرم برای شماست.</p>
+                 <div className="flex flex-wrap items-center gap-3 mt-3">
                      {['فاوندرهای تنها', 'سازندگان مستقل', 'استارتاپ‌های نوپا', 'کارآفرینان اول'].map((label) => (
-                         <div key={label} className="flex items-center md:justify-center gap-2">
-                             <CheckCircle2 className="h-5 w-5 text-indigo-400" />
+                         <div key={label} className="inline-flex items-center gap-1 rounded-full border border-slate-600 px-3 py-1.5 text-xs md:text-sm text-slate-100 hover:border-slate-400 transition">
+                             <CheckCircle2 className="h-4 w-4 text-indigo-400" />
                              <span className="font-medium">{label}</span>
                          </div>
                      ))}
@@ -186,26 +188,28 @@ export default async function LandingPage() {
         </section>
 
         {/* CTA Bottom */}
-        <section className="py-20 px-4 text-center">
-             <div className="container mx-auto max-w-3xl space-y-8">
-                 <h2 className="text-3xl md:text-5xl font-bold">برای لانچ کردن ایده بعدی‌تان آماده‌اید؟</h2>
-                 <p className="text-xl text-muted-foreground">به پلتفرمی بپیوندید که کمک می‌کند از ایده روی کاغذ، به یک پلن اجرایی واقعی برسید.</p>
-                 <Button asChild size="lg" className="text-lg h-14 px-10 bg-indigo-600 hover:bg-indigo-700 text-white">
-                    <Link href="/builder">
-                       همین حالا شروع کنید
-                    </Link>
-                 </Button>
+        <section className="py-16 md:py-24 px-4 text-center">
+             <div className="container mx-auto max-w-3xl space-y-6 px-4 md:px-6">
+                 <h2 className="text-2xl md:text-3xl font-bold text-slate-900">برای لانچ کردن ایده بعدی‌تان آماده‌اید؟</h2>
+                 <p className="mt-2 text-sm md:text-base text-slate-600">به پلتفرمی بپیوندید که کمک می‌کند از ایده روی کاغذ، به یک پلن اجرایی واقعی برسید.</p>
+                 <div className="mt-8 flex justify-center">
+                    <Button asChild className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-8 py-3 text-sm md:text-base font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors h-auto">
+                        <Link href="/builder">
+                        همین حالا شروع کنید
+                        </Link>
+                    </Button>
+                 </div>
              </div>
         </section>
       </main>
 
-      <footer className="border-t py-12 bg-slate-50 dark:bg-slate-950">
-          <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-              <p className="mb-4 font-semibold">پلتفرم اجرای استارتاپ</p>
-              <div className="flex justify-center gap-6 mb-8">
-                  <a href="#" className="hover:text-foreground">درباره</a>
-                  <a href="#" className="hover:text-foreground">امکانات</a>
-                  <a href="#" className="hover:text-foreground">گیت‌هاب</a>
+      <footer className="border-t border-slate-200 mt-12 bg-slate-50 dark:bg-slate-950">
+          <div className="container mx-auto max-w-5xl px-4 md:px-6 py-8 text-center text-xs md:text-sm text-slate-500 space-y-3">
+              <p className="mb-4 font-semibold text-slate-700">پلتفرم اجرای استارتاپ</p>
+              <div className="flex items-center justify-center gap-4 text-xs md:text-sm text-slate-500">
+                  <a href="#" className="hover:text-slate-700 hover:underline">درباره</a>
+                  <a href="#" className="hover:text-slate-700 hover:underline">امکانات</a>
+                  <a href="#" className="hover:text-slate-700 hover:underline">گیت‌هاب</a>
               </div>
               <p>© {new Date().getFullYear()} آریو. همه حقوق محفوظ است.</p>
           </div>
@@ -216,16 +220,12 @@ export default async function LandingPage() {
 
 function FeatureCard({ icon, title, desc }: { icon: React.ReactNode, title: string, desc: string }) {
     return (
-        <Card>
-            <CardHeader>
-                <div className="mb-2 p-2 w-fit rounded-lg bg-slate-100 dark:bg-slate-800">
-                    {icon}
-                </div>
-                <CardTitle className="text-xl">{title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">{desc}</p>
-            </CardContent>
-        </Card>
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow p-6 md:p-7 h-full flex flex-col">
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 mb-4">
+                {icon}
+            </div>
+            <h3 className="text-base md:text-lg font-semibold text-slate-900 mb-2">{title}</h3>
+            <p className="text-sm text-slate-600 leading-relaxed">{desc}</p>
+        </div>
     );
 }
