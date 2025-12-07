@@ -1,13 +1,19 @@
+/**
+ * RTL & Farsi Setup
+ * - Changed html lang to 'fa' and dir to 'rtl'
+ * - Replaced Geist Sans with Vazirmatn (supports Arabic/Persian subset)
+ * - Updated metadata to Farsi
+ */
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Vazirmatn, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import FeedbackButton from "@/components/FeedbackButton";
 
 import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const vazirmatn = Vazirmatn({
+  variable: "--font-vazirmatn",
+  subsets: ["arabic", "latin"],
 });
 
 const geistMono = Geist_Mono({
@@ -16,8 +22,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Startup Execution Platform | AI-Powered Founder Tools",
-  description: "Turn your startup idea into an execution-ready plan. AI strategy, branding, and roadmap tools for solo founders.",
+  title: "Startup Execution Platform | اجرا کننده استارتاپ",
+  description: "تبدیل ایده استارتاپی به برنامه اجرایی. ابزارهای استراتژی، برندینگ و نقشه‌راه با هوش مصنوعی.",
 };
 
 export default function RootLayout({
@@ -26,9 +32,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fa" dir="rtl">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${vazirmatn.variable} ${geistMono.variable} antialiased`}
       >
         {children}
         <FeedbackButton />

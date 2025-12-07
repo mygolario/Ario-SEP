@@ -82,7 +82,7 @@ export default function FeedbackButton() {
         <Button
           variant="secondary"
           size="sm"
-          className="fixed bottom-4 right-4 z-50 shadow-lg rounded-full px-4 h-10 gap-2 border bg-background/80 backdrop-blur hover:bg-background"
+          className="fixed bottom-4 end-4 z-50 shadow-lg rounded-full px-4 h-10 gap-2 border bg-background/80 backdrop-blur hover:bg-background"
         >
           <MessageSquare className="h-4 w-4" />
           Feedback
@@ -143,7 +143,7 @@ export default function FeedbackButton() {
             </div>
             <DialogFooter>
               <Button type="submit" disabled={loading}>
-                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {loading && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
                 Submit
               </Button>
             </DialogFooter>

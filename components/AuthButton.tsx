@@ -48,13 +48,13 @@ export default async function AuthButton() {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
             <Link href="/dashboard" className="cursor-pointer w-full flex items-center">
-                <LayoutDashboard className="mr-2 h-4 w-4" />
+                <LayoutDashboard className="me-2 h-4 w-4" />
                 <span>Dashboard</span>
             </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
              <Link href="/account" className="cursor-pointer w-full flex items-center">
-                <CreditCard className="mr-2 h-4 w-4" />
+                <CreditCard className="me-2 h-4 w-4" />
                 <span>Account & Plan</span>
             </Link>
         </DropdownMenuItem>
@@ -68,7 +68,7 @@ export default async function AuthButton() {
                 className="w-full"
             >
                 <button type="submit" className="flex w-full items-center">
-                    <LogOut className="mr-2 h-4 w-4" />
+                    <LogOut className="me-2 h-4 w-4" />
                     <span>Sign out</span>
                 </button>
             </form>

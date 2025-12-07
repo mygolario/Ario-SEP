@@ -56,7 +56,7 @@ export default async function LandingPage() {
                         <Button asChild size="lg" className="w-full sm:w-auto text-lg h-12 px-8">
                             <Link href="/dashboard">
                                 Go to Dashboard
-                                <ArrowRight className="ml-2 h-5 w-5" />
+                                <ArrowRight className="ms-2 h-5 w-5 rtl:rotate-180" />
                             </Link>
                         </Button>
                         <Button asChild size="lg" variant="outline" className="w-full sm:w-auto text-lg h-12 px-8">
@@ -70,7 +70,7 @@ export default async function LandingPage() {
                         <Button asChild size="lg" className="w-full sm:w-auto text-lg h-12 px-8 bg-indigo-600 hover:bg-indigo-700 text-white">
                              <Link href="/builder">
                                 Start Your First Plan
-                                <ArrowRight className="ml-2 h-5 w-5" />
+                                <ArrowRight className="ms-2 h-5 w-5 rtl:rotate-180" />
                              </Link>
                         </Button>
                         <Button asChild size="lg" variant="outline" className="w-full sm:w-auto text-lg h-12 px-8">
@@ -161,7 +161,7 @@ export default async function LandingPage() {
         <section className="py-20 px-4">
              <div className="container mx-auto max-w-4xl text-center border rounded-2xl p-12 bg-slate-900 text-slate-50 dark:bg-slate-900/50">
                  <h2 className="text-3xl font-bold mb-8">Built for Builders</h2>
-                 <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 text-left md:text-center">
+                 <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 text-start md:text-center">
                      {['Solo Founders', 'Indie Hackers', 'Early-stage Startups', 'First-time Entrepreneurs'].map((label) => (
                          <div key={label} className="flex items-center md:justify-center gap-2">
                              <CheckCircle2 className="h-5 w-5 text-indigo-400" />
