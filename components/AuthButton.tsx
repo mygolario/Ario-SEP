@@ -23,7 +23,7 @@ export default async function AuthButton() {
           await signIn("google")
         }}
       >
-        <Button variant="outline" type="submit">Sign in with Google</Button>
+        <Button variant="outline" type="submit">ورود با گوگل</Button>
       </form>
     )
   }
@@ -49,13 +49,13 @@ export default async function AuthButton() {
         <DropdownMenuItem asChild>
             <Link href="/dashboard" className="cursor-pointer w-full flex items-center">
                 <LayoutDashboard className="me-2 h-4 w-4" />
-                <span>Dashboard</span>
+                <span>داشبورد</span>
             </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
              <Link href="/account" className="cursor-pointer w-full flex items-center">
                 <CreditCard className="me-2 h-4 w-4" />
-                <span>Account & Plan</span>
+                <span>حساب کاربری و پلن</span>
             </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -69,7 +69,7 @@ export default async function AuthButton() {
             >
                 <button type="submit" className="flex w-full items-center">
                     <LogOut className="me-2 h-4 w-4" />
-                    <span>Sign out</span>
+                    <span>خروج</span>
                 </button>
             </form>
         </DropdownMenuItem>
