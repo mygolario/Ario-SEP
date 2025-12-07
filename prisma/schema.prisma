@@ -71,6 +71,7 @@ model Project {
   deepPlan         DeepPlan?
   brandingKit      BrandingKit?
   landingPagePlan  LandingPagePlan?
+  marketAnalysis   MarketAnalysis?
 }
 
 model StrategyMap {
@@ -99,6 +100,14 @@ model BrandingKit {
 }
 
 model LandingPagePlan {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id])
+  data      Json
+  createdAt DateTime @default(now())
+}
+
+model MarketAnalysis {
   id        String   @id @default(cuid())
   projectId String   @unique
   project   Project  @relation(fields: [projectId], references: [id])

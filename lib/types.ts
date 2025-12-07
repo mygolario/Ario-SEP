@@ -150,3 +150,36 @@ export type ExecutionCoachResponse = {
   focusSummary: string;
   tasks: ExecutionTask[];
 };
+
+export type MarketCompetitor = {
+  name: string;
+  type: string;              // e.g. "direct", "indirect", "alternative"
+  description: string;
+  strengths: string[];
+  weaknesses: string[];
+  pricingSummary?: string;
+  keyFeatures?: string[];
+};
+
+export type MarketAnalysisData = {
+  marketOverview: {
+    segment: string;         // e.g. "AI tools for solo founders"
+    sizeDescription: string; // qualitative (e.g. "growing, early-stage niche")
+    trends: string[];        // key trends impacting this idea
+  };
+  idealCustomerProfile: {
+    description: string;
+    mainPainPoints: string[];
+    mainGoals: string[];
+  };
+  competitors: MarketCompetitor[];
+  positioningGaps: {
+    gapDescription: string;   // what competitors miss
+    opportunity: string;      // how the user can exploit it
+  }[];
+  recommendedPositioning: {
+    oneLiner: string;         // short positioning sentence
+    narrative: string;        // 1–2 paragraph explanation
+    keyDifferentiators: string[];
+  };
+};

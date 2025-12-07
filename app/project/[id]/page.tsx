@@ -6,8 +6,8 @@ import StrategyMap from '@/components/StrategyMap';
 import ShareLinkButton from '@/components/ShareLinkButton';
 import RegenerateButton from '@/components/RegenerateButton';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, LayoutTemplate, Layers, Settings, Palette, Layout } from 'lucide-react';
-import { StartupPlan, DeepPlanData, BrandingKitData, LandingPagePlanData } from '@/lib/types';
+import { ArrowLeft, LayoutTemplate, Layers, Settings, Palette, Layout, ShieldCheck } from 'lucide-react';
+import { StartupPlan, DeepPlanData, BrandingKitData, LandingPagePlanData, MarketAnalysisData } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DeepPlanGenerator from '@/components/DeepPlanGenerator';
 import DeepPlanRenderer from '@/components/DeepPlanRenderer';
@@ -15,6 +15,7 @@ import BrandingKitGenerator from '@/components/BrandingKitGenerator';
 import BrandingKitRenderer from '@/components/BrandingKitRenderer';
 import LandingPageGenerator from '@/components/LandingPageGenerator';
 import LandingPageRenderer from '@/components/LandingPageRenderer';
+import MarketAnalysisTab from '@/components/market/MarketAnalysisTab';
 import ProjectSettings from '@/components/ProjectSettings';
 import ExecutionCoachPanel from '@/components/ExecutionCoachPanel';
 
@@ -46,6 +47,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       deepPlan: true,
       brandingKit: true,
       landingPagePlan: true,
+      marketAnalysis: true,
     },
   });
 
@@ -68,6 +70,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const hasLandingPagePlan = !!project.landingPagePlan?.data;
   const landingPagePlan = hasLandingPagePlan ? (project.landingPagePlan?.data as unknown as LandingPagePlanData) : null;
+
+  const hasMarketAnalysis = !!project.marketAnalysis?.data;
+  const marketAnalysis = hasMarketAnalysis ? (project.marketAnalysis?.data as unknown as MarketAnalysisData) : null;
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 md:px-8">
@@ -105,7 +110,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </header>
 
         <Tabs defaultValue="one-page" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 max-w-[750px] mb-8 overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-6 max-w-[850px] mb-8 overflow-x-auto">
             <TabsTrigger value="one-page" className="flex items-center gap-2">
               <LayoutTemplate className="h-4 w-4" />
               One-Page
@@ -117,6 +122,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <TabsTrigger value="branding" className="flex items-center gap-2">
                <Palette className="h-4 w-4" />
                Branding
+            </TabsTrigger>
+            <TabsTrigger value="market-analysis" className="flex items-center gap-2">
+               <ShieldCheck className="h-4 w-4" />
+               Market
             </TabsTrigger>
             <TabsTrigger value="landing-page" className="flex items-center gap-2">
                <Layout className="h-4 w-4" />
@@ -153,6 +162,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
              ) : (
                 <BrandingKitGenerator projectId={project.id} />
              )}
+          </TabsContent>
+
+          <TabsContent value="market-analysis" className="mt-0">
+             <MarketAnalysisTab projectId={project.id} marketAnalysis={marketAnalysis} />
           </TabsContent>
 
           <TabsContent value="landing-page" className="mt-0">

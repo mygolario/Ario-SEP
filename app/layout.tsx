@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import FeedbackButton from "@/components/FeedbackButton";
 
+import { Toaster } from "@/components/ui/toaster";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -30,6 +32,7 @@ export default function RootLayout({
       >
         {children}
         <FeedbackButton />
+        <Toaster />
       </body>
     </html>
   );
