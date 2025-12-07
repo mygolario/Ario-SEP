@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LayoutTemplate, Layers, Palette, Layout, Zap, ArrowRight, CheckCircle2 } from 'lucide-react';
 import AuthButton from '@/components/AuthButton';
+import IdeaIntakeForm from '@/components/IdeaIntakeForm';
 
 export default async function LandingPage() {
   const session = await auth();
@@ -109,10 +110,21 @@ export default async function LandingPage() {
                         </div>
                     ))}
                     {/* Connecting line for desktop */}
-                    <div className="hidden md:block absolute top-6 left-0 right-0 h-0.5 bg-slate-100 dark:bg-slate-800 z-0" />
                 </div>
             </div>
         </section>
+
+        {/* Idea Intake Form Section */}
+        <section className="py-20 px-4 bg-slate-50 dark:bg-slate-950/50" id="intake-form">
+            <div className="container mx-auto max-w-2xl text-center mb-10">
+                <h2 className="text-3xl font-bold mb-4">ثبت ایده و شروع ارزیابی</h2>
+                <p className="text-muted-foreground">
+                  این فرم فقط چند سؤال ساده دارد و پر کردنش حدود ۲–۳ دقیقه طول می‌کشد. لازم نیست جزئیات فنی بنویسید؛ فقط واضح بگویید چه می‌خواهید بسازید، ما کمک می‌کنیم آن را به پلن اجرایی تبدیل کنید.
+                </p>
+            </div>
+            <IdeaIntakeForm />
+        </section>
+
 
         {/* Core Features */}
         <section className="py-20 px-4 bg-slate-50 dark:bg-slate-950/50">
