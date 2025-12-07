@@ -5,16 +5,11 @@
  * - Updated metadata to Farsi
  */
 import type { Metadata } from "next";
-import { Vazirmatn, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import FeedbackButton from "@/components/FeedbackButton";
 
 import { Toaster } from "@/components/ui/toaster";
-
-const vazirmatn = Vazirmatn({
-  variable: "--font-vazirmatn",
-  subsets: ["arabic", "latin"],
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -34,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body
-        className={`${vazirmatn.variable} ${geistMono.variable} antialiased`}
+        className={`font-sans ${geistMono.variable} antialiased`}
       >
         {children}
         <FeedbackButton />
