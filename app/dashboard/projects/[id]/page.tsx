@@ -100,7 +100,7 @@ export default async function ProjectSummaryPage({ params }: Props) {
       </div>
 
       {/* AI Summary Placeholder */}
-      <div className="p-8 bg-gradient-to-br from-indigo-50 to-white border border-indigo-100 rounded-2xl">
+      <div className="p-8 bg-linear-to-br from-indigo-50 to-white border border-indigo-100 rounded-2xl">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-indigo-100 rounded-lg">
             <Lightbulb className="w-6 h-6 text-indigo-600" />
