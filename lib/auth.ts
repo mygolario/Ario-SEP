@@ -2,6 +2,9 @@ import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
+// NOTE: Ensure 'npx prisma db seed' is run to create the initial admin user.
+// Without seeding, login will fail with 401.
+
 const SESSION_COOKIE_NAME = "sep_session";
 const SESSION_TTL_DAYS = 7; // 7 days
 
