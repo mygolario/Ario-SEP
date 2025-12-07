@@ -197,6 +197,7 @@ export default async function ProjectSectionPage({ params }: SectionPageProps) {
                  <div className="flex justify-between items-center">
                     <h2 className="text-2xl font-bold">Execution Coach</h2>
                  </div>
+                 <p className="text-muted-foreground">Concrete tasks to move your idea forward this week.</p>
                  <div className="p-8 border rounded-lg bg-slate-50 dark:bg-slate-900">
                      <p className="mb-4">The Execution Coach provides AI-powered task lists and guidance.</p>
                      <ExecutionCoachPanel projectId={project.id} />
