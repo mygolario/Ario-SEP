@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth';
+import { getSession } from '@/lib/session';
 import prisma from '@/lib/prisma';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -7,10 +7,10 @@ import { Button } from '@/components/ui/button';
 import { PlusCircle, ArrowRight } from 'lucide-react';
 
 export default async function DashboardPage() {
-  const session = await auth();
+  const session = await getSession();
 
-  if (!session?.user?.id) {
-    redirect('/');
+  if (!session?.user) {
+    redirect('/login');
   }
 
   const projects = await prisma.project.findMany({
