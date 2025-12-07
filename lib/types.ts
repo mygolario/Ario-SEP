@@ -183,3 +183,40 @@ export type MarketAnalysisData = {
     keyDifferentiators: string[];
   };
 };
+
+export type PitchDeckSlideType =
+  | "title"
+  | "problem"
+  | "solution"
+  | "market"
+  | "product"
+  | "business_model"
+  | "traction"
+  | "competition"
+  | "go_to_market"
+  | "team"
+  | "financials"
+  | "ask"
+  | "roadmap"
+  | "closing"
+  | "custom";
+
+export type PitchDeckSlide = {
+  id: string;              // unique id, e.g. "slide-1"
+  type: PitchDeckSlideType;
+  title: string;           // slide title
+  subtitle?: string;
+  bullets: string[];       // 3–6 bullet points
+  speakerNotes?: string;   // a short paragraph for presenter notes
+};
+
+export type PitchDeckData = {
+  titleSlide: {
+    startupName: string;
+    tagline: string;
+    oneLiner: string;
+  };
+  slides: PitchDeckSlide[];
+  overallNarrative: string;  // 1–2 paragraph narrative connecting the story
+  investorFitNote?: string;  // suggestions for who this is a good fit for
+};

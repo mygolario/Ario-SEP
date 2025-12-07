@@ -6,8 +6,8 @@ import StrategyMap from '@/components/StrategyMap';
 import ShareLinkButton from '@/components/ShareLinkButton';
 import RegenerateButton from '@/components/RegenerateButton';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, LayoutTemplate, Layers, Settings, Palette, Layout, ShieldCheck } from 'lucide-react';
-import { StartupPlan, DeepPlanData, BrandingKitData, LandingPagePlanData, MarketAnalysisData } from '@/lib/types';
+import { ArrowLeft, LayoutTemplate, Layers, Settings, Palette, Layout, ShieldCheck, Presentation } from 'lucide-react';
+import { StartupPlan, DeepPlanData, BrandingKitData, LandingPagePlanData, MarketAnalysisData, PitchDeckData } from '@/lib/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DeepPlanGenerator from '@/components/DeepPlanGenerator';
 import DeepPlanRenderer from '@/components/DeepPlanRenderer';
@@ -16,6 +16,7 @@ import BrandingKitRenderer from '@/components/BrandingKitRenderer';
 import LandingPageGenerator from '@/components/LandingPageGenerator';
 import LandingPageRenderer from '@/components/LandingPageRenderer';
 import MarketAnalysisTab from '@/components/market/MarketAnalysisTab';
+import PitchDeckTab from '@/components/pitch-deck/PitchDeckTab';
 import ProjectSettings from '@/components/ProjectSettings';
 import ExecutionCoachPanel from '@/components/ExecutionCoachPanel';
 
@@ -48,6 +49,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       brandingKit: true,
       landingPagePlan: true,
       marketAnalysis: true,
+      pitchDeck: true,
     },
   });
 
@@ -73,6 +75,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   const hasMarketAnalysis = !!project.marketAnalysis?.data;
   const marketAnalysis = hasMarketAnalysis ? (project.marketAnalysis?.data as unknown as MarketAnalysisData) : null;
+
+  const hasPitchDeck = !!project.pitchDeck?.data;
+  const pitchDeck = hasPitchDeck ? (project.pitchDeck?.data as unknown as PitchDeckData) : null;
 
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 py-12 px-4 md:px-8">
@@ -110,7 +115,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </header>
 
         <Tabs defaultValue="one-page" className="w-full">
-          <TabsList className="grid w-full grid-cols-6 max-w-[850px] mb-8 overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-7 max-w-[950px] mb-8 overflow-x-auto">
             <TabsTrigger value="one-page" className="flex items-center gap-2">
               <LayoutTemplate className="h-4 w-4" />
               One-Page
@@ -126,6 +131,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <TabsTrigger value="market-analysis" className="flex items-center gap-2">
                <ShieldCheck className="h-4 w-4" />
                Market
+            </TabsTrigger>
+            <TabsTrigger value="pitch-deck" className="flex items-center gap-2">
+               <Presentation className="h-4 w-4" />
+               Pitch Deck
             </TabsTrigger>
             <TabsTrigger value="landing-page" className="flex items-center gap-2">
                <Layout className="h-4 w-4" />
@@ -166,6 +175,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
           <TabsContent value="market-analysis" className="mt-0">
              <MarketAnalysisTab projectId={project.id} marketAnalysis={marketAnalysis} />
+          </TabsContent>
+
+          <TabsContent value="pitch-deck" className="mt-0">
+             <PitchDeckTab projectId={project.id} pitchDeck={pitchDeck} />
           </TabsContent>
 
           <TabsContent value="landing-page" className="mt-0">
