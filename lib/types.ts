@@ -220,3 +220,40 @@ export type PitchDeckData = {
   overallNarrative: string;  // 1–2 paragraph narrative connecting the story
   investorFitNote?: string;  // suggestions for who this is a good fit for
 };
+
+export type FundingStrategy =
+  | "bootstrapping"
+  | "angel"
+  | "accelerator"
+  | "vc"
+  | "grant"
+  | "not_recommended_yet";
+
+export type FundingRoadmapData = {
+  shouldRaiseNow: boolean;
+  recommendedStrategy: FundingStrategy;
+  reasoning: string;
+
+  prerequisites: {
+    description: string;
+    checklist: string[];
+  };
+
+  plan30Days: {
+    focus: string;
+    tasks: string[];
+  };
+
+  plan90Days: {
+    focus: string;
+    tasks: string[];
+  };
+
+  recommendedAsk: {
+    amountRange: string;        // e.g. "$50k–$150k"
+    runwayMonths: number;       // e.g. 6
+    useOfFunds: { label: string; percent: number; }[];
+  };
+
+  risks: string[];              // list of fundraising risks/blockers
+};

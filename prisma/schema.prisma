@@ -73,6 +73,7 @@ model Project {
   landingPagePlan  LandingPagePlan?
   marketAnalysis   MarketAnalysis?
   pitchDeck        PitchDeck?
+  fundingRoadmap   FundingRoadmap?
 }
 
 model StrategyMap {
@@ -117,6 +118,14 @@ model MarketAnalysis {
 }
 
 model PitchDeck {
+  id        String   @id @default(cuid())
+  projectId String   @unique
+  project   Project  @relation(fields: [projectId], references: [id])
+  data      Json
+  createdAt DateTime @default(now())
+}
+
+model FundingRoadmap {
   id        String   @id @default(cuid())
   projectId String   @unique
   project   Project  @relation(fields: [projectId], references: [id])
