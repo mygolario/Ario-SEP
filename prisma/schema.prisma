@@ -36,9 +36,9 @@ model Session {
 }
 
 model User {
-  id            String     @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String     @unique
+  email         String       @unique
   emailVerified DateTime?
   image         String?
   passwordHash  String
@@ -46,7 +46,8 @@ model User {
   sessions      Session[]
   projects      Project[]
   feedbacks     Feedback[]
-  createdAt     DateTime   @default(now())
+  ideaIntakes   IdeaIntake[]
+  createdAt     DateTime     @default(now())
 }
 
 model VerificationToken {
@@ -179,4 +180,7 @@ model IdeaIntake {
   budgetAndTimeline String?
   extraInfo         String?
   contact           String?
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

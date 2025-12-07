@@ -46,12 +46,33 @@ export default function IdeaIntakeForm() {
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error('Submission failed');
+      const data = await res.json();
+
+      if (res.status === 401) {
+          toast({
+            variant: "destructive",
+            title: "نیاز به ورود",
+            description: data.message || "برای ساخت پلن باید ابتدا وارد حساب کاربری شوید.",
+            action: <Button variant="outline" size="sm" onClick={() => window.location.href = '/login'}>ورود</Button>
+          });
+          return;
+      }
+
+      if (res.status === 403) {
+          toast({
+            variant: "destructive",
+            title: "محدودیت پلن رایگان",
+            description: data.message || "پلن رایگان شما استفاده شده است.",
+          });
+          return;
+      }
+
+      if (!res.ok) throw new Error(data.message || 'Submission failed');
 
       setSuccess(true);
       toast({
         title: "ثبت شد!",
-        description: "ایده‌تان با موفقیت ثبت شد. به‌زودی با شما تماس می‌گیریم.",
+        description: "ایده‌تان با موفقیت ثبت شد. در ادامه برایت یک خلاصه یک‌صفحه‌ای ساخته می‌شود.",
       });
       setFormData({
         ideaOneLiner: '',
@@ -59,11 +80,11 @@ export default function IdeaIntakeForm() {
         solution: '',
         audience: '',
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
         title: "خطا",
-        description: "در ارسال فرم مشکلی پیش آمد. لطفاً دوباره تلاش کن.",
+        description: error.message || "در ارسال فرم مشکلی پیش آمد. لطفاً دوباره تلاش کن.",
       });
     } finally {
       setLoading(false);

@@ -1,8 +1,39 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth";
 
 export async function POST(req: Request) {
   try {
+    const user = await getCurrentUser();
+    
+    if (!user) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: "UNAUTHENTICATED",
+          message: "برای ساخت پلن، ابتدا باید وارد حساب کاربری شوید.",
+        },
+        { status: 401 }
+      );
+    }
+    
+    // Check free tier limit (1 project per user)
+    const count = await prisma.ideaIntake.count({
+      where: { userId: user.id },
+    });
+
+    if (count >= 1) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: "FREE_LIMIT_REACHED",
+          message:
+            "شما یک پلن رایگان ساخته‌اید. برای ساخت پروژه‌ی جدید باید اشتراک فعال داشته باشید.",
+        },
+        { status: 403 }
+      );
+    }
+
     const { ideaOneLiner, problem, solution, audience } = await req.json();
 
     if (
@@ -27,6 +58,7 @@ export async function POST(req: Request) {
         problem,
         solution,
         audience,
+        userId: user.id,
       },
     });
 
