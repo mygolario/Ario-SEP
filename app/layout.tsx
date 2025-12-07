@@ -7,8 +7,8 @@
 import type { Metadata } from "next";
 import { Vazirmatn, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
 import FeedbackButton from "@/components/FeedbackButton";
-
 import { Toaster } from "@/components/ui/toaster";
 
 const vazirmatn = Vazirmatn({
@@ -36,6 +36,7 @@ export default function RootLayout({
       <body
         className={`${vazirmatn.variable} ${geistMono.variable} antialiased`}
       >
+        <Header />
         {children}
         <FeedbackButton />
         <Toaster />

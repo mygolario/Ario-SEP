@@ -82,14 +82,17 @@ export default function IdeaIntakeForm() {
       setSuccess(true);
       toast({
         title: "ثبت شد!",
-        description: "ایده‌تان با موفقیت ثبت شد. در ادامه برایت یک خلاصه یک‌صفحه‌ای ساخته می‌شود.",
+        description: "ایده‌تان با موفقیت ثبت شد. در حال انتقال...",
       });
-      setFormData({
-        ideaOneLiner: '',
-        problem: '',
-        solution: '',
-        audience: '',
-      });
+      
+      if (data.id) {
+        // Redirect to the new project summary page
+        window.location.href = `/dashboard/projects/${data.id}`;
+      } else {
+        // Fallback
+        window.location.href = '/dashboard/projects';
+      }
+      
     } catch (error: any) {
       toast({
         variant: "destructive",

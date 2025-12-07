@@ -48,7 +48,13 @@ model User {
   feedbacks        Feedback[]
   ideaIntakes      IdeaIntake[]
   subscriptionTier String       @default("FREE") // FREE | STARTER | PRO
+  role             UserRole     @default(USER)
   createdAt        DateTime     @default(now())
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }
 
 model VerificationToken {

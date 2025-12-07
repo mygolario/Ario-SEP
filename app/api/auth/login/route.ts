@@ -29,6 +29,18 @@ export async function POST(req: Request) {
       );
     }
 
+    // Check for Admin Upgrade (if not already admin)
+    const adminEmail = process.env.ADMIN_EMAIL;
+    if (adminEmail && user.email === adminEmail && user.role !== "ADMIN") {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          role: "ADMIN",
+          subscriptionTier: "PRO",
+        },
+      });
+    }
+
     await createSession(user.id);
 
     return NextResponse.json({ success: true });

@@ -3,41 +3,20 @@ import { getCurrentUser } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LayoutTemplate, Layers, Palette, Layout, Zap, ArrowRight, CheckCircle2 } from 'lucide-react';
-import AuthButton from '@/components/AuthButton';
 
+
+export const dynamic = 'force-dynamic';
 
 export default async function LandingPage() {
   const user = await getCurrentUser();
   const isSignedIn = !!user;
 
   return (
-    // Main layout wrapper
     <div className="min-h-screen bg-background text-foreground flex flex-col">
-      {/* Navbar */}
-      <header className="border-b sticky top-0 z-40 bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="font-bold text-xl flex items-center gap-2">
-             <Zap className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-             <span>StartupExec</span>
-          </div>
-          <div className="flex items-center gap-4">
-            {isSignedIn ? (
-                <AuthButton />
-            ) : (
-                <div className="flex items-center gap-4">
-                     <Button asChild variant="ghost">
-                        <Link href="/login">ورود</Link>
-                     </Button>
-                     <Button asChild>
-                        <Link href="/dashboard/new">شروع کنید</Link>
-                     </Button>
-                </div>
-            )}
-          </div>
-        </div>
-      </header>
 
-      <main className="flex-1">
+
+        <main className="flex-1">
+
         {/* Hero Section */}
         {/* Hero Section */}
         <section className="py-20 md:py-28 px-4 text-center bg-slate-50 dark:bg-slate-950/50">
@@ -117,24 +96,8 @@ export default async function LandingPage() {
 
         {/* Idea Intake Form Section */}
         {/* Idea Intake Form Section - REPLACED WITH CTA */}
-        <section className="py-16 md:py-24 px-4 bg-slate-50 dark:bg-slate-950/50" id="intake-cta">
-            <div className="container mx-auto max-w-2xl text-center mb-10">
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-4">آماده‌اید ایده‌تان را بسازید؟</h2>
-                <p className="mt-2 text-sm md:text-base text-slate-600 leading-relaxed max-w-lg mx-auto mb-8">
-                  فقط کافیست چند سؤال ساده را پاسخ دهید تا هوش مصنوعی ما برای شما یک نقشه راه اجرایی دقیق بسازد.
-                </p>
-                <div className="flex justify-center">
-                    <Button asChild className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-8 py-4 text-base font-semibold text-white shadow-lg hover:bg-indigo-700 transition-colors h-auto">
-                        <Link href="/dashboard/new">
-                            شروع ساخت پروژه جدید
-                            <ArrowRight className="ms-2 h-5 w-5 rtl:rotate-180" />
-                        </Link>
-                    </Button>
-                </div>
-            </div>
-        </section>
-
-
+        {/* Idea Intake Form Section - REPLACED WITH CTA - REMOVED DUPLICATE */}
+        
         {/* Core Features */}
         <section className="py-16 md:py-24 px-4 bg-slate-50 dark:bg-slate-950/50">
              <div className="container mx-auto max-w-5xl px-4 md:px-6">
@@ -200,11 +163,12 @@ export default async function LandingPage() {
                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900">برای لانچ کردن ایده بعدی‌تان آماده‌اید؟</h2>
                  <p className="mt-2 text-sm md:text-base text-slate-600">به پلتفرمی بپیوندید که کمک می‌کند از ایده روی کاغذ، به یک پلن اجرایی واقعی برسید.</p>
                  <div className="mt-8 flex justify-center">
-                    <Button asChild className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-8 py-3 text-sm md:text-base font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors h-auto">
-                        <Link href="/builder">
+                    <Link
+                        href="/login?callback=/dashboard/new"
+                        className="inline-flex items-center justify-center rounded-xl bg-indigo-600 px-8 py-3 text-sm md:text-base font-semibold text-white shadow-sm hover:bg-indigo-700 transition h-auto"
+                    >
                         همین حالا شروع کنید
-                        </Link>
-                    </Button>
+                    </Link>
                  </div>
              </div>
         </section>
@@ -222,6 +186,7 @@ export default async function LandingPage() {
           </div>
       </footer>
     </div>
+
   );
 }
 

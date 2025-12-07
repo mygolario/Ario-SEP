@@ -41,6 +41,11 @@ export async function POST(req: Request) {
       maxProjects = 50; 
     }
 
+    // ADMIN: Unlimited
+    if (dbUser.role === "ADMIN") {
+      maxProjects = 9999;
+    }
+
     if (existingCount >= maxProjects) {
       return NextResponse.json(
         {
