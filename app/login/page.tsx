@@ -28,13 +28,13 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || data.error || 'Login failed');
+        throw new Error(data.message || data.error || 'ورود ناموفق بود');
       }
 
       router.push('/dashboard');
       router.refresh(); // Refresh to update server components
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'خطایی رخ داد');
     } finally {
       setLoading(false);
     }

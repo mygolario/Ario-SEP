@@ -1,5 +1,5 @@
 import AuthButton from '@/components/AuthButton';
-import IdeaGenerator from '@/components/IdeaGenerator';
+import IdeaIntakeForm from '@/components/IdeaIntakeForm';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -28,7 +28,7 @@ export default function BuilderPage() {
           </p>
         </header>
         
-        <IdeaGenerator />
+        <IdeaIntakeForm />
       </div>
     </main>
   );

@@ -26,7 +26,7 @@ export default async function LandingPage() {
             ) : (
                 <div className="flex items-center gap-4">
                      <Button asChild variant="ghost">
-                        <Link href="/api/auth/signin">ورود</Link>
+                        <Link href="/login">ورود</Link>
                      </Button>
                      <Button asChild>
                         <Link href="/builder">شروع کنید</Link>
@@ -76,7 +76,7 @@ export default async function LandingPage() {
                              </Link>
                         </Button>
                         <Button asChild variant="outline" className="inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm md:text-base font-medium text-slate-800 hover:bg-slate-50 transition-colors h-auto">
-                             <Link href="/api/auth/signin">
+                             <Link href="/login">
                                 ورود به حساب کاربری
                              </Link>
                         </Button>
