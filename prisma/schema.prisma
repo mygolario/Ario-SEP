@@ -36,18 +36,19 @@ model Session {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  name          String?
-  email         String       @unique
-  emailVerified DateTime?
-  image         String?
-  passwordHash  String
-  accounts      Account[]
-  sessions      Session[]
-  projects      Project[]
-  feedbacks     Feedback[]
-  ideaIntakes   IdeaIntake[]
-  createdAt     DateTime     @default(now())
+  id               String       @id @default(cuid())
+  name             String?
+  email            String       @unique
+  emailVerified    DateTime?
+  image            String?
+  passwordHash     String
+  accounts         Account[]
+  sessions         Session[]
+  projects         Project[]
+  feedbacks        Feedback[]
+  ideaIntakes      IdeaIntake[]
+  subscriptionTier String       @default("FREE") // FREE | STARTER | PRO
+  createdAt        DateTime     @default(now())
 }
 
 model VerificationToken {

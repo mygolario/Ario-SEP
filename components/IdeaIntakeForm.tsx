@@ -58,11 +58,21 @@ export default function IdeaIntakeForm() {
           return;
       }
 
-      if (res.status === 403) {
+      if (res.status === 403 && data.code === "PLAN_LIMIT_REACHED") {
           toast({
             variant: "destructive",
             title: "محدودیت پلن رایگان",
-            description: data.message || "پلن رایگان شما استفاده شده است.",
+            description: "ظرفیت پلن فعلی برای ساخت پروژه جدید پر شده است.",
+            action: <Button variant="outline" size="sm" onClick={() => window.location.href = '/pricing'}>مشاهده پلن‌ها</Button>
+          });
+          return;
+      }
+
+      if (res.status === 403) {
+          toast({
+            variant: "destructive",
+            title: "دسترسی غیرمجاز",
+             description: data.message || "شما اجازه انجام این کار را ندارید.",
           });
           return;
       }

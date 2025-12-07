@@ -125,16 +125,16 @@ export default async function ProjectSummaryPage({ params }: Props) {
         
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {lockedFeatures.map((feature, idx) => (
-            <div key={idx} className="relative p-6 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden group">
+            <a key={idx} href="/pricing" className="block relative p-6 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden group hover:border-indigo-300 transition-colors">
               <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <Lock className="w-8 h-8 text-slate-400 mb-2" />
-                <span className="text-xs font-semibold text-slate-500">نیازمند اشتراک</span>
+                <Lock className="w-8 h-8 text-indigo-500 mb-2" />
+                <span className="text-xs font-semibold text-indigo-600">مشاهده پلن‌ها</span>
               </div>
               <div className="flex items-center justify-between opacity-60">
                 <h3 className="font-semibold text-slate-800">{feature}</h3>
                 <Lock className="w-4 h-4 text-slate-400" />
               </div>
-            </div>
+            </a>
           ))}
         </div>
 

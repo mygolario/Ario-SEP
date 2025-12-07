@@ -16,19 +16,38 @@ export async function POST(req: Request) {
         { status: 401 }
       );
     }
+
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
+    });
     
-    // Check free tier limit (1 project per user)
-    const count = await prisma.ideaIntake.count({
+    if (!dbUser) {
+      return NextResponse.json(
+        { success: false, message: "کاربر یافت نشد." },
+        { status: 401 }
+      );
+    }
+    
+    // Check limit based on subscription tier
+    const existingCount = await prisma.ideaIntake.count({
       where: { userId: user.id },
     });
 
-    if (count >= 1) {
+    let maxProjects = 1; // default FREE
+
+    if (dbUser.subscriptionTier === "STARTER") {
+      maxProjects = 5;
+    } else if (dbUser.subscriptionTier === "PRO") {
+      maxProjects = 50; 
+    }
+
+    if (existingCount >= maxProjects) {
       return NextResponse.json(
         {
           success: false,
-          code: "FREE_LIMIT_REACHED",
+          code: "PLAN_LIMIT_REACHED",
           message:
-            "شما یک پلن رایگان ساخته‌اید. برای ساخت پروژه‌ی جدید باید اشتراک فعال داشته باشید.",
+            "ظرفیت این پلن برای تعداد پروژه‌ها پر شده است. برای ساخت پروژه‌ی جدید باید پلن بالاتر را فعال کنید.",
         },
         { status: 403 }
       );
