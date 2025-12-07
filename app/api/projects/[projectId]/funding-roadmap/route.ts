@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { generateFundingRoadmap } from '@/lib/ai/funding-roadmap';
 import { NextResponse } from 'next/server';
@@ -9,8 +9,8 @@ export async function POST(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
-    const session = await auth();
-    if (!session?.user?.id) {
+    const user = await getCurrentUser();
+    if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -20,7 +20,7 @@ export async function POST(
     const project = await prisma.project.findUnique({
       where: {
         id: projectId,
-        userId: session.user.id,
+        userId: user.id,
       },
       include: {
         strategyMaps: {

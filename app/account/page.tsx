@@ -1,13 +1,13 @@
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default async function AccountPage() {
-  const session = await auth();
+  const user = await getCurrentUser();
 
-  if (!session?.user) {
-    redirect('/');
+  if (!user) {
+    redirect('/api/auth/signin');
   }
 
   return (
@@ -22,12 +22,12 @@ export default async function AccountPage() {
           </CardHeader>
           <CardContent className="flex items-center gap-6">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={session.user.image || ''} alt={session.user.name || ''} />
-              <AvatarFallback className="text-xl">{session.user.name?.charAt(0)}</AvatarFallback>
+              <AvatarImage src={user.image || ''} alt={user.name || ''} />
+              <AvatarFallback className="text-xl">{user.name?.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
-              <h3 className="font-semibold text-lg">{session.user.name}</h3>
-              <p className="text-muted-foreground">{session.user.email}</p>
+              <h3 className="font-semibold text-lg">{user.name}</h3>
+              <p className="text-muted-foreground">{user.email}</p>
             </div>
           </CardContent>
         </Card>

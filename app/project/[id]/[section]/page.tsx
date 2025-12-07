@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -29,9 +29,9 @@ interface SectionPageProps {
 
 export default async function ProjectSectionPage({ params }: SectionPageProps) {
   const { id, section } = await params;
-  const session = await auth();
+  const user = await getCurrentUser();
 
-  if (!session?.user?.id) {
+  if (!user) {
     redirect('/');
   }
 
@@ -59,7 +59,7 @@ export default async function ProjectSectionPage({ params }: SectionPageProps) {
     notFound();
   }
 
-  if (project.userId !== session.user.id) {
+  if (project.userId !== user.id) {
     redirect('/dashboard'); 
   }
 
@@ -82,7 +82,7 @@ export default async function ProjectSectionPage({ params }: SectionPageProps) {
   // Header Actions Component for reusability in header
   const HeaderActions = () => (
       <div className='flex gap-2 items-center'>
-        {session?.user?.id && project.userId === session.user.id && (
+        {user && project.userId === user.id && (
             <RegenerateButton projectId={project.id} />
         )}
         <ShareLinkButton publicId={project.publicId} />

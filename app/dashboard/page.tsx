@@ -1,21 +1,21 @@
-import { getSession } from '@/lib/session';
-import prisma from '@/lib/prisma';
 import { redirect } from 'next/navigation';
+import { getCurrentUser } from '@/lib/auth';
+import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, ArrowRight } from 'lucide-react';
 
 export default async function DashboardPage() {
-  const session = await getSession();
+  const user = await getCurrentUser();
 
-  if (!session?.user) {
+  if (!user) {
     redirect('/login');
   }
 
   const projects = await prisma.project.findMany({
     where: {
-      userId: session.user.id,
+      userId: user.id,
     },
     orderBy: {
       createdAt: 'desc',

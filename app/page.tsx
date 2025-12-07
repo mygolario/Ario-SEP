@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LayoutTemplate, Layers, Palette, Layout, Zap, ArrowRight, CheckCircle2 } from 'lucide-react';
@@ -7,8 +7,8 @@ import AuthButton from '@/components/AuthButton';
 import IdeaIntakeForm from '@/components/IdeaIntakeForm';
 
 export default async function LandingPage() {
-  const session = await auth();
-  const isSignedIn = !!session?.user;
+  const user = await getCurrentUser();
+  const isSignedIn = !!user;
 
   return (
     // Main layout wrapper

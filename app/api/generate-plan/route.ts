@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
 import { IdeaInput, StartupPlan } from '@/lib/types';
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { BudgetLevel, ExperienceLevel, Prisma } from '@prisma/client';
 import { generateStrategyMap } from '@/lib/ai/generate';
 
 export async function POST(request: Request) {
   try {
-    const session = await auth();
+    const user = await getCurrentUser();
     const body: IdeaInput = await request.json();
     const {
       ideaTitle,
@@ -45,11 +45,11 @@ export async function POST(request: Request) {
     // Persistence Logic
     let projectId: string | undefined;
 
-    if (session?.user?.id) {
+    if (user?.id) {
       try {
         const project = await prisma.project.create({
           data: {
-            userId: session.user.id,
+            userId: user.id,
             title: ideaTitle,
             description: ideaDescription,
             targetAudience: targetAudience,

@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { generateExecutionTasks } from '@/lib/ai/execution-coach';
@@ -8,10 +8,10 @@ export async function POST(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
-    const session = await auth();
+    const user = await getCurrentUser();
     const { projectId } = await params;
 
-    if (!session?.user?.id) {
+    if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -35,7 +35,7 @@ export async function POST(
         return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
-    if (project.userId !== session.user.id) {
+    if (project.userId !== user.id) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

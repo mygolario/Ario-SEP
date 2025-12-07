@@ -1,11 +1,11 @@
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { FeedbackType } from '@prisma/client';
 
 export async function POST(request: Request) {
   try {
-    const session = await auth();
+    const user = await getCurrentUser();
     const body = await request.json();
     const { type, message, projectId, metadata } = body;
 
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     const feedback = await prisma.feedback.create({
       data: {
-        userId: session?.user?.id,
+        userId: user?.id,
         projectId: projectId || null,
         type: type,
         message: message.substring(0, 2000), // Change limit as needed

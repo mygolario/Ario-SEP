@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { generateStrategyMap } from '@/lib/ai/generate';
 import { BudgetLevel, ExperienceLevel, Prisma } from '@prisma/client';
@@ -9,10 +9,10 @@ export async function POST(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
-    const session = await auth();
+    const user = await getCurrentUser();
     const { projectId } = await params;
 
-    if (!session?.user?.id) {
+    if (!user?.id) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -33,7 +33,7 @@ export async function POST(
       );
     }
 
-    if (project.userId !== session.user.id) {
+    if (project.userId !== user.id) {
        return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 403 }

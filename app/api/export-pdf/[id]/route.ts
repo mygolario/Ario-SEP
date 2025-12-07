@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import React from 'react';
 import { renderToStream } from '@react-pdf/renderer';
@@ -12,9 +12,9 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const session = await auth();
+    const user = await getCurrentUser();
 
-    if (!session?.user?.id) {
+    if (!user?.id) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
@@ -34,7 +34,7 @@ export async function GET(
       return new NextResponse('Project not found', { status: 404 });
     }
 
-    if (project.userId !== session.user.id) {
+    if (project.userId !== user.id) {
       return new NextResponse('Unauthorized', { status: 403 });
     }
 

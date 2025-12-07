@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { redirect, notFound } from 'next/navigation';
 import { ProjectSidebar } from '@/components/sidebar/ProjectSidebar';
@@ -16,9 +16,9 @@ interface ProjectLayoutProps {
 
 export default async function ProjectLayout({ children, params }: ProjectLayoutProps) {
   const { id } = await params;
-  const session = await auth();
+  const user = await getCurrentUser();
 
-  if (!session?.user?.id) {
+  if (!user) {
     redirect('/');
   }
 
@@ -37,7 +37,7 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
     notFound();
   }
   
-  if (project.userId !== session.user.id) {
+  if (project.userId !== user.id) {
      redirect('/dashboard');
   }
 
