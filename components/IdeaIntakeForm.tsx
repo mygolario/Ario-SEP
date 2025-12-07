@@ -16,10 +16,9 @@ export default function IdeaIntakeForm() {
   
   const [formData, setFormData] = useState({
     ideaOneLiner: '',
-    mainNeed: '',
-    budgetAndTimeline: '',
-    extraInfo: '',
-    contact: '',
+    problem: '',
+    solution: '',
+    audience: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -27,9 +26,9 @@ export default function IdeaIntakeForm() {
   const validate = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.ideaOneLiner.trim()) newErrors.ideaOneLiner = 'توضیح ایده الزامی است.';
-    if (!formData.mainNeed) newErrors.mainNeed = 'انتخاب نوع نیاز الزامی است.';
-    if (!formData.budgetAndTimeline.trim()) newErrors.budgetAndTimeline = 'بودجه و زمان الزامی است.';
-    if (!formData.contact.trim()) newErrors.contact = 'راه ارتباطی الزامی است.';
+    if (!formData.problem.trim()) newErrors.problem = 'توضیح مشکل الزامی است.';
+    if (!formData.solution.trim()) newErrors.solution = 'توضیح راه‌حل الزامی است.';
+    if (!formData.audience.trim()) newErrors.audience = 'توضیح مخاطب الزامی است.';
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -56,16 +55,15 @@ export default function IdeaIntakeForm() {
       });
       setFormData({
         ideaOneLiner: '',
-        mainNeed: '',
-        budgetAndTimeline: '',
-        extraInfo: '',
-        contact: '',
+        problem: '',
+        solution: '',
+        audience: '',
       });
     } catch (error) {
       toast({
         variant: "destructive",
         title: "خطا",
-        description: "در ارسال فرم مشکل پیش آمد. لطفاً دوباره تلاش کنید.",
+        description: "در ارسال فرم مشکلی پیش آمد. لطفاً دوباره تلاش کن.",
       });
     } finally {
       setLoading(false);
@@ -89,9 +87,9 @@ export default function IdeaIntakeForm() {
           <div className="mx-auto w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
             <CheckCircle2 className="w-8 h-8 text-green-600 dark:text-green-400" />
           </div>
-          <h3 className="text-xl font-bold text-green-800 dark:text-green-300">ایده‌تان با موفقیت ثبت شد</h3>
+          <h3 className="text-xl font-bold text-green-800 dark:text-green-300">ایده‌ات با موفقیت ثبت شد</h3>
           <p className="text-green-700 dark:text-green-400">
-            حداکثر تا چند روز کاری آینده آن را بررسی می‌کنیم و در صورت نیاز با شما تماس می‌گیریم.
+            در ادامه برایت یک خلاصه یک‌صفحه‌ای ساخته می‌شود.
           </p>
           <Button 
             variant="outline" 
@@ -115,91 +113,70 @@ export default function IdeaIntakeForm() {
           
           {/* Idea One Liner */}
           <div className="space-y-2">
-            <Label htmlFor="ideaOneLiner" className="block text-sm font-medium text-slate-800 mb-1">ایده‌تان را در یک جمله توضیح دهید <span className="text-red-500">*</span></Label>
+            <Label htmlFor="ideaOneLiner" className="block text-sm font-medium text-slate-800 mb-1">در یک جمله بگو می‌خوای چی بسازی <span className="text-red-500">*</span></Label>
             <Input 
               id="ideaOneLiner" 
-              placeholder="مثال: می‌خواهم پلتفرمی بسازم که مربی‌های زبان را به شاگردها وصل کند."
+              placeholder="مثال: می‌خوام یه فروشگاه آنلاین لباس بسازم."
               value={formData.ideaOneLiner}
               onChange={(e) => handleChange('ideaOneLiner', e.target.value)}
               className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition ${errors.ideaOneLiner ? 'border-red-500' : ''}`}
             />
-            {errors.ideaOneLiner ? (
-              <p className="mt-1 text-xs text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> {errors.ideaOneLiner}</p>
-            ) : (
-              <p className="mt-1 text-xs text-slate-500">خیلی ساده و خودمانی بنویسید؛ لازم نیست اصطلاحات تخصصی استفاده کنید.</p>
-            )}
+             {errors.ideaOneLiner ? (
+                <p className="mt-1 text-xs text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> {errors.ideaOneLiner}</p>
+             ) : (
+                <p className="mt-1 text-xs text-slate-500">خیلی ساده و کوتاه بنویس؛ لازم نیست رسمی باشد.</p>
+             )}
           </div>
 
-          {/* Main Need - Radio Group */}
+          {/* Problem */}
           <div className="space-y-2">
-            <Label className="block text-sm font-medium text-slate-800 mb-1">الان مهم‌ترین کاری که از ما می‌خواهید چیست؟ <span className="text-red-500">*</span></Label>
-            <RadioGroup 
-              value={formData.mainNeed} 
-              onValueChange={(val) => handleChange('mainNeed', val)}
-              className="flex flex-col space-y-3"
-            >
-              {[
-                { val: 'evaluate', label: 'فقط ارزیابی ایده و گفتن مسیر شروع' },
-                { val: 'mvp', label: 'طراحی و اجرای نسخه اول (MVP)' },
-                { val: 'improve', label: 'ارتقای وبسایت یا محصول فعلی' },
-                { val: 'guide', label: 'هنوز مطمئن نیستم، فقط می‌خواهم راهنمایی بگیرم' },
-              ].map((opt) => (
-                <div key={opt.val} className="flex items-center gap-2 text-sm text-slate-700">
-                  <RadioGroupItem value={opt.val} id={opt.val} className="text-indigo-600 focus:ring-indigo-500" />
-                  <Label htmlFor={opt.val} className="font-normal cursor-pointer text-slate-700">{opt.label}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-            {errors.mainNeed ? (
-              <p className="mt-1 text-xs text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> {errors.mainNeed}</p>
-            ) : (
-              <p className="mt-1 text-xs text-slate-500">گزینه‌ای را انتخاب کنید که بیش‌تر به وضعیت فعلی شما نزدیک است.</p>
-            )}
-          </div>
-
-          {/* Budget & Timeline */}
-          <div className="space-y-2">
-            <Label htmlFor="budgetAndTimeline" className="block text-sm font-medium text-slate-800 mb-1">حدود بودجه و بازه زمانی مورد انتظار <span className="text-red-500">*</span></Label>
-            <Input 
-              id="budgetAndTimeline" 
-              placeholder="مثال: بین ۲۰ تا ۵۰ میلیون، تحویل حدود ۱ تا ۲ ماه"
-              value={formData.budgetAndTimeline}
-              onChange={(e) => handleChange('budgetAndTimeline', e.target.value)}
-              className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition ${errors.budgetAndTimeline ? 'border-red-500' : ''}`}
-            />
-            {errors.budgetAndTimeline && (
-              <p className="mt-1 text-xs text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> {errors.budgetAndTimeline}</p>
-            )}
-            {!errors.budgetAndTimeline && <p className="mt-1 text-xs text-slate-500">نیازی به عدد دقیق نیست؛ حدود بودجه و بازه زمانی که در ذهن دارید را بنویسید.</p>}
-          </div>
-
-          {/* Extra Info */}
-          <div className="space-y-2">
-            <Label htmlFor="extraInfo" className="block text-sm font-medium text-slate-800 mb-1">توضیحات یا لینک‌های اضافه (اختیاری)</Label>
+            <Label htmlFor="problem" className="block text-sm font-medium text-slate-800 mb-1">چه مشکل یا نیازی را می‌خوای حل کنی؟ <span className="text-red-500">*</span></Label>
             <Textarea 
-              id="extraInfo" 
-              placeholder="اگر نمونه مشابه، رقیب، پیج اینستاگرام یا توضیح خاصی دارید اینجا بنویسید..."
-              value={formData.extraInfo}
-              onChange={(e) => handleChange('extraInfo', e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition min-h-[80px]"
+              id="problem" 
+              placeholder="مثال: پیدا کردن لباس خوب سخته / مشتری کم دارم / مردم آموزش درست ندارن."
+              value={formData.problem}
+              onChange={(e) => handleChange('problem', e.target.value)}
+              className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition min-h-[80px] ${errors.problem ? 'border-red-500' : ''}`}
             />
-            <p className="mt-1 text-xs text-slate-500">می‌توانید لینک سایت‌های مشابه، رقبای اصلی یا هر توضیحی که کمک می‌کند ما بهتر ایده‌تان را بفهمیم اضافه کنید.</p>
+            {errors.problem ? (
+                <p className="mt-1 text-xs text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> {errors.problem}</p>
+            ) : (
+                <p className="mt-1 text-xs text-slate-500">به ساده‌ترین شکل ممکن مشکل را بنویس.</p>
+            )}
           </div>
 
-          {/* Contact */}
+          {/* Solution */}
           <div className="space-y-2">
-            <Label htmlFor="contact" className="block text-sm font-medium text-slate-800 mb-1">راه ارتباطی ترجیحی شما <span className="text-red-500">*</span></Label>
-            <Input 
-              id="contact" 
-              placeholder="مثال: شماره موبایل، تلگرام، ایمیل یا اینستاگرام"
-              value={formData.contact}
-              onChange={(e) => handleChange('contact', e.target.value)}
-              className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition ${errors.contact ? 'border-red-500' : ''}`}
+            <Label htmlFor="solution" className="block text-sm font-medium text-slate-800 mb-1">راه‌حل یا ایده‌ات چطور این مشکل را حل می‌کند؟ <span className="text-red-500">*</span></Label>
+             <Textarea 
+              id="solution" 
+              placeholder="مثال: می‌خوام یه سایت با فیلترگذاری بسازم / می‌خوام دوره آموزشی درست کنم."
+              value={formData.solution}
+              onChange={(e) => handleChange('solution', e.target.value)}
+              className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition min-h-[80px] ${errors.solution ? 'border-red-500' : ''}`}
             />
-            {errors.contact && (
-               <p className="mt-1 text-xs text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> {errors.contact}</p>
+            {errors.solution ? (
+                <p className="mt-1 text-xs text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> {errors.solution}</p>
+            ) : (
+                <p className="mt-1 text-xs text-slate-500">در یک یا دو جمله خیلی ساده توضیح بده.</p>
             )}
-             {!errors.contact && <p className="mt-1 text-xs text-slate-500">اطلاعات تماسی که بیش‌تر چک می‌کنید را بنویسید تا در صورت نیاز با شما هماهنگ کنیم.</p>}
+          </div>
+
+          {/* Audience */}
+          <div className="space-y-2">
+            <Label htmlFor="audience" className="block text-sm font-medium text-slate-800 mb-1">این ایده برای چه کسانی است؟ <span className="text-red-500">*</span></Label>
+            <Input 
+              id="audience" 
+              placeholder="مثال: دانشجوها / صاحب‌کافه‌ها / کسب‌وکارهای کوچک / گیمرها..."
+              value={formData.audience}
+              onChange={(e) => handleChange('audience', e.target.value)}
+              className={`w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition ${errors.audience ? 'border-red-500' : ''}`}
+            />
+             {errors.audience ? (
+                <p className="mt-1 text-xs text-red-500 flex items-center gap-1"><AlertCircle className="w-3 h-3"/> {errors.audience}</p>
+             ) : (
+                <p className="mt-1 text-xs text-slate-500">کسانی که قرار است از این استفاده کنند را خیلی کوتاه بنویس.</p>
+             )}
           </div>
 
           <Button type="submit" className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl bg-indigo-600 px-8 py-3 text-sm md:text-base font-semibold text-white shadow-sm hover:bg-indigo-700 transition-colors mt-4" size="lg" disabled={loading}>

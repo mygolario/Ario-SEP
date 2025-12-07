@@ -1,35 +1,40 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma'; // Ensure this matches your existing prisma export
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { ideaOneLiner, mainNeed, budgetAndTimeline, extraInfo, contact } = body;
+    const { ideaOneLiner, problem, solution, audience } = await req.json();
 
-    // Basic Validation
-    if (!ideaOneLiner || !mainNeed || !budgetAndTimeline || !contact) {
+    if (
+      !ideaOneLiner ||
+      !problem ||
+      !solution ||
+      !audience ||
+      typeof ideaOneLiner !== "string" ||
+      typeof problem !== "string" ||
+      typeof solution !== "string" ||
+      typeof audience !== "string"
+    ) {
       return NextResponse.json(
-        { error: 'لطفاً تمام فیلدهای الزامی را پر کنید.' },
+        { success: false, message: "لطفاً همه فیلدها را به صورت کامل پر کنید." },
         { status: 400 }
       );
     }
 
-    // Persist to Database
     const intake = await prisma.ideaIntake.create({
       data: {
         ideaOneLiner,
-        mainNeed,
-        budgetAndTimeline,
-        extraInfo: extraInfo || null, // Handle optional field
-        contact,
+        problem,
+        solution,
+        audience,
       },
     });
 
     return NextResponse.json({ success: true, id: intake.id });
   } catch (error) {
-    console.error('Intake form error:', error);
+    console.error(error);
     return NextResponse.json(
-      { error: 'خطایی در پردازش درخواست رخ داد.' },
+      { success: false, message: "خطایی رخ داد. لطفاً دوباره تلاش کنید." },
       { status: 500 }
     );
   }

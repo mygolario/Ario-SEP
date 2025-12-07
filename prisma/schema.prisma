@@ -169,9 +169,14 @@ model IdeaIntake {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  ideaOneLiner      String
-  mainNeed          String
-  budgetAndTimeline String
+  ideaOneLiner String
+  problem      String @default("")
+  solution     String @default("")
+  audience     String @default("")
+
+  // Legacy fields (optional)
+  mainNeed          String?
+  budgetAndTimeline String?
   extraInfo         String?
-  contact           String
+  contact           String?
 }

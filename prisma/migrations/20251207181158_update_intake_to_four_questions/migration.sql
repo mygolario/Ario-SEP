@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "IdeaIntake" ADD COLUMN     "audience" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "problem" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "solution" TEXT NOT NULL DEFAULT '',
+ALTER COLUMN "mainNeed" DROP NOT NULL,
+ALTER COLUMN "budgetAndTimeline" DROP NOT NULL,
+ALTER COLUMN "contact" DROP NOT NULL;
