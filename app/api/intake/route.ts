@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import prisma from '@/lib/prisma'; // Ensure this matches your existing prisma export
 
 export async function POST(req: Request) {
   try {
@@ -13,16 +14,18 @@ export async function POST(req: Request) {
       );
     }
 
-    // TODO: Integrate with Database (Prisma) or Email Service (e.g. Brevo/Resend)
-    console.log('--- New Intake Form Submission ---');
-    console.log('Idea:', ideaOneLiner);
-    console.log('Need:', mainNeed);
-    console.log('Budget/Time:', budgetAndTimeline);
-    console.log('Contact:', contact);
-    console.log('Extra:', extraInfo);
-    console.log('----------------------------------');
+    // Persist to Database
+    const intake = await prisma.ideaIntake.create({
+      data: {
+        ideaOneLiner,
+        mainNeed,
+        budgetAndTimeline,
+        extraInfo: extraInfo || null, // Handle optional field
+        contact,
+      },
+    });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, id: intake.id });
   } catch (error) {
     console.error('Intake form error:', error);
     return NextResponse.json(

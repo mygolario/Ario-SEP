@@ -162,3 +162,14 @@ enum FeedbackType {
   CONFUSION
   OTHER
 }
+
+model IdeaIntake {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  ideaOneLiner      String
+  mainNeed          String
+  budgetAndTimeline String
+  extraInfo         String?
+  contact           String
+}
