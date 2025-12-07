@@ -12,7 +12,7 @@ export default async function LandingPage() {
 
   return (
     // Main layout wrapper
-    <div key="landing-root" className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
       {/* Navbar */}
       <header className="border-b sticky top-0 z-40 bg-background/80 backdrop-blur-md">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
