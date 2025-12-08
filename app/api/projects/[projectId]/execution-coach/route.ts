@@ -16,7 +16,7 @@ export async function POST(
     }
 
     // Fetch project with all related plans to give full context to AI
-    const project = await prisma.project.findUnique({
+    const project = await prisma.ideaIntake.findUnique({
       where: {
          id: projectId
       },
@@ -35,7 +35,7 @@ export async function POST(
         return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
-    if (project.userId !== user.id) {
+    if (project.userId && project.userId !== user.id && user.role !== "ADMIN") {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

@@ -1,13 +1,9 @@
-import { ExecutionCoachResponse } from '@/lib/types';
-import { Project, StrategyMap, DeepPlan, BrandingKit, LandingPagePlan } from '@prisma/client';
+import { ExecutionPlanData } from '@/lib/types';
+import { IdeaIntake } from '@prisma/client';
 
-export async function generateExecutionTasks(
-  project: Project,
-  strategyMap?: StrategyMap | null,
-  deepPlan?: DeepPlan | null,
-  brandingKit?: BrandingKit | null,
-  landingPagePlan?: LandingPagePlan | null
-): Promise<ExecutionCoachResponse> {
+export async function generateExecutionPlan(
+  project: IdeaIntake
+): Promise<ExecutionPlanData> {
   const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
   const apiUrl = process.env.OPENROUTER_API_KEY
     ? 'https://openrouter.ai/api/v1/chat/completions'
@@ -21,46 +17,55 @@ export async function generateExecutionTasks(
     throw new Error('API key not configured');
   }
 
-  const systemPrompt = `You are an execution-focused startup coach. You give very practical, small, concrete tasks a solo founder can do in the next 1–3 days.
-Given the project's strategy, deep plan, branding, and landing page structure, output JSON matching this structure:
+  const systemPrompt = `تو یک کوچ اجرایی برای بنیان‌گذاران استارتاپ هستی.
+باید برای ایده زیر یک "برنامه اجرای اولیه" برای چند هفته اول بچینی؛ طوری که:
+- ساده و قابل‌انجام باشد
+- برای یک آدم معمولی قابل فهم باشد
+- فقط روی چند کار مهم و ضروری تمرکز کند
+
+خروجی را فقط و فقط به صورت JSON معتبر (بدون هیچ متن اضافی بیرون از JSON) برگردان، با ساختار زیر:
 
 type ExecutionTask = {
-  id: string;           // random string
-  title: string;        // short label
-  description: string;  // 1–3 sentences describing how to do it
-  category: "validation" | "marketing" | "product" | "branding" | "landing_page" | "research" | "setup" | "other";
-  priority: "high" | "medium" | "low";
-  estimatedTimeMinutes: number;  // e.g. 15, 30, 60
-  suggestedTools: string[];      // e.g. ["Google Forms", "Notion", "Figma"]
+  id: string;          // شناسه یکتا
+  title: string;       // عنوان کوتاه تسک (فارسی)
+  description?: string; // توضیح کمی عمیق‌تر، فارسی
+  category: "تحقیق" | "محصول" | "بازاریابی" | "مالی" | "ذهنیت و نظم شخصی" | string;
+  suggestedDuration?: string; // مثلا: "۳۰ تا ۶۰ دقیقه"
+  difficulty?: "خیلی سبک" | "متوسط" | "سنگین" | string;
 };
 
-type ExecutionCoachResponse = {
-  focusSummary: string;  // short overview of what the user should focus on right now (max 2 sentences)
-  tasks: ExecutionTask[]; // 3-6 tasks
+type ExecutionWeek = {
+  id: string;
+  order: number;
+  label: string;       // مثلا: "هفته اول", "هفته دوم", "ماه اول"
+  focus: string;       // توضیح کلی تمرکز این هفته
+  tasks: ExecutionTask[];
 };
 
-Tasks MUST:
-- be small and doable (15–60 minutes)
-- be specific and non-generic
-- be adapted to this project’s current stage
-- focus on actions, not ideas.
+type ExecutionPlanData = {
+  summary: {
+    title: string;
+    description: string; // توضیح کلی درباره رویکرد اجرای قدم‌های اول (۲-۳ پاراگراف)
+  };
+  weeks: ExecutionWeek[];
+  reminders: string[]; // چند نکته تکراری مهم
+};
 
-Return ONLY valid JSON.`;
+قواعد مهم:
+- همه متن‌ها باید کاملاً فارسی و روان باشند.
+- از هیچ واژه انگلیسی در title, description, label, focus, category یا متن تسک‌ها استفاده نکن.
+- تعداد هفته‌ها می‌تواند بین ۲ تا ۵ باشد (مثلاً: هفته اول، هفته دوم، هفته سوم، یا ماه اول).
+- تعداد تسک‌ها در هر هفته را محدود نگه دار (مثلاً بین ۳ تا ۷ تسک)، تا کاربر حس نکند غرق شده است.
+- تسک‌ها را تا حد ممکن مشخص و قابل انجام بنویس، نه کلی و مبهم.`;
 
   const userPrompt = `
-Project: ${project.title}
-Description: ${project.description}
-Audience: ${project.targetAudience}
-Stage: ${project.budgetLevel} budget, ${project.experienceLevel} experience.
+اطلاعات ایده:
+- ایده در یک جمله: ${project.ideaOneLiner}
+- مشکل: ${project.problem}
+- راه‌حل: ${project.solution}
+- مشتری یا مخاطب هدف: ${project.audience}
 
-Status:
-- Strategy Map: ${strategyMap ? 'Created' : 'Missing'}
-- Deep Plan: ${deepPlan ? 'Created' : 'Missing'}
-- Branding Kit: ${brandingKit ? 'Created' : 'Missing'}
-- Landing Page Plan: ${landingPagePlan ? 'Created' : 'Missing'}
-
-Generate next next actions.
-`;
+لطفاً برنامه اجرای اولیه را بساز.`;
 
   const response = await fetch(apiUrl, {
     method: 'POST',
@@ -85,8 +90,7 @@ Generate next next actions.
 
   if (!response.ok) {
     const errorData = await response.json();
-    console.error('AI API Error:', errorData);
-    throw new Error(errorData.error?.message || 'Failed to generate execution tasks');
+    throw new Error(errorData.error?.message || 'Failed to generate execution plan');
   }
 
   const data = await response.json();
@@ -95,7 +99,6 @@ Generate next next actions.
   try {
     return JSON.parse(content);
   } catch (e) {
-    console.error('JSON Parse Error:', e);
     throw new Error('Failed to parse AI response');
   }
 }

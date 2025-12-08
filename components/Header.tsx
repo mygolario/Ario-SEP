@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Zap } from 'lucide-react';
 import AuthButton from '@/components/AuthButton';
 
-export default function Header() {
+export default async function Header() {
   return (
     <header className="w-full sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800" dir="rtl">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -19,9 +19,7 @@ export default function Header() {
         </nav>
 
         {/* Auth Button */}
-        <div suppressHydrationWarning>
-            <AuthButton />
-        </div>
+        <AuthButton />
       </div>
     </header>
   );

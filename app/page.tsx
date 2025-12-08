@@ -12,7 +12,7 @@ export default async function LandingPage() {
   const isSignedIn = !!user;
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <>
 
 
         <main className="flex-1">
@@ -185,7 +185,7 @@ export default async function LandingPage() {
               <p>© {new Date().getFullYear()} آریو. همه حقوق محفوظ است.</p>
           </div>
       </footer>
-    </div>
+    </>
 
   );
 }

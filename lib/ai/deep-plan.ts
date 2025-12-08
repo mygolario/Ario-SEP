@@ -1,7 +1,7 @@
 import { DeepPlanData } from '@/lib/types';
-import { Project } from '@prisma/client';
+import { IdeaIntake } from '@prisma/client';
 
-export async function generateDeepPlan(project: Project): Promise<DeepPlanData> {
+export async function generateDeepPlan(project: IdeaIntake): Promise<DeepPlanData> {
   const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
   const apiUrl = process.env.OPENROUTER_API_KEY
     ? 'https://openrouter.ai/api/v1/chat/completions'
@@ -15,66 +15,35 @@ export async function generateDeepPlan(project: Project): Promise<DeepPlanData> 
     throw new Error('API key not configured');
   }
 
-  const systemPrompt = `You are an expert startup strategist. Generate a comprehensive deep strategy plan for the startup described below. Return ONLY valid JSON matching exactly this TypeScript structure:
+  const systemPrompt = `تو یک مشاور استارتاپ و استراتژی کسب‌وکار خبره هستی. باید یک "برنامه عمیق" (Deep Plan) جامع برای استارتاپ کاربر بسازی.
+خروجی باید فقط و فقط JSON معتبر باشد که دقیقاً با این تایپ اسکریپت مطابقت داشته باشد:
 
-type DeepPlanData = {
-  overview: {
-    marketSummary: string;
-    mainProblem: string;
-    mainOpportunity: string;
-  };
-  customerSegments: {
-    name: string;
-    description: string;
-    pains: string[];
-    gains: string[];
-  }[];
-  personas: {
-    name: string;
-    role: string;
-    goals: string[];
-    frustrations: string[];
-  }[];
-  competitors: {
-    name: string;
-    type: string;
-    strengths: string[];
-    weaknesses: string[];
-    differentiation: string;
-  }[];
-  extendedRoadmap: {
-    phase: string;
-    timeFrame: string;
-    items: string[];
-  }[];
-  monetization: {
-    pricingStrategy: string;
-    revenueStreams: string[];
-    costDrivers: string[];
-  };
-  goToMarket: {
-    channels: string[];
-    keyActions: string[];
-    first100UsersStrategy: string;
-  };
-  risks: {
-    risk: string;
-    impact: string;
-    mitigation: string;
-  }[];
+type DeepPlanSection = {
+  id: string;
+  title: string;       // عنوان فارسی جذاب
+  description: string; // توضیحات فارسی کامل (۳-۵ خط)
+  bullets?: string[];  // لیست نکات کلیدی فارسی
 };
 
-Ensure the content is detailed, specific to the startup, and provides actionable strategic insights. Do not include markdown code blocks.`;
+type DeepPlanData = {
+  overview: DeepPlanSection;          // نمای کلی ایده و فرصت بازار
+  customerAndProblem: DeepPlanSection;// تحلیل مشتری و مشکل اصلی
+  solutionAndProduct: DeepPlanSection;// راه‌حل و ویژگی‌های محصول
+  roadmap90Days: DeepPlanSection;     // برنامه اجرایی ۹۰ روز اول
+  risks: DeepPlanSection;             // ریسک‌ها و چالش‌های اصلی
+  metrics: DeepPlanSection;           // معیارهای کلیدی موفقیت (KPI)
+};
+
+تمام متن‌ها باید به زبان فارسی، حرفه‌ای و مناسب اکوسیستم استارتاپی ایران باشد. از کلمات انگلیسی در متن خروجی استفاده نکن مگر اینکه اصطلاح فنی رایج باشد.`;
 
   const userPrompt = `
-Startup Title: ${project.title}
-Description: ${project.description}
-Target Audience: ${project.targetAudience}
-Budget Level: ${project.budgetLevel}
-Experience Level: ${project.experienceLevel}
-Time Commitment: ${project.timePerWeekHours ? `${project.timePerWeekHours} hours/week` : 'Flexible'}
+اطلاعات استارتاپ:
+- ایده: ${project.ideaOneLiner}
+- مشکل: ${project.problem}
+- راه‌حل: ${project.solution}
+- مخاطب هدف: ${project.audience}
 
-Generate the deep strategy plan now.
+لطفاً برنامه عمیق استراتژیک را با ساختار JSON خواسته شده تولید کن.
 `;
 
   const response = await fetch(apiUrl, {

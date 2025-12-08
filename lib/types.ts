@@ -25,162 +25,134 @@ export interface IdeaInput {
   timePerWeek?: number;
 }
 
-export type DeepPlanData = {
-  overview: {
-    marketSummary: string;
-    mainProblem: string;
-    mainOpportunity: string;
-  };
-  customerSegments: {
-    name: string;
-    description: string;
-    pains: string[];
-    gains: string[];
-  }[];
-  personas: {
-    name: string;
-    role: string;
-    goals: string[];
-    frustrations: string[];
-  }[];
-  competitors: {
-    name: string;
-    type: string;
-    strengths: string[];
-    weaknesses: string[];
-    differentiation: string;
-  }[];
-  extendedRoadmap: {
-    phase: string;
-    timeFrame: string;
-    items: string[];
-  }[];
-  monetization: {
-    pricingStrategy: string;
-    revenueStreams: string[];
-    costDrivers: string[];
-  };
-  goToMarket: {
-    channels: string[];
-    keyActions: string[];
-    first100UsersStrategy: string;
-  };
-  risks: {
-    risk: string;
-    impact: string;
-    mitigation: string;
-  }[];
-};
-
-export type BrandingKitData = {
-  brandEssence: {
-    coreIdea: string;
-    personality: string;
-    toneOfVoice: string;
-  };
-  visualDirection: {
-    colorPalette: {
-      name: string;
-      hex: string;
-      usage: string;
-    }[];
-    typography: {
-      role: string;
-      suggestion: string;
-      styleNote: string;
-    }[];
-  };
-  messaging: {
-    tagline: string;
-    shortDescription: string;
-    elevatorPitch: string;
-    valueProposition: string;
-  };
-  heroSection: {
-    headline: string;
-    subheadline: string;
-    primaryCTA: string;
-    secondaryCTA: string;
-  };
-  brandDoDont: {
-    do: string[];
-    dont: string[];
-  };
-};
-
-export type LandingPagePlanData = {
-  hero: {
-    headline: string;
-    subheadline: string;
-    primaryCTA: string;
-    secondaryCTA?: string;
-    keyBenefits: string[];
-  };
-  sections: {
-    id: string;
-    type: "features" | "problem-solution" | "how-it-works" | "testimonial" | "pricing" | "faq" | "trust" | "cta" | "custom";
-    title: string;
-    subtitle?: string;
-    body?: string;
-    bulletPoints?: string[];
-  }[];
-  layoutNotes: {
-    generalStyle: string;
-    suggestedStructure: string;
-    aboveTheFoldFocus: string;
-  };
-  seo: {
-    targetKeyword: string;
-    metaTitle: string;
-    metaDescription: string;
-  };
-};
-
-export type ExecutionTask = {
+export type DeepPlanSection = {
   id: string;
   title: string;
   description: string;
-  category: "validation" | "marketing" | "product" | "branding" | "landing_page" | "research" | "setup" | "other";
-  priority: "high" | "medium" | "low";
-  estimatedTimeMinutes: number;
-  suggestedTools: string[];
+  bullets?: string[];
 };
 
-export type ExecutionCoachResponse = {
-  focusSummary: string;
+export type DeepPlanData = {
+  overview: DeepPlanSection;
+  customerAndProblem: DeepPlanSection;
+  solutionAndProduct: DeepPlanSection;
+  roadmap90Days: DeepPlanSection;
+  risks: DeepPlanSection;
+  metrics: DeepPlanSection;
+};
+
+export type BrandingKitSection = {
+  id: string;
+  title: string;
+  description: string;
+  bullets?: string[];
+  options?: string[]; // For name suggestions
+  keywords?: string[]; // For visual direction
+};
+
+export type BrandingColor = {
+  name: string;
+  hex: string;
+  usage: string;
+};
+
+export type BrandingKitData = {
+  nameAndSlogan: BrandingKitSection;
+  personality: BrandingKitSection;
+  toneOfVoice: BrandingKitSection;
+  brandPromises: BrandingKitSection;
+  visualDirection: BrandingKitSection;
+  colors: {
+    title: string;
+    description: string;
+    palette: BrandingColor[];
+  };
+  usageExamples: BrandingKitSection;
+};
+
+export type LandingSection = {
+  id: string;
+  type: string; // "hero" | "problem" | "solution" | "features" | "steps" | "socialProof" | "faq" | "cta"
+  title: string;
+  subtitle?: string;
+  body?: string;
+  bullets?: string[];
+  highlightText?: string;
+};
+
+export type LandingPlanData = {
+  hero: LandingSection;
+  problem: LandingSection;
+  solution: LandingSection;
+  features: LandingSection;
+  steps: LandingSection;
+  socialProof: LandingSection;
+  faq: LandingSection;
+  finalCta: LandingSection;
+};
+
+export type ExecutionTask = {
+  id: string;          // unique id for UI
+  title: string;       // عنوان کوتاه تسک (فارسی)
+  description?: string; // توضیح کمی عمیق‌تر، فارسی
+  category: "تحقیق" | "محصول" | "بازاریابی" | "مالی" | "ذهنیت و نظم شخصی" | string;
+  suggestedDuration?: string; // مثلا: "۳۰ تا ۶۰ دقیقه"
+  difficulty?: "خیلی سبک" | "متوسط" | "سنگین" | string;
+};
+
+export type ExecutionWeek = {
+  id: string;
+  order: number;
+  label: string;       // مثلا: "هفته اول", "هفته دوم", "ماه اول"
+  focus: string;       // توضیح کلی تمرکز این هفته
   tasks: ExecutionTask[];
 };
 
-export type MarketCompetitor = {
+export type ExecutionPlanData = {
+  summary: {
+    title: string;
+    description: string; // توضیح کلی درباره رویکرد اجرای قدم‌های اول
+  };
+  weeks: ExecutionWeek[];
+  reminders: string[]; // چند نکته تکراری مهم
+};
+
+export type MarketSegment = {
   name: string;
-  type: string;              // e.g. "direct", "indirect", "alternative"
   description: string;
+  needs: string[];
+};
+
+export type CompetitorRow = {
+  name: string;
+  type: string;          // "مستقیم" | "غیرمستقیم"
   strengths: string[];
   weaknesses: string[];
-  pricingSummary?: string;
-  keyFeatures?: string[];
 };
 
 export type MarketAnalysisData = {
-  marketOverview: {
-    segment: string;         // e.g. "AI tools for solo founders"
-    sizeDescription: string; // qualitative (e.g. "growing, early-stage niche")
-    trends: string[];        // key trends impacting this idea
-  };
-  idealCustomerProfile: {
+  overview: {
+    title: string;
     description: string;
-    mainPainPoints: string[];
-    mainGoals: string[];
   };
-  competitors: MarketCompetitor[];
-  positioningGaps: {
-    gapDescription: string;   // what competitors miss
-    opportunity: string;      // how the user can exploit it
-  }[];
-  recommendedPositioning: {
-    oneLiner: string;         // short positioning sentence
-    narrative: string;        // 1–2 paragraph explanation
-    keyDifferentiators: string[];
+  segments: MarketSegment[];
+  layers: {
+    overallMarket: string;  // TAM
+    targetMarket: string;   // SAM
+    reachableMarket: string; // SOM
+  };
+  competitors: {
+    title: string;
+    description: string;
+    items: CompetitorRow[];
+  };
+  opportunities: {
+    title: string;
+    bullets: string[];
+  };
+  risks: {
+    title: string;
+    bullets: string[];
   };
 };
 
@@ -203,10 +175,13 @@ export type PitchDeckSlideType =
 
 export type PitchDeckSlide = {
   id: string;              // unique id, e.g. "slide-1"
+  order: number;           // slide order
   type: PitchDeckSlideType;
   title: string;           // slide title
   subtitle?: string;
+  body?: string;           // main text content
   bullets: string[];       // 3–6 bullet points
+  note?: string;           // guide for the presenter
   speakerNotes?: string;   // a short paragraph for presenter notes
 };
 
@@ -229,31 +204,26 @@ export type FundingStrategy =
   | "grant"
   | "not_recommended_yet";
 
-export type FundingRoadmapData = {
-  shouldRaiseNow: boolean;
-  recommendedStrategy: FundingStrategy;
-  reasoning: string;
+export type FundingPhase = {
+  id: string;
+  order: number;
+  title: string;         // فارسی
+  timeframe: string;     // مثلاً: "۳ تا ۶ ماه اول"
+  goal: string;          // هدف اصلی این مرحله
+  amountSummary: string; // توضیح کیفی درباره مقدار پول موردنیاز
+  spendCategories: {
+    name: string;        // فارسی
+    description: string; // فارسی
+  }[];
+  milestones: string[];  // چند خروجی مهم
+  risks?: string[];      // ریسک‌های خاص این مرحله
+};
 
-  prerequisites: {
-    description: string;
-    checklist: string[];
+export type FundingPlanData = {
+  overallStrategy: {
+    title: string;
+    description: string; // توضیح کلی درباره رویکرد مالی
   };
-
-  plan30Days: {
-    focus: string;
-    tasks: string[];
-  };
-
-  plan90Days: {
-    focus: string;
-    tasks: string[];
-  };
-
-  recommendedAsk: {
-    amountRange: string;        // e.g. "$50k–$150k"
-    runwayMonths: number;       // e.g. 6
-    useOfFunds: { label: string; percent: number; }[];
-  };
-
-  risks: string[];              // list of fundraising risks/blockers
+  phases: FundingPhase[];
+  generalNotes: string[]; // چند نکته کلی درباره مدیریت پول
 };

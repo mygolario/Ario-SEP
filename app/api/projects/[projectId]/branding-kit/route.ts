@@ -15,7 +15,7 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const project = await prisma.project.findUnique({
+    const project = await prisma.ideaIntake.findUnique({
       where: {
          id: projectId
       },
@@ -28,7 +28,7 @@ export async function POST(
         return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
-    if (project.userId !== user.id) {
+    if (project.userId && project.userId !== user.id && user.role !== "ADMIN") {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -38,13 +38,13 @@ export async function POST(
     // Save to database
     const savedBrandingKit = await prisma.brandingKit.upsert({
       where: {
-        projectId: projectId,
+        ideaIntakeId: projectId,
       },
       update: {
         data: brandingData as any,
       },
       create: {
-        projectId: projectId,
+        ideaIntakeId: projectId,
         data: brandingData as any,
       },
     });

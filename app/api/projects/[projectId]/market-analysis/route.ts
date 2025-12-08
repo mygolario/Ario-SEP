@@ -16,10 +16,9 @@ export async function POST(
     const { projectId } = await params;
 
     // 1. Fetch Project + Strategy Map
-    const project = await prisma.project.findUnique({
+    const project = await prisma.ideaIntake.findUnique({
       where: {
         id: projectId,
-        userId: user.id,
       },
       include: {
         strategyMaps: {
@@ -33,41 +32,24 @@ export async function POST(
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
-    // 2. Prepare data for AI
-    // We need at least a basic description or strategy map to work with.
-    // If no strategy map, fallback to project description.
-    
-    // Cast the JSON to the expected type safely
-    const strategyMap = project.strategyMaps[0]?.summary 
-        ? { summary: project.strategyMaps[0].summary } 
-        : { summary: { title: project.title, coreGoal: 'N/A', elevatorPitch: 'N/A' } };
+    if (project.userId && project.userId !== user.id && user.role !== "ADMIN") {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
 
-    // Ideally we type this properly, but for now we construct a lightweight object 
-    // to satisfy the AI function signature if needed, or update the AI function to take primitives.
-    // The lib/ai/market-analysis.ts expects a StartupPlan-like object for 'summary'.
-    
-    const partialPlan: any = {
-        summary: strategyMap.summary
-    };
-
-    // 3. Generate Analysis
-    const marketData = await generateMarketAnalysis(
-        partialPlan,
-        project.description,
-        project.targetAudience
-    );
+    // 3. Generate Analysis - changed to pass full project object
+    const marketData = await generateMarketAnalysis(project);
 
     // 4. Save to DB
     const marketAnalysis = await prisma.marketAnalysis.upsert({
       where: {
-        projectId: project.id,
+        ideaIntakeId: projectId,
       },
       update: {
         data: marketData,
         createdAt: new Date(),
       },
       create: {
-        projectId: project.id,
+        ideaIntakeId: projectId,
         data: marketData,
       },
     });

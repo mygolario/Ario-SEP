@@ -1,7 +1,7 @@
 import { BrandingKitData } from '@/lib/types';
-import { Project } from '@prisma/client';
+import { IdeaIntake } from '@prisma/client';
 
-export async function generateBrandingKit(project: Project): Promise<BrandingKitData> {
+export async function generateBrandingKit(project: IdeaIntake): Promise<BrandingKitData> {
   const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
   const apiUrl = process.env.OPENROUTER_API_KEY
     ? 'https://openrouter.ai/api/v1/chat/completions'
@@ -15,55 +15,51 @@ export async function generateBrandingKit(project: Project): Promise<BrandingKit
     throw new Error('API key not configured');
   }
 
-  const systemPrompt = `You are a senior brand strategist. Generate a comprehensive branding kit for the startup described below. Return ONLY valid JSON matching exactly this TypeScript structure:
+  const systemPrompt = `تو یک استراتژیست برند و کپی‌رایتر خلاق فارسی‌زبان هستی. باید یک "بسته برند" (Branding Kit) کامل برای استارتاپ زیر بسازی.
+خروجی باید فقط و فقط JSON معتبر باشد که دقیقاً با این تایپ اسکریپت مطابقت داشته باشد:
 
-type BrandingKitData = {
-  brandEssence: {
-    coreIdea: string;
-    personality: string;   // e.g. bold, friendly, minimalist
-    toneOfVoice: string;   // e.g. confident, playful, expert
-  };
-  visualDirection: {
-    colorPalette: {
-      name: string;        // e.g. "Primary", "Accent"
-      hex: string;         // e.g. "#FF5733"
-      usage: string;       // e.g. "Buttons, CTAs"
-    }[];
-    typography: {
-      role: string;        // e.g. "Headings", "Body"
-      suggestion: string;  // e.g. "Inter", "Space Grotesk"
-      styleNote: string;   // e.g. "Modern, clean"
-    }[];
-  };
-  messaging: {
-    tagline: string;
-    shortDescription: string;
-    elevatorPitch: string;
-    valueProposition: string;
-  };
-  heroSection: {
-    headline: string;
-    subheadline: string;
-    primaryCTA: string;
-    secondaryCTA: string;
-  };
-  brandDoDont: {
-    do: string[];
-    dont: string[];
-  };
+type BrandingKitSection = {
+  id: string;
+  title: string;       // عنوان فارسی جذاب
+  description: string; // توضیحات فارسی کامل و خلاقانه
+  bullets?: string[];  // لیست نکات
+  options?: string[];  // برای نام و شعار
+  keywords?: string[]; // برای جهت‌گیری بصری
 };
 
-Ensure the content is creative, aligned with the startup's audience, and provides a cohesive brand identity. Do not include markdown code blocks.`;
+type BrandingColor = {
+  name: string; // نام فارسی و خلاقانه رنگ
+  hex: string;  // کد رنگ معتبر
+  usage: string;// کاربرد در UI
+};
+
+type BrandingKitData = {
+  nameAndSlogan: BrandingKitSection;   // پیشنهادات نام و شعار
+  personality: BrandingKitSection;     // شخصیت برند
+  toneOfVoice: BrandingKitSection;     // لحن گفتار
+  brandPromises: BrandingKitSection;   // قول‌های برند
+  visualDirection: BrandingKitSection; // جهت‌گیری بصری کلی
+  colors: {
+    title: string;
+    description: string;
+    palette: BrandingColor[];
+  };
+  usageExamples: BrandingKitSection;   // نمونه‌های واقعی کاربرد متن/کپی
+};
+
+نکات مهم:
+1. تمام متن‌ها باید کاملاً فارسی، روان و مناسب مخاطب ایرانی باشد.
+2. نام‌های پیشنهادی برند می‌توانند فارسی، انگلیسی یا ترکیبی باشند، اما توضیحات آن‌ها باید فارسی باشد.
+3. لحن باید متناسب با مخاطب هدف استارتاپ انتخاب شود.`;
 
   const userPrompt = `
-Startup Title: ${project.title}
-Description: ${project.description}
-Target Audience: ${project.targetAudience}
-Budget Level: ${project.budgetLevel}
-Experience Level: ${project.experienceLevel}
-Time Commitment: ${project.timePerWeekHours ? `${project.timePerWeekHours} hours/week` : 'Flexible'}
+اطلاعات استارتاپ:
+- ایده: ${project.ideaOneLiner}
+- مشکل: ${project.problem}
+- راه‌حل: ${project.solution}
+- مخاطب هدف: ${project.audience}
 
-Generate the branding kit now.
+لطفاً بسته برند کامل را با ساختار JSON خواسته شده تولید کن.
 `;
 
   const response = await fetch(apiUrl, {

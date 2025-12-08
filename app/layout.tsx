@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body
-        className={`${vazirmatn.variable} ${geistMono.variable} antialiased`}
+        className={`${vazirmatn.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground flex flex-col`}
       >
         <Header />
         {children}

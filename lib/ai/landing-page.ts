@@ -1,7 +1,7 @@
-import { LandingPagePlanData } from '@/lib/types';
-import { Project } from '@prisma/client';
+import { LandingPlanData } from '@/lib/types';
+import { IdeaIntake } from '@prisma/client';
 
-export async function generateLandingPagePlan(project: Project, brandingKitData?: any): Promise<LandingPagePlanData> {
+export async function generateLandingPagePlan(project: IdeaIntake, brandingKitData?: any): Promise<LandingPlanData> {
   const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
   const apiUrl = process.env.OPENROUTER_API_KEY
     ? 'https://openrouter.ai/api/v1/chat/completions'
@@ -15,46 +15,50 @@ export async function generateLandingPagePlan(project: Project, brandingKitData?
     throw new Error('API key not configured');
   }
 
-  const systemPrompt = `You are a senior conversion-focused copywriter and landing page strategist. You generate structured landing page plans for startups. You MUST return valid JSON only, matching this TypeScript type:
+  const systemPrompt = `تو یک طراح تجربه کاربری و کپی‌رایتر حرفه‌ای صفحه لندینگ هستی. باید برای ایده استارتاپی زیر یک ساختار کامل صفحه لندینگ (Landing Page Structure) به زبان فارسی طراحی کنی.
+خروجی باید فقط و فقط JSON معتبر باشد که دقیقاً با این تایپ اسکریپت مطابقت داشته باشد:
 
-type LandingPagePlanData = {
-  hero: {
-    headline: string;
-    subheadline: string;
-    primaryCTA: string;
-    secondaryCTA?: string;
-    keyBenefits: string[];
-  };
-  sections: {
-    id: string; // unique
-    type: "features" | "problem-solution" | "how-it-works" | "testimonial" | "pricing" | "faq" | "trust" | "cta" | "custom";
-    title: string;
-    subtitle?: string;
-    body?: string;
-    bulletPoints?: string[];
-  }[];
-  layoutNotes: {
-    generalStyle: string;      // e.g. "clean, modern, high contrast"
-    suggestedStructure: string; // overall flow description
-    aboveTheFoldFocus: string;
-  };
-  seo: {
-    targetKeyword: string;
-    metaTitle: string;
-    metaDescription: string;
-  };
+type LandingSection = {
+  id: string;
+  type: string;
+  title: string;       // عنوان فارسی جذاب
+  subtitle?: string;   // زیرعنوان فارسی
+  body?: string;       // متن اصلی فارسی
+  bullets?: string[];  // لیست نکات
+  highlightText?: string; // متن تأکیدی یا روی دکمه
 };
 
-Focus on high conversion, clear messaging, and benefits over features.`;
+type LandingPlanData = {
+  hero: LandingSection;        // بخش بالای صفحه
+  problem: LandingSection;     // بخش طرح مشکل
+  solution: LandingSection;    // بخش راه‌حل
+  features: LandingSection;    // ویژگی‌ها
+  steps: LandingSection;       // مراحل کار
+  socialProof: LandingSection; // اعتماد و اعتبار
+  faq: LandingSection;         // سؤالات متداول
+  finalCta: LandingSection;    // دکمه اقدام نهایی
+};
+
+نکات مهم:
+1. تمام متن‌ها باید کاملاً فارسی، روان و مناسب مخاطب ایرانی باشد.
+2. از کلمات انگلیسی در متن خروجی استفاده نکن.
+3. لحن نوشته‌ها باید ترغیب‌کننده و متناسب با پرسونای مشتری باشد.`;
+
+  // Branding Kit Data is now rich Farsi structure
+  const tone = brandingKitData?.toneOfVoice?.description || 'حرفه‌ای و قابل اعتماد';
+  const personality = brandingKitData?.personality?.description || 'جدی و کارآمد';
 
   const userPrompt = `
-Startup Title: ${project.title}
-Description: ${project.description}
-Target Audience: ${project.targetAudience}
+اطلاعات استارتاپ:
+- ایده: ${project.ideaOneLiner}
+- مشکل: ${project.problem}
+- راه‌حل: ${project.solution}
+- مخاطب هدف: ${project.audience}
 
-${brandingKitData ? `Brand Tone: ${brandingKitData.brandEssence.toneOfVoice}\nBrand Personality: ${brandingKitData.brandEssence.personality}` : ''}
+لحن برند: ${tone}
+شخصیت برند: ${personality}
 
-Generate a high-converting landing page plan.
+لطفاً ساختار کامل صفحه لندینگ را با فرمت JSON خواسته شده تولید کن.
 `;
 
   const response = await fetch(apiUrl, {

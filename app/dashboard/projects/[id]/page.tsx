@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { Lock, FileText, Target, Lightbulb, Users } from "lucide-react";
+import { AISummaryBox } from "@/components/projects/AISummaryBox";
 
 interface Props {
   params: Promise<{
@@ -10,19 +11,7 @@ interface Props {
   }>;
 }
 
-function buildIdeaSummary(project: any) {
-  const { ideaOneLiner, problem, solution, audience } = project;
 
-  return [
-    `این ایده درباره «${ideaOneLiner}» است.`,
-    problem && `مشکلی که می‌خواهد حل کند این است: ${problem}.`,
-    solution && `راه‌حلی که برای این مشکل در نظر گرفته شده: ${solution}.`,
-    audience && `مخاطبان اصلی این ایده: ${audience}.`,
-    `بر اساس این اطلاعات می‌توان برای این ایده یک پلن اجرایی دقیق و ابزارهای بعدی (برنامه عمیق، برندینگ، لندینگ و...) ساخت.`
-  ]
-    .filter(Boolean)
-    .join(" ");
-}
 
 export default async function ProjectSummaryPage({ params }: Props) {
   const user = await getCurrentUser();
@@ -116,21 +105,12 @@ export default async function ProjectSummaryPage({ params }: Props) {
         ))}
       </div>
 
-      {/* AI Summary Placeholder */}
-      <div className="p-8 bg-linear-to-br from-indigo-50 to-white border border-indigo-100 rounded-2xl">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-indigo-100 rounded-lg">
-            <Lightbulb className="w-6 h-6 text-indigo-600" />
-          </div>
-          <h3 className="text-xl font-bold text-slate-900">خلاصه تحلیلی هوشمند (AI)</h3>
-        </div>
-        <p className="text-sm md:text-[13px] leading-7 text-slate-700">
-          {buildIdeaSummary(project)}
-        </p>
-        <p className="mt-3 text-xs text-slate-500">
-          این متن فعلاً به صورت خودکار بر اساس اطلاعاتی که برای این پروژه وارد کرده‌اید ساخته شده است.
-        </p>
-      </div>
+      {/* AI Summary Box */}
+      <AISummaryBox 
+        projectId={project.id} 
+        initialSummary={project.aiSummary} 
+        isAdmin={user.role === "ADMIN"} 
+      />
 
       {/* Locked Features */}
       {user.role === "ADMIN" ? (

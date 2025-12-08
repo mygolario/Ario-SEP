@@ -1,70 +1,67 @@
-import { FundingRoadmapData, StartupPlan, DeepPlanData, MarketAnalysisData, BrandingKitData, LandingPagePlanData, PitchDeckData } from '@/lib/types';
+import { FundingPlanData } from '@/lib/types';
 
 export async function generateFundingRoadmap(
-  projectData: {
-    title: string;
-    description: string;
-    targetAudience: string;
-    plan: StartupPlan | null;
-    deepPlan: DeepPlanData | null;
-    marketAnalysis: MarketAnalysisData | null;
-    brandingKit: BrandingKitData | null;
-    landingPage: LandingPagePlanData | null;
-    pitchDeck: PitchDeckData | null;
-  }
-): Promise<FundingRoadmapData> {
+  projectData: any
+): Promise<FundingPlanData> {
   const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
   const apiUrl = process.env.OPENROUTER_API_KEY
     ? 'https://openrouter.ai/api/v1/chat/completions'
     : 'https://api.openai.com/v1/chat/completions';
   
   const model = process.env.OPENROUTER_API_KEY
-    ? 'openai/gpt-4o-mini'
-    : 'gpt-4o-mini';
+    ? 'openai/gpt-4o'
+    : 'gpt-4o';
 
   if (!apiKey) {
     throw new Error('API key not configured');
   }
 
-  const systemPrompt = `You are a startup fundraising strategist. Based on the provided startup information, decide whether the founder should raise money now. If not, explain why and what they need first. Recommend the best funding path (bootstrap, angel, accelerator, VC, grant). Provide a 30-day and 90-day roadmap, plus a recommended funding ask amount in a structured JSON format. ONLY output valid JSON matching FundingRoadmapData structure:
-{
-  "shouldRaiseNow": boolean,
-  "recommendedStrategy": "bootstrapping" | "angel" | "accelerator" | "vc" | "grant" | "not_recommended_yet",
-  "reasoning": "string",
-  "prerequisites": {
-    "description": "string",
-    "checklist": ["string"]
-  },
-  "plan30Days": {
-    "focus": "string",
-    "tasks": ["string"]
-  },
-  "plan90Days": {
-    "focus": "string",
-    "tasks": ["string"]
-  },
-  "recommendedAsk": {
-    "amountRange": "string",
-    "runwayMonths": number,
-    "useOfFunds": [{ "label": "string", "percent": number }]
-  },
-  "risks": ["string"]
-}
+  const systemPrompt = `تو یک مشاور استارتاپ و برنامه‌ریز مالی هستی.
+باید برای ایده داده شده یک "نقشه راه تأمین مالی" ساده و واقع‌بینانه بنویسی.
 
-Checklist and tasks should be concrete, tactical, and realistic. Strategy must fit early-stage startups.`;
+فرض کن تیم در مرحله خیلی ابتدایی است و می‌خواهد بداند:
+- در چند مرحله کلی، چه نوع پولی لازم دارد
+- هر مرحله تقریبا برای چه بازه زمانی است
+- پول در هر مرحله بیشتر قرار است کجا خرج شود
+- به چه خروجی‌هایی باید برسد تا بتواند وارد مرحله بعد شود
+
+خروجی را فقط و فقط به صورت JSON معتبر (بدون هیچ متن اضافی بیرون از JSON) برگردان، با این ساختار تایپ‌اسکریپت:
+
+type FundingPhase = {
+  id: string;
+  order: number;
+  title: string;         // فارسی
+  timeframe: string;     // مثلاً: "۳ تا ۶ ماه اول"
+  goal: string;          // هدف اصلی این مرحله
+  amountSummary: string; // توضیح کیفی درباره مقدار پول موردنیاز
+  spendCategories: {
+    name: string;        // فارسی
+    description: string; // فارسی
+  }[];
+  milestones: string[];  // چند خروجی مهم
+  risks?: string[];      // ریسک‌های خاص این مرحله
+};
+
+type FundingPlanData = {
+  overallStrategy: {
+    title: string;
+    description: string; // توضیح کلی درباره رویکرد مالی (۲-۳ پاراگراف)
+  };
+  phases: FundingPhase[];
+  generalNotes: string[]; // چند نکته کلی درباره مدیریت پول
+};
+
+همه متن‌ها باید کاملاً فارسی، روان و بدون هیچ کلمه انگلیسی باشند.
+نکات را طوری بنویس که برای یک بنیان‌گذار تازه‌کار ایرانی قابل فهم و عمل باشد.
+از عددسازی جزئی و غیرواقعی خودداری کن و بیشتر توضیح کیفی بده.`;
 
   const userPrompt = `
-Project Title: ${projectData.title}
-Description: ${projectData.description}
-Target Audience: ${projectData.targetAudience}
+اطلاعات ایده:
+- ایده: ${projectData.title}
+- مشکل: ${projectData.description}
+- مخاطب هدف: ${projectData.targetAudience}
 
-Key Plan Data:
-${projectData.plan ? `Elevator Pitch: ${projectData.plan.summary.elevatorPitch}` : ''}
-${projectData.deepPlan ? `Problem: ${projectData.deepPlan.overview.mainProblem}\nOpportunity: ${projectData.deepPlan.overview.mainOpportunity}` : ''}
-${projectData.marketAnalysis ? `Market Segment: ${projectData.marketAnalysis.marketOverview.segment}` : ''}
-${projectData.pitchDeck ? `Narrative: ${projectData.pitchDeck.overallNarrative}` : ''}
-
-Generate the funding roadmap.`;
+لطفاً نقشه راه تأمین مالی را بساز.`;
 
   const response = await fetch(apiUrl, {
     method: 'POST',
@@ -89,7 +86,7 @@ Generate the funding roadmap.`;
 
   if (!response.ok) {
     const errorData = await response.json();
-    throw new Error(errorData.error?.message || 'Failed to generate funding roadmap');
+    throw new Error(errorData.error?.message || 'Failed to generate funding plan');
   }
 
   const data = await response.json();
