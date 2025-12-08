@@ -1,33 +1,26 @@
 import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { generateExecutionTasks } from '@/lib/ai/execution-coach';
+import { generateDeepPlan } from '@/lib/ai/deep-plan';
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ projectId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
-    const { projectId } = await params;
+    const { id: projectId } = await params;
 
     if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Fetch project with all related plans to give full context to AI
     const project = await prisma.ideaIntake.findUnique({
       where: {
          id: projectId
       },
       include: {
-        strategyMaps: {
-            orderBy: { createdAt: 'desc' },
-            take: 1
-        },
-        deepPlan: true,
-        brandingKit: true,
-        landingPagePlan: true,
+        deepPlan: true
       }
     });
 
@@ -39,19 +32,28 @@ export async function POST(
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    const tasks = await generateExecutionTasks(
-        project,
-        project.strategyMaps[0],
-        project.deepPlan,
-        project.brandingKit,
-        project.landingPagePlan
-    );
+    // Call AI to generate deep plan
+    const deepPlanData = await generateDeepPlan(project);
 
-    return NextResponse.json(tasks);
+    // Save to database
+    const savedDeepPlan = await prisma.deepPlan.upsert({
+      where: {
+        ideaIntakeId: projectId,
+      },
+      update: {
+        data: deepPlanData as any, // Prisma Json handling
+      },
+      create: {
+        ideaIntakeId: projectId,
+        data: deepPlanData as any,
+      },
+    });
+
+    return NextResponse.json(savedDeepPlan);
   } catch (error: any) {
-    console.error('Execution Coach Error:', error);
+    console.error('Deep Plan Generation Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to generate execution tasks' },
+      { error: error.message || 'Failed to generate deep plan' },
       { status: 500 }
     );
   }

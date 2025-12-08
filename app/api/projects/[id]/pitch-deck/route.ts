@@ -1,11 +1,11 @@
 import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
-import { generateMarketAnalysis } from '@/lib/ai/market-analysis';
+import { generatePitchDeck } from '@/lib/ai/pitch-deck';
 import { NextResponse } from 'next/server';
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ projectId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
@@ -13,9 +13,9 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { projectId } = await params;
+    const { id: projectId } = await params;
 
-    // 1. Fetch Project + Strategy Map
+    // 1. Fetch Project + All Context
     const project = await prisma.ideaIntake.findUnique({
       where: {
         id: projectId,
@@ -25,6 +25,10 @@ export async function POST(
           orderBy: { createdAt: 'desc' },
           take: 1,
         },
+        deepPlan: true,
+        marketAnalysis: true,
+        brandingKit: true,
+        landingPagePlan: true,
       },
     });
 
@@ -33,33 +37,40 @@ export async function POST(
     }
 
     if (project.userId && project.userId !== user.id && user.role !== "ADMIN") {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    // 3. Generate Analysis - changed to pass full project object
-    const marketData = await generateMarketAnalysis(project);
+    // 2. Prepare data for AI
+    const projectData = {
+      title: project.ideaOneLiner,
+      description: `${project.problem} - ${project.solution}`,
+      targetAudience: project.audience,
+    };
 
-    // 4. Save to DB
-    const marketAnalysis = await prisma.marketAnalysis.upsert({
+    // 3. Generate Deck
+    const pitchDeckData = await generatePitchDeck(projectData);
+
+    // 4. Save/Update DB
+    const pitchDeck = await prisma.pitchDeck.upsert({
       where: {
         ideaIntakeId: projectId,
       },
       update: {
-        data: marketData,
+        data: pitchDeckData as any,
         createdAt: new Date(),
       },
       create: {
         ideaIntakeId: projectId,
-        data: marketData,
+        data: pitchDeckData as any,
       },
     });
 
-    return NextResponse.json(marketAnalysis.data);
+    return NextResponse.json(pitchDeck.data);
 
   } catch (error: any) {
-    console.error('Market Analysis Error:', error);
+    console.error('Pitch Deck Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to generate market analysis' },
+      { error: error.message || 'Failed to generate pitch deck' },
       { status: 500 }
     );
   }

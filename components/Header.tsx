@@ -4,10 +4,10 @@ import AuthButton from '@/components/AuthButton';
 
 export default async function Header() {
   return (
-    <header className="w-full sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800" dir="rtl">
+    <header className="w-full sticky top-0 z-50 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
-        <div className="font-bold text-xl flex items-center gap-2 text-slate-900 dark:text-slate-100">
+        <div className="font-bold text-xl flex items-center gap-2 text-slate-900 dark:text-slate-100" suppressHydrationWarning>
              <Zap className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
              <span>StartupExec</span>
         </div>

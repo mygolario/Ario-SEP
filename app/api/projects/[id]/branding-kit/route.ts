@@ -1,15 +1,15 @@
 import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { generateDeepPlan } from '@/lib/ai/deep-plan';
+import { generateBrandingKit } from '@/lib/ai/branding';
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ projectId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
-    const { projectId } = await params;
+    const { id: projectId } = await params;
 
     if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -20,7 +20,7 @@ export async function POST(
          id: projectId
       },
       include: {
-        deepPlan: true
+        brandingKit: true
       }
     });
 
@@ -32,28 +32,28 @@ export async function POST(
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    // Call AI to generate deep plan
-    const deepPlanData = await generateDeepPlan(project);
+    // Call AI to generate branding kit
+    const brandingData = await generateBrandingKit(project);
 
     // Save to database
-    const savedDeepPlan = await prisma.deepPlan.upsert({
+    const savedBrandingKit = await prisma.brandingKit.upsert({
       where: {
         ideaIntakeId: projectId,
       },
       update: {
-        data: deepPlanData as any, // Prisma Json handling
+        data: brandingData as any,
       },
       create: {
         ideaIntakeId: projectId,
-        data: deepPlanData as any,
+        data: brandingData as any,
       },
     });
 
-    return NextResponse.json(savedDeepPlan);
+    return NextResponse.json(savedBrandingKit);
   } catch (error: any) {
-    console.error('Deep Plan Generation Error:', error);
+    console.error('Branding Kit Generation Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to generate deep plan' },
+      { error: error.message || 'Failed to generate branding kit' },
       { status: 500 }
     );
   }

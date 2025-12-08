@@ -1,8 +1,8 @@
-
 import { getCurrentUser } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import GenerateDeepPlanButton from "@/components/projects/GenerateDeepPlanButton";
+import { DeepPlanEnsembleButton } from "@/components/projects/DeepPlanEnsembleButton";
 import { DeepPlanData } from "@/lib/types";
 import { CheckCircle2, AlertTriangle, Target, Clock, ArrowUpRight, BarChart3, Layers, Zap } from "lucide-react";
 
@@ -95,9 +95,36 @@ export default async function DeepPlanPage({ params }: PageProps) {
                 <p className="text-sm text-slate-500 max-w-md mx-auto">با یک کلیک می‌توانی یک برنامه عمیق اولیه شامل تحلیل بازار، مسیر اجرا و ریسک‌ها بر اساس اطلاعات همین ایده بسازی.</p>
              </div>
              <GenerateDeepPlanButton projectId={id} />
+             
+             {/* Pro Mode Divider */}
+             <div className="relative flex py-2 items-center w-full max-w-md mx-auto">
+                 <div className="grow border-t border-slate-200"></div>
+                 <span className="shrink-0 mx-4 text-slate-400 text-xs">یا استفاده از حالت پیشرفته</span>
+                 <div className="grow border-t border-slate-200"></div>
+             </div>
+
+             {/* Ensemble Mode */}
+             <div className="border border-slate-200 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 bg-white shadow-sm ring-1 ring-slate-100 w-full">
+                <div className="space-y-1 text-center md:text-right">
+                    <h3 className="text-sm font-bold text-slate-900 flex items-center justify-center md:justify-start gap-2">
+                        <Zap className="w-4 h-4 text-amber-500" />
+                        حالت پیشرفته (Ensemble)
+                    </h3>
+                    <p className="text-xs text-slate-500 max-w-md">تحلیل عمیق‌تر با استفاده همزمان از ۳ مدل هوش مصنوعی (Google Gemini + GPT-5 + Claude).</p>
+                </div>
+                <DeepPlanEnsembleButton projectId={id} />
+             </div>
            </div>
         ) : (
           <div className="space-y-6">
+              <div className="flex justify-end mb-4">
+                 <div className="bg-white border p-2 rounded-xl shadow-sm flex items-center gap-3">
+                     <span className="text-xs text-slate-500 font-medium px-2">به‌روزرسانی برنامه:</span>
+                     <GenerateDeepPlanButton projectId={id} />
+                     <div className="w-px h-6 bg-slate-200"></div>
+                     <DeepPlanEnsembleButton projectId={id} />
+                 </div>
+              </div>
             
             {/* 1. Overview */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

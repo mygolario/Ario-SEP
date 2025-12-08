@@ -1,11 +1,10 @@
-
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ projectId: string }> } // Awaiting params for Next.js 15+
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
@@ -16,7 +15,7 @@ export async function POST(
       );
     }
 
-    const { projectId } = await params;
+    const { id: projectId } = await params;
 
     const project = await prisma.ideaIntake.findUnique({
       where: { id: projectId },

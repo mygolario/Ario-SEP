@@ -1,11 +1,11 @@
 import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
-import { generateFundingRoadmap } from '@/lib/ai/funding-roadmap';
+import { generateMarketAnalysis } from '@/lib/ai/market-analysis';
 import { NextResponse } from 'next/server';
 
 export async function POST(
   req: Request,
-  { params }: { params: Promise<{ projectId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
@@ -13,7 +13,7 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { projectId } = await params;
+    const { id: projectId } = await params;
 
     const project = await prisma.ideaIntake.findUnique({
       where: {
@@ -32,36 +32,33 @@ export async function POST(
     }
 
     if (project.userId && project.userId !== user.id && user.role !== "ADMIN") {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    const fundingRoadmapData = await generateFundingRoadmap({
-      title: project.ideaOneLiner,
-      description: `${project.problem} - ${project.solution}`,
-      targetAudience: project.audience,
-    });
+    // 3. Generate Analysis - changed to pass full project object
+    const marketData = await generateMarketAnalysis(project);
 
-    // 4. Save/Update DB
-    const fundingRoadmap = await prisma.fundingRoadmap.upsert({
+    // 4. Save to DB
+    const marketAnalysis = await prisma.marketAnalysis.upsert({
       where: {
         ideaIntakeId: projectId,
       },
       update: {
-        data: fundingRoadmapData as any,
+        data: marketData,
         createdAt: new Date(),
       },
       create: {
         ideaIntakeId: projectId,
-        data: fundingRoadmapData as any,
+        data: marketData,
       },
     });
 
-    return NextResponse.json(fundingRoadmap.data);
+    return NextResponse.json(marketAnalysis.data);
 
   } catch (error: any) {
-    console.error('Funding Roadmap Error:', error);
+    console.error('Market Analysis Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to generate funding roadmap' },
+      { error: error.message || 'Failed to generate market analysis' },
       { status: 500 }
     );
   }

@@ -1,26 +1,33 @@
 import { getCurrentUser } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
-import { generateBrandingKit } from '@/lib/ai/branding';
+import { generateExecutionPlan } from '@/lib/ai/execution-coach';
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ projectId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
-    const { projectId } = await params;
+    const { id: projectId } = await params;
 
     if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Fetch project with all related plans to give full context to AI
     const project = await prisma.ideaIntake.findUnique({
       where: {
          id: projectId
       },
       include: {
-        brandingKit: true
+        strategyMaps: {
+            orderBy: { createdAt: 'desc' },
+            take: 1
+        },
+        deepPlan: true,
+        brandingKit: true,
+        landingPagePlan: true,
       }
     });
 
@@ -32,28 +39,13 @@ export async function POST(
         return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
-    // Call AI to generate branding kit
-    const brandingData = await generateBrandingKit(project);
+    const tasks = await generateExecutionPlan(project);
 
-    // Save to database
-    const savedBrandingKit = await prisma.brandingKit.upsert({
-      where: {
-        ideaIntakeId: projectId,
-      },
-      update: {
-        data: brandingData as any,
-      },
-      create: {
-        ideaIntakeId: projectId,
-        data: brandingData as any,
-      },
-    });
-
-    return NextResponse.json(savedBrandingKit);
+    return NextResponse.json(tasks);
   } catch (error: any) {
-    console.error('Branding Kit Generation Error:', error);
+    console.error('Execution Coach Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to generate branding kit' },
+      { error: error.message || 'Failed to generate execution tasks' },
       { status: 500 }
     );
   }

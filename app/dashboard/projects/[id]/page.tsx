@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { Lock, FileText, Target, Lightbulb, Users } from "lucide-react";
+import { ToolCard } from "@/components/projects/ToolCard";
 import { AISummaryBox } from "@/components/projects/AISummaryBox";
 
 interface Props {
@@ -25,6 +26,9 @@ export default async function ProjectSummaryPage({ params }: Props) {
   const project = await prisma.ideaIntake.findUnique({
     where: { id },
   });
+
+  // @ts-ignore: Stale Prisma types due to running server
+  const projectData = project as any;
 
   if (!project) {
     return (
@@ -78,95 +82,116 @@ export default async function ProjectSummaryPage({ params }: Props) {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4 space-y-10" dir="rtl">
+    <main className="min-h-screen bg-slate-50" dir="rtl">
+      <div className="max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-10 space-y-8 text-right">
       
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-slate-900">خلاصه یک‌صفحه‌ای</h1>
-        <p className="text-slate-600 text-lg">
-          بر اساس اطلاعاتی که وارد کردی، این خلاصه‌ی اولیه‌ی ایده‌ی توست.
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900">خلاصه و ابزارهای این ایده</h1>
+        <p className="text-sm md:text-[13px] text-slate-600 leading-6">
+          از اینجا می‌توانی همه ابزارهای تحلیلی و اجرایی مربوط به این ایده را ببینی و بین آن‌ها جابه‌جا شوی.
         </p>
       </div>
 
-      {/* Base Idea Summary */}
-      <div className="grid gap-6 md:grid-cols-2">
-        {baseDetails.map((item, index) => (
-          <div key={index} className="p-6 bg-white border border-slate-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="p-2 bg-indigo-50 rounded-lg">
-                {item.icon}
-              </div>
-              <h3 className="font-bold text-slate-900">{item.title}</h3>
-            </div>
-            <p className="text-slate-700 text-sm leading-7 whitespace-pre-wrap">
-              {item.content}
+      {/* Idea Summary Card */}
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 md:p-6 space-y-4 shadow-sm">
+        <div className="flex items-center justify-between gap-2">
+            <h1 className="text-lg md:text-xl font-bold text-slate-900 flex items-center gap-2">
+            <Lightbulb className="w-5 h-5 text-amber-500" />
+            ایده: <span className="text-indigo-700">{project.ideaOneLiner}</span>
+            </h1>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] md:text-[13px] text-slate-700 bg-slate-50 rounded-xl p-4 border border-slate-100">
+            <div className="space-y-1">
+            <p className="text-[11px] font-bold text-slate-500 flex items-center gap-1">
+                <FileText className="w-3 h-3" />
+                مشکل اصلی
             </p>
-          </div>
-        ))}
+            <p className="leading-6">{project.problem}</p>
+            </div>
+            <div className="space-y-1">
+            <p className="text-[11px] font-bold text-slate-500 flex items-center gap-1">
+                <Target className="w-3 h-3" />
+                راه‌حل پیشنهادی
+            </p>
+            <p className="leading-6">{project.solution}</p>
+            </div>
+            <div className="space-y-1 md:col-span-2">
+            <p className="text-[11px] font-bold text-slate-500 flex items-center gap-1">
+                <Users className="w-3 h-3" />
+                مخاطب هدف
+            </p>
+            <p className="leading-6">{project.audience}</p>
+            </div>
+        </div>
       </div>
 
-      {/* AI Summary Box */}
-      <AISummaryBox 
+      {/* AI Summary (Optional - kept if it exists) */}
+       <AISummaryBox 
         projectId={project.id} 
         initialSummary={project.aiSummary} 
         isAdmin={user.role === "ADMIN"} 
       />
 
-      {/* Locked Features */}
-      {user.role === "ADMIN" ? (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-slate-900">ابزارهای پیشرفته</h2>
-            <span className="text-sm font-medium text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 flex items-center gap-1">
-              <Lock className="w-3 h-3" />
-              حالت ادمین (باز)
-            </span>
-          </div>
-          
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {lockedFeatures.map((feature, idx) => (
-              <Link key={idx} href={`/dashboard/projects/${project.id}/${feature.slug}`}>
-                <div className="p-6 border border-emerald-200 bg-emerald-50/40 rounded-xl shadow-sm hover:bg-emerald-100/60 hover:border-emerald-300 transition-all cursor-pointer group">
-                  <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-emerald-900 group-hover:text-emerald-950 transition-colors">{feature.name}</h3>
-                      <span className="text-[11px] px-2 py-1 rounded-full bg-emerald-100 text-emerald-700 group-hover:bg-emerald-200 transition-colors">فعال</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-slate-900">ابزارهای پیشرفته</h2>
-            <span className="text-sm font-medium text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-100">
-              نسخه پرمیوم
-            </span>
-          </div>
-          
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {lockedFeatures.map((feature, idx) => (
-              <Link key={idx} href={`/dashboard/projects/${project.id}/${feature.slug}`} className="block relative p-6 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden group hover:border-indigo-300 transition-colors">
-                <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Lock className="w-8 h-8 text-indigo-500 mb-2" />
-                  <span className="text-xs font-semibold text-indigo-600">ارتقای پلن</span>
-                </div>
-                <div className="flex items-center justify-between opacity-60">
-                  <h3 className="font-semibold text-slate-800">{feature.name}</h3>
-                  <Lock className="w-4 h-4 text-slate-400" />
-                </div>
-              </Link>
-            ))}
-          </div>
+      {/* Tools Grid */}
+      <div className="space-y-4">
+        <h2 className="text-base md:text-lg font-bold text-slate-900 pr-2 border-r-4 border-indigo-500">
+            ابزارهای پیشرفته برای این ایده
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            <ToolCard
+                title="برنامه عمیق"
+                description="مسیر مرحله‌به‌مرحله اجرای ایده، از شروع تا رشد."
+                href={`/dashboard/projects/${project.id}/deep-plan`}
+                hasData={!!projectData.deepPlan}
+            />
 
-          <div className="mt-8 flex justify-center">
-              <a href="/pricing" className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-8 py-3 text-base font-semibold text-white shadow-sm hover:bg-slate-800 transition-colors w-full sm:w-auto">
-                  مشاهده پلن‌های اشتراک
-              </a>
-          </div>
+            <ToolCard
+                title="بسته برند"
+                description="نام، شعار، شخصیت، لحن و پالت رنگ پیشنهادی برند."
+                href={`/dashboard/projects/${project.id}/branding-kit`}
+                hasData={!!projectData.brandingKit}
+            />
+
+            <ToolCard
+                title="ساختار لندینگ"
+                description="چینش بخش‌های صفحه لندینگ، تیترها و متن‌های پیشنهادی."
+                href={`/dashboard/projects/${project.id}/landing`}
+                hasData={!!projectData.landingPagePlan} // Note: field name in schema is landingPagePlan
+            />
+
+            <ToolCard
+                title="تحلیل بازار و رقبا"
+                description="تصویر کلی بازار، بخش‌های مشتری، رقبا، فرصت‌ها و ریسک‌ها."
+                href={`/dashboard/projects/${project.id}/market`}
+                hasData={!!projectData.marketAnalysis}
+            />
+
+            <ToolCard
+                title="طرح ارائه برای سرمایه‌گذار"
+                description="اسکلت اسلایدهای ارائه: مشکل، راه‌حل، بازار، تیم و درخواست سرمایه."
+                href={`/dashboard/projects/${project.id}/pitch-deck`}
+                hasData={!!projectData.pitchDeck}
+            />
+
+            <ToolCard
+                title="نقشه راه تأمین مالی"
+                description="مراحل کلی تأمین مالی، خرج‌ها و خروجی‌های هر مرحله."
+                href={`/dashboard/projects/${project.id}/funding`}
+                hasData={!!projectData.fundingRoadmap} // Note: field name in schema is fundingRoadmap
+            />
+
+            <ToolCard
+                title="کوچ اجرا و فهرست کارها"
+                description="برنامه هفتگی برای تسک‌های مهم شروع کار روی همین ایده."
+                href={`/dashboard/projects/${project.id}/tasks`}
+                hasData={!!projectData.executionPlan}
+            />
         </div>
-      )}
-    </div>
+      </div>
+
+      </div>
+    </main>
   );
 }

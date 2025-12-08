@@ -4,11 +4,11 @@ import { NextResponse } from 'next/server';
 
 export async function PATCH(
   request: Request,
-  { params }: { params: Promise<{ projectId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
-    const { projectId } = await params;
+    const { id: projectId } = await params;
 
     if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -66,11 +66,11 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ projectId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
-    const { projectId } = await params;
+    const { id: projectId } = await params;
 
     if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -103,8 +103,8 @@ export async function DELETE(
     // So we should delete children first to be safe, or use a transaction.
 
     await prisma.$transaction([
-        prisma.strategyMap.deleteMany({ where: { projectId } }),
-        prisma.deepPlan.deleteMany({ where: { projectId } }),
+        prisma.strategyMap.deleteMany({ where: { ideaIntakeId: projectId } }),
+        prisma.deepPlan.deleteMany({ where: { ideaIntakeId: projectId } }),
         prisma.project.delete({ where: { id: projectId } })
     ]);
 

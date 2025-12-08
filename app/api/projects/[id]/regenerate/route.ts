@@ -6,11 +6,11 @@ import { BudgetLevel, ExperienceLevel, Prisma } from '@prisma/client';
 
 export async function POST(
   request: Request,
-  { params }: { params: Promise<{ projectId: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await getCurrentUser();
-    const { projectId } = await params;
+    const { id: projectId } = await params;
 
     if (!user?.id) {
       return NextResponse.json(
@@ -53,7 +53,7 @@ export async function POST(
         // Create a new StrategyMap linked to the project
         const newMap = await prisma.strategyMap.create({
             data: {
-                projectId: project.id,
+                ideaIntakeId: project.id,
                 summary: plan.summary as unknown as Prisma.InputJsonValue,
                 data: plan as unknown as Prisma.InputJsonValue,
             }
